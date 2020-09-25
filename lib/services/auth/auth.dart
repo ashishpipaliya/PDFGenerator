@@ -38,7 +38,7 @@ class AuthProvider with ChangeNotifier {
         print('Wrong password provided for that user.');
       }
     } catch (e) {
-      print(e.toString());
+      // print(e.toString());
     }
     notifyListeners();
   }
