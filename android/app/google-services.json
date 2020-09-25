@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "442098452315",
+    "firebase_url": "https://pdf-generator-605e0.firebaseio.com",
+    "project_id": "pdf-generator-605e0",
+    "storage_bucket": "pdf-generator-605e0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:442098452315:android:420b727a621aa58a697c7e",
+        "android_client_info": {
+          "package_name": "app.pdf_gen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "442098452315-ru4p52b5f8umk22qdfi2es77tqt9k5ma.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.pdf_gen",
+            "certificate_hash": "bcc416156fbd49c59e8648615c9cf1bf0d113b1f"
+          }
+        },
+        {
+          "client_id": "442098452315-6q11almkovlvveg79dupfv3isi0tag9s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBciiHAO-IEcen1Gn6j1uCpblaqmw-pcCk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "442098452315-6q11almkovlvveg79dupfv3isi0tag9s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
