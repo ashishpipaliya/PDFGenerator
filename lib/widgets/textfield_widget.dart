@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pdf_gen/shared/color_palette.dart';
+import 'package:pdf_gen/utils/ui_utils.dart';
 
-class TextFieldWidget extends StatelessWidget {
+class TextFieldWidgetwithIcon extends StatelessWidget {
   final String hintText;
+  final String errorText;
   final TextInputType keyboardType;
   final IconData prefixIconData;
   final IconData suffixIconData;
@@ -11,25 +13,28 @@ class TextFieldWidget extends StatelessWidget {
   final Function togglePassword;
   final String Function(String) validator;
 
-  const TextFieldWidget(
+  const TextFieldWidgetwithIcon(
       {Key key,
-      this.hintText,
+      @required this.hintText,
       this.prefixIconData,
       this.suffixIconData,
       this.obscureText,
-      this.onChanged,
+      @required this.onChanged,
       this.keyboardType,
       this.togglePassword,
-      this.validator})
+      @required this.validator,
+      this.errorText})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      style: TextStyle(
-        color: ColorPalette.darkPurple,
-        fontSize: 14.0,
-      ),
+      style: UIUtils().getTextStyle(fontsize: 14),
+      // TextStyle(
+      //   color: ColorPalette.darkPurple,
+      //   fontSize: 14.0,
+      // ),
+
       validator: validator,
       obscureText: obscureText,
       onChanged: onChanged,
@@ -37,6 +42,7 @@ class TextFieldWidget extends StatelessWidget {
       cursorColor: ColorPalette.darkPurple,
       decoration: InputDecoration(
           labelText: hintText,
+          errorText: errorText,
           prefixIcon: Icon(
             prefixIconData,
             size: 18,
@@ -52,8 +58,13 @@ class TextFieldWidget extends StatelessWidget {
             borderSide: BorderSide(color: ColorPalette.darkPurple),
           ),
           errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: ColorPalette.errorRed)),
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: ColorPalette.errorRed),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: ColorPalette.errorRed),
+          ),
           suffixIcon: GestureDetector(
             onTap: togglePassword,
             child: Icon(
@@ -62,6 +73,55 @@ class TextFieldWidget extends StatelessWidget {
               color: ColorPalette.darkPurple,
             ),
           ),
+          labelStyle: TextStyle(color: ColorPalette.darkPurple),
+          focusColor: ColorPalette.darkPurple),
+    );
+  }
+}
+
+class TextFieldWidget extends StatelessWidget {
+  final String hintText;
+  final TextInputType keyboardType;
+  final bool obscureText;
+  final Function onChanged;
+  final String Function(String) validator;
+
+  const TextFieldWidget(
+      {Key key,
+      @required this.hintText,
+      this.obscureText,
+      @required this.onChanged,
+      this.keyboardType,
+      this.validator})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      style: UIUtils().getTextStyle(fontsize: 14),
+      // TextStyle(
+      //   color: ColorPalette.darkPurple,
+      //   fontSize: 14.0,
+      // ),
+      validator: validator,
+      obscureText: obscureText,
+      onChanged: onChanged,
+      keyboardType: keyboardType,
+      cursorColor: ColorPalette.darkPurple,
+      decoration: InputDecoration(
+          labelText: hintText,
+          filled: true,
+          enabledBorder: UnderlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: ColorPalette.darkPurple),
+          ),
+          errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: ColorPalette.errorRed)),
           labelStyle: TextStyle(color: ColorPalette.darkPurple),
           focusColor: ColorPalette.darkPurple),
     );

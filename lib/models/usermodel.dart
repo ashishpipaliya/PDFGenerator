@@ -13,7 +13,6 @@ class UserModel {
   String zip;
   String country;
   String deviceId;
-  String deviceToken;
   String deviceType;
   String createdAt;
 
@@ -33,7 +32,7 @@ class UserModel {
       this.deviceType,
       this.createdAt});
 
-  factory UserModel.fromFIrestore(DocumentSnapshot doc) {
+  factory UserModel.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data();
 
     return UserModel(
@@ -52,5 +51,23 @@ class UserModel {
       deviceType: data['device_type'],
       createdAt: data['created_at'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'uid': uid,
+      'first_name': firstName,
+      'last_name': lastname,
+      'email': email,
+      'image': image,
+      'city': city,
+      'state': state,
+      'zip': zip,
+      'country': country,
+      'phone': phoneNumber,
+      'device_id': deviceId,
+      'device_type': deviceType,
+      'created_at': createdAt,
+    };
   }
 }

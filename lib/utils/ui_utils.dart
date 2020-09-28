@@ -37,6 +37,7 @@ class UIUtils {
   }
 
   double get getNavBarSize => min(UIUtils().getProportionalHeight(52.0), 52.0);
+
   double getProportionalHeight(double height) {
     if (_screenHeight == null) return height;
     final h = _screenHeight * height / _referenceScreenHeight;

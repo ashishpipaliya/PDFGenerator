@@ -8,7 +8,6 @@ import 'package:pdf_gen/shared/color_palette.dart';
 import 'package:pdf_gen/utils/ui_utils.dart';
 import 'package:pdf_gen/widgets/button_widget.dart';
 import 'package:pdf_gen/widgets/textfield_widget.dart';
-import 'package:pdf_gen/wrapper/wrapper.dart';
 
 class Signup extends StatefulWidget {
   @override
@@ -18,6 +17,7 @@ class Signup extends StatefulWidget {
 class _SignupState extends State<Signup> {
   String _email;
   String _password;
+  final _formKey = GlobalKey<FormState>();
 
   bool _obscureText = true;
 
@@ -56,6 +56,7 @@ class _SignupState extends State<Signup> {
                 child: Padding(
                   padding: EdgeInsets.all(15),
                   child: Form(
+                    key: _formKey,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -86,7 +87,7 @@ class _SignupState extends State<Signup> {
                           ],
                         ),
                         heightGap(),
-                        TextFieldWidget(
+                        TextFieldWidgetwithIcon(
                             hintText: 'Email',
                             keyboardType: TextInputType.emailAddress,
                             obscureText: false,
@@ -101,7 +102,7 @@ class _SignupState extends State<Signup> {
                               return !validEmail ? 'Invalid email' : null;
                             }),
                         heightGap(),
-                        TextFieldWidget(
+                        TextFieldWidgetwithIcon(
                           hintText: 'Password',
                           obscureText: _obscureText,
                           prefixIconData: Icons.lock_outline,
@@ -116,7 +117,7 @@ class _SignupState extends State<Signup> {
                               value.length < 6 ? 'Password too short' : null,
                         ),
                         heightGap(),
-                        TextFieldWidget(
+                        TextFieldWidgetwithIcon(
                           hintText: 'Phone',
                           keyboardType: TextInputType.number,
                           obscureText: false,

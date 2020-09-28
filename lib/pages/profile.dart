@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'file:///C:/Users/ashis/Documents/Flutter/Agile%20Infoways/pdf_gen/lib/pages/login.dart';
 import 'package:pdf_gen/shared/color_palette.dart';
 import 'package:pdf_gen/widgets/button_widget.dart';
 import 'package:pdf_gen/widgets/textfield_widget.dart';
@@ -100,7 +99,7 @@ class _ProfileState extends State<Profile> {
               ],
             ),
             heightGap(),
-            TextFieldWidget(
+            TextFieldWidgetwithIcon(
                 hintText: 'Email',
                 keyboardType: TextInputType.emailAddress,
                 obscureText: false,
@@ -114,7 +113,7 @@ class _ProfileState extends State<Profile> {
                   return !validEmail ? 'Invalid email' : null;
                 }),
             heightGap(),
-            TextFieldWidget(
+            TextFieldWidgetwithIcon(
               hintText: 'Phone',
               keyboardType: TextInputType.number,
               obscureText: false,
@@ -135,4 +134,12 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+}
+
+Widget heightGap() {
+  return SizedBox(height: 20);
+}
+
+Widget widthGap() {
+  return SizedBox(width: 15);
 }

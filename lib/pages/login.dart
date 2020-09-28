@@ -20,6 +20,8 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   String _email;
   String _password;
+  String _error;
+  final _formKey = GlobalKey<FormState>();
 
   bool _obscureText = true;
 
@@ -58,10 +60,11 @@ class _LoginState extends State<Login> {
                 child: Padding(
                   padding: const EdgeInsets.all(30.0),
                   child: Form(
+                    key: _formKey,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        TextFieldWidget(
+                        TextFieldWidgetwithIcon(
                             hintText: 'Email',
                             keyboardType: TextInputType.emailAddress,
                             obscureText: false,
@@ -73,13 +76,14 @@ class _LoginState extends State<Login> {
                               Pattern pattern =
                                   r"[^@\t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+";
                               bool validEmail = RegExp(pattern).hasMatch(value);
+
                               return !validEmail ? 'Invalid email' : null;
                             }),
                         heightGap(),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            TextFieldWidget(
+                            TextFieldWidgetwithIcon(
                               hintText: 'Password',
                               obscureText: _obscureText,
                               prefixIconData: Icons.lock_outline,
@@ -112,6 +116,10 @@ class _LoginState extends State<Login> {
                           ],
                         ),
                         heightGap(),
+                        Text(_error ?? '',
+                            style: UIUtils()
+                                .getTextStyle(color: ColorPalette.errorRed)),
+                        heightGap(),
                         ButtonWidget(
                           title: 'Login',
                           hasBorder: false,
@@ -124,13 +132,7 @@ class _LoginState extends State<Login> {
                         ButtonWidget(
                           title: 'Sign Up',
                           hasBorder: true,
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Signup(),
-                                ));
-                          },
+                          onPressed: _onClickSignup,
                         ),
                         heightGap(),
                       ],
@@ -162,14 +164,26 @@ class _LoginState extends State<Login> {
   }
 
   void _onClickLogin() async {
-    FocusScope.of(context).requestFocus(FocusNode());
-    UIUtils().showProgressDialog(context);
+    if (_formKey.currentState.validate()) {
+      FocusScope.of(context).unfocus();
+      UIUtils().showProgressDialog(context);
+      final result = await _auth.login(_email, _password);
+      if (result == null) {
+        setState(() {
+          _error = 'Something went wrong. Please try again';
+        });
+      }
+      Future.delayed(Duration(milliseconds: 1500), () {});
+      UIUtils().dismissProgressDialog(context);
+    }
+  }
 
-    await _auth.login(_email, _password);
-
-    Future.delayed(Duration(milliseconds: 1000), () {});
-
-    UIUtils().dismissProgressDialog(context);
+  void _onClickSignup() async {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Signup(),
+        ));
   }
 }
 

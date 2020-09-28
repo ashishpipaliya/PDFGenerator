@@ -38,7 +38,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      TextFieldWidget(
+                      TextFieldWidgetwithIcon(
                         hintText: 'Email',
                         keyboardType: TextInputType.emailAddress,
                         obscureText: false,
