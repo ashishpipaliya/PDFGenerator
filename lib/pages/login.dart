@@ -1,11 +1,8 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pdf_gen/pages/homepage.dart';
 import 'package:pdf_gen/services/auth/auth.dart';
-import 'package:pdf_gen/services/navigation_service.dart';
 import 'file:///C:/Users/ashis/Documents/Flutter/Agile%20Infoways/pdf_gen/lib/pages/forget_password.dart';
-import 'file:///C:/Users/ashis/Documents/Flutter/Agile%20Infoways/pdf_gen/lib/pages/homepage.dart';
 import 'file:///C:/Users/ashis/Documents/Flutter/Agile%20Infoways/pdf_gen/lib/pages/signup.dart';
 import 'package:pdf_gen/shared/color_palette.dart';
 import 'package:pdf_gen/utils/ui_utils.dart';
@@ -38,6 +35,9 @@ class _LoginState extends State<Login> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light
         .copyWith(statusBarIconBrightness: Brightness.light));
 
+    final height = UIUtils().size(context).height;
+    final width = UIUtils().size(context).width;
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -46,19 +46,21 @@ class _LoginState extends State<Login> {
           child: Stack(
             children: [
               Container(
-                height: MediaQuery.of(context).size.height * 0.6,
-                // width: MediaQuery.of(context).size.width,
-                child: FlareActor(
-                  'assets/flare/flow.flr',
-                  animation: "Flow",
-                  fit: BoxFit.fill,
+                height: height * 0.5,
+                child: Opacity(
+                  opacity: 1,
+                  child: FlareActor(
+                    'assets/flare/flow.flr',
+                    animation: "Flow",
+                    fit: BoxFit.fill,
+                  ),
                 ),
               ),
               Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
+                width: width,
+                height: height,
                 child: Padding(
-                  padding: const EdgeInsets.all(30.0),
+                  padding: const EdgeInsets.all(15.0),
                   child: Form(
                     key: _formKey,
                     child: Column(
@@ -141,16 +143,16 @@ class _LoginState extends State<Login> {
                 ),
               ),
               Positioned(
-                height: MediaQuery.of(context).size.height * 0.4,
-                width: MediaQuery.of(context).size.width,
+                height: height * 0.4,
+                width: width,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       "Login",
                       style: TextStyle(
-                          color: ColorPalette.cream,
-                          fontSize: 35,
+                          color: ColorPalette.superlightPurple,
+                          fontSize: width * 0.1,
                           fontWeight: FontWeight.w600),
                     ),
                   ],
@@ -168,9 +170,10 @@ class _LoginState extends State<Login> {
       FocusScope.of(context).unfocus();
       UIUtils().showProgressDialog(context);
       final result = await _auth.login(_email, _password);
+
       if (result == null) {
         setState(() {
-          _error = 'Something went wrong. Please try again';
+          _error = 'Please check your credentials and try again';
         });
       }
       Future.delayed(Duration(milliseconds: 1500), () {});

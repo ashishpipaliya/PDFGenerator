@@ -26,6 +26,10 @@ class UIUtils {
   final double _referenceScreenHeight = 812;
   final double _referenceScreenWidth = 375;
 
+  Size size(BuildContext context) {
+    return MediaQuery.of(context).size;
+  }
+
   void updateScreenDimension({double width, double height}) {
     if (_screenWidth != null && _screenHeight != null) {
       return;

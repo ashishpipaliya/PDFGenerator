@@ -38,7 +38,7 @@ dependencies:
   device_info: ^0.4.2+8
   connectivity: ^0.4.9+3
   package_info: ^0.4.3
-  overlay_support: ^1.0.5
+  image_picker: ^0.6.6+5
 
 dev_dependencies:
   flutter_test:

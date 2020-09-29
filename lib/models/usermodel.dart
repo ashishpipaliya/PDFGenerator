@@ -12,25 +12,26 @@ class UserModel {
   String state;
   String zip;
   String country;
-  String deviceId;
   String deviceType;
-  String createdAt;
+  FieldValue createdAtServer;
+  DateTime createdAtClient;
 
-  UserModel(
-      {this.uid,
-      this.firstName,
-      this.lastname,
-      this.email,
-      this.password,
-      this.image,
-      this.phoneNumber,
-      this.city,
-      this.state,
-      this.zip,
-      this.country,
-      this.deviceId,
-      this.deviceType,
-      this.createdAt});
+  UserModel({
+    this.uid,
+    this.firstName,
+    this.lastname,
+    this.email,
+    this.password,
+    this.image,
+    this.phoneNumber,
+    this.city,
+    this.state,
+    this.zip,
+    this.country,
+    this.deviceType,
+    this.createdAtServer,
+    this.createdAtClient,
+  });
 
   factory UserModel.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data();
@@ -47,9 +48,9 @@ class UserModel {
       zip: data['zip'],
       country: data['country'],
       phoneNumber: data['phone'],
-      deviceId: data['device_id'],
       deviceType: data['device_type'],
-      createdAt: data['created_at'],
+      createdAtServer: data['created_at_server'],
+      createdAtClient: data['created_at_client'],
     );
   }
 
@@ -65,9 +66,9 @@ class UserModel {
       'zip': zip,
       'country': country,
       'phone': phoneNumber,
-      'device_id': deviceId,
       'device_type': deviceType,
-      'created_at': createdAt,
+      'created_at_server': createdAtServer,
+      'created_at_client': createdAtClient,
     };
   }
 }

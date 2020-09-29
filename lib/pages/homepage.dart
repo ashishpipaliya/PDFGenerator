@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:pdf_gen/services/auth/auth.dart';
 import 'file:///C:/Users/ashis/Documents/Flutter/Agile%20Infoways/pdf_gen/lib/pages/profile.dart';
-import 'package:pdf_gen/shared/color_palette.dart';
-import 'package:pdf_gen/utils/ui_utils.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -17,6 +14,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("PDF"),
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: Column(

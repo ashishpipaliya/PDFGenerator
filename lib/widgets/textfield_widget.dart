@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pdf_gen/shared/color_palette.dart';
 import 'package:pdf_gen/utils/ui_utils.dart';
 
@@ -12,19 +13,21 @@ class TextFieldWidgetwithIcon extends StatelessWidget {
   final Function onChanged;
   final Function togglePassword;
   final String Function(String) validator;
+  final int maxLength;
 
-  const TextFieldWidgetwithIcon(
-      {Key key,
-      @required this.hintText,
-      this.prefixIconData,
-      this.suffixIconData,
-      this.obscureText,
-      @required this.onChanged,
-      this.keyboardType,
-      this.togglePassword,
-      @required this.validator,
-      this.errorText})
-      : super(key: key);
+  const TextFieldWidgetwithIcon({
+    Key key,
+    @required this.hintText,
+    this.prefixIconData,
+    this.suffixIconData,
+    this.obscureText,
+    @required this.onChanged,
+    this.keyboardType,
+    this.togglePassword,
+    this.validator,
+    this.errorText,
+    this.maxLength,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +37,7 @@ class TextFieldWidgetwithIcon extends StatelessWidget {
       //   color: ColorPalette.darkPurple,
       //   fontSize: 14.0,
       // ),
-
+      maxLength: maxLength,
       validator: validator,
       obscureText: obscureText,
       onChanged: onChanged,
@@ -85,6 +88,7 @@ class TextFieldWidget extends StatelessWidget {
   final bool obscureText;
   final Function onChanged;
   final String Function(String) validator;
+  final int maxLength;
 
   const TextFieldWidget(
       {Key key,
@@ -92,24 +96,22 @@ class TextFieldWidget extends StatelessWidget {
       this.obscureText,
       @required this.onChanged,
       this.keyboardType,
-      this.validator})
+      this.validator,
+      this.maxLength})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       style: UIUtils().getTextStyle(fontsize: 14),
-      // TextStyle(
-      //   color: ColorPalette.darkPurple,
-      //   fontSize: 14.0,
-      // ),
+      maxLength: maxLength,
       validator: validator,
       obscureText: obscureText,
       onChanged: onChanged,
       keyboardType: keyboardType,
       cursorColor: ColorPalette.darkPurple,
       decoration: InputDecoration(
-          labelText: hintText,
+          hintText: hintText,
           filled: true,
           enabledBorder: UnderlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -122,6 +124,10 @@ class TextFieldWidget extends StatelessWidget {
           errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: ColorPalette.errorRed)),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: ColorPalette.errorRed),
+          ),
           labelStyle: TextStyle(color: ColorPalette.darkPurple),
           focusColor: ColorPalette.darkPurple),
     );
