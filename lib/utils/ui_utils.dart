@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:pdf_gen/shared/color_palette.dart';
@@ -109,6 +110,31 @@ class UIUtils {
     if (Navigator.of(context).canPop()) {
       Navigator.of(context).pop();
     }
+  }
+
+  myDialog(
+    BuildContext context,
+    String title,
+    String content,
+    String buttonText,
+  ) {
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+              title: Text(title),
+              content: Text(content),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text(
+                    buttonText,
+                    style: TextStyle(color: ColorPalette.darkPurple),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            ));
   }
 }
 

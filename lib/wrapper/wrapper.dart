@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf_gen/pages/homepage.dart';
-import 'package:pdf_gen/pages/login.dart';
+import 'package:pdf_gen/pages/login_redesign.dart';
 import 'package:provider/provider.dart';
 
 class Wrapper extends StatefulWidget {
@@ -17,6 +17,6 @@ class _WrapperState extends State<Wrapper> {
 
     bool loggedIn = user != null;
 
-    return !loggedIn ? Login() : HomePage();
+    return !loggedIn ? LoginRedesign() : HomePage();
   }
 }

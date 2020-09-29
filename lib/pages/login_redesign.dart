@@ -1,7 +1,8 @@
-import 'package:flare_flutter/flare_actor.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pdf_gen/pages/login_redesign.dart';
+import 'package:pdf_gen/pages/forget_password.dart';
+import 'package:pdf_gen/pages/signup_redesign.dart';
 import 'package:pdf_gen/services/auth.dart';
 import 'package:pdf_gen/services/validation.dart';
 import 'package:pdf_gen/shared/background_animation.dart';
@@ -10,17 +11,26 @@ import 'package:pdf_gen/utils/ui_utils.dart';
 import 'package:pdf_gen/widgets/button_widget.dart';
 import 'package:pdf_gen/widgets/textfield_widget.dart';
 
-class ForgetPassword extends StatefulWidget {
+class LoginRedesign extends StatefulWidget {
   @override
-  _ForgetPasswordState createState() => _ForgetPasswordState();
+  _LoginRedesignState createState() => _LoginRedesignState();
 }
 
-class _ForgetPasswordState extends State<ForgetPassword> {
-  AuthProvider _auth = AuthProvider();
+class _LoginRedesignState extends State<LoginRedesign> {
   String _email;
+  String _password;
+  String _error;
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController _emailController = TextEditingController();
+  bool _obscureText = true;
+
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
+
+  AuthProvider _auth = AuthProvider();
   Validator _validator = Validator();
 
   @override
@@ -54,7 +64,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Forget Password",
+                            "Login",
                             style: TextStyle(
                                 color: ColorPalette.superlightPurple,
                                 fontSize: width * 0.1,
@@ -88,24 +98,69 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               TextFieldWidgetwithIcon(
-                                controller: _emailController,
                                 hintText: 'Email',
-                                validator: (value) =>
-                                    _validator.emailValidator(value),
                                 keyboardType: TextInputType.emailAddress,
                                 obscureText: false,
                                 prefixIconData: Icons.mail_outline,
                                 onChanged: (value) {
                                   _email = value;
                                 },
+                                validator: (value) =>
+                                    _validator.emailValidator(value),
                               ),
-                              SizedBox(height: 50),
+                              heightGap(),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  TextFieldWidgetwithIcon(
+                                    hintText: 'Password',
+                                    obscureText: _obscureText,
+                                    prefixIconData: Icons.lock_outline,
+                                    suffixIconData: _obscureText
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    togglePassword: () => _toggle(),
+                                    onChanged: (value) {
+                                      _password = value;
+                                    },
+                                    validator: (value) =>
+                                        _validator.passwordValidator(value),
+                                  ),
+                                  FlatButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ForgetPassword()));
+                                    },
+                                    child: Text(
+                                      'Forgot password',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w300,
+                                          color: ColorPalette.darkPurple),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              heightGap(),
+                              Text(_error ?? '',
+                                  style: UIUtils().getTextStyle(
+                                      color: ColorPalette.errorRed)),
+                              heightGap(),
                               ButtonWidget(
-                                title: 'Submit',
+                                title: 'Login',
                                 hasBorder: false,
-                                onPressed: () {
-                                  _onSubmit(_email);
-                                },
+                                onPressed: _onClickLogin,
+                                // onPressed: () async {
+                                //   // await _auth.login(_email, _password);
+                                // },
+                              ),
+                              heightGap(),
+                              ButtonWidget(
+                                title: 'Sign Up',
+                                hasBorder: true,
+                                onPressed: _onClickSignup,
                               ),
                               heightGap(),
                             ],
@@ -123,34 +178,35 @@ class _ForgetPasswordState extends State<ForgetPassword> {
     );
   }
 
-  void _onSubmit(String email) async {
+  void _onClickLogin() async {
     if (_formKey.currentState.validate()) {
       FocusScope.of(context).unfocus();
       UIUtils().showProgressDialog(context);
-
-      final result = await _auth.resetPassword(email);
-      _emailController.clear();
-      UIUtils().dismissProgressDialog(context);
-
-      try {
-        if (result ==
-            "There is no user record corresponding to this identifier. The user may have been deleted.") {
-          UIUtils().myDialog(
-              context,
-              "Error",
-              "No user found for this email. Please check your email address and try again.",
-              "Ok");
-        } else {
-          UIUtils().myDialog(
-              context,
-              "Successful",
-              "Password reset email sent successsfully. Please check your inbox to reset password",
-              "ok");
-        }
-      } catch (e) {
-        UIUtils().myDialog(
-            context, "Error Occurred", "Please try after sometime", "Ok");
+      final result = await _auth.login(_email, _password);
+      if (result == null) {
+        setState(() {
+          _error = 'Please check your credentials and try again';
+        });
       }
+      // Future.delayed(Duration(milliseconds: 1500), () {});
+      UIUtils().dismissProgressDialog(context);
     }
   }
+
+  void _onClickSignup() {
+    FocusScope.of(context).unfocus();
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SignupRedesign(),
+        ));
+  }
+}
+
+Widget heightGap() {
+  return SizedBox(height: 15);
+}
+
+Widget widthGap() {
+  return SizedBox(width: 15);
 }

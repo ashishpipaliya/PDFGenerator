@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:pdf_gen/models/usermodel.dart';
 import 'package:pdf_gen/utils/logger.dart';
 
 class Database {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
+  // signup
   Future createUser(UserModel userModel) async {
     try {
       await FirebaseFirestore.instance
@@ -20,21 +20,10 @@ class Database {
     }
   }
 
-  Future<UserModel> getUserData(String uid, String email) async {
+  // view profile
+
+  Future<UserModel> getUserData(String email) async {
     var docSnapshot = await _db.collection(email).doc('profile').get();
     return UserModel.fromFirestore(docSnapshot);
-  }
-
-  File _imageFile;
-  pickImage(ImageSource source) async {
-    File image = await ImagePicker.pickImage(
-      source: source,
-      imageQuality: 50,
-    );
-    _imageFile = image;
-  }
-
-  void clear() {
-    _imageFile = null;
   }
 }

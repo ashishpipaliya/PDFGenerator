@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf_gen/shared/color_palette.dart';
+import 'package:pdf_gen/utils/ui_utils.dart';
 
 class ButtonWidget extends StatelessWidget {
   final String title;
@@ -12,6 +13,8 @@ class ButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final height = UIUtils().size(context).height;
+    final width = UIUtils().size(context).width;
     return Material(
       child: InkWell(
         onTap: onPressed,
@@ -23,14 +26,13 @@ class ButtonWidget extends StatelessWidget {
                 ? Border.all(color: ColorPalette.darkPurple, width: 1.0)
                 : Border.fromBorderSide(BorderSide.none),
           ),
-          height: 50.0,
+          height: height * 0.06,
           child: Center(
             child: Text(
               title,
               style: TextStyle(
                 color: hasBorder ? ColorPalette.darkPurple : ColorPalette.white,
                 fontWeight: FontWeight.w600,
-                fontSize: 16.0,
               ),
             ),
           ),

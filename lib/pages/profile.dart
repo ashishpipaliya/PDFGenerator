@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:pdf_gen/shared/color_palette.dart';
-import 'package:pdf_gen/widgets/button_widget.dart';
+import 'package:pdf_gen/models/usermodel.dart';
+import 'package:pdf_gen/services/database.dart';
 import 'package:pdf_gen/widgets/textfield_widget.dart';
+import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -9,127 +11,74 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  Database _db = Database();
+  UserModel user;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  _getUserData(String email) async {
+    final userData = await _db.getUserData(email);
+    setState(() {
+      user = userData;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final userr = Provider.of<User>(context);
     return Scaffold(
       appBar: AppBar(
-        elevation: 0.0,
-        leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () {}),
-        actions: [IconButton(icon: Icon(Icons.settings), onPressed: () {})],
+        title: Text("Profile"),
+        leading: IconButton(
+            icon: Icon(Icons.clear),
+            onPressed: () {
+              if (Navigator.canPop(context)) {
+                Navigator.of(context).pop();
+              }
+            }),
       ),
       body: Container(
-        padding: EdgeInsets.only(left: 16, top: 25, right: 16),
-        child: ListView(
+        child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
-          children: [
-            Text(
-              "Profile",
-              style: TextStyle(fontSize: 35, fontWeight: FontWeight.w600),
-            ),
-            heightGap(),
-            Center(
-              child: Stack(
-                children: [
-                  Container(
-                    width: 130,
-                    height: 130,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: NetworkImage(
-                            "https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    right: 0,
-                    bottom: 0,
-                    child: Container(
-                      height: 35,
-                      width: 35,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: ColorPalette.darkPurple,
-                          border: Border.all(
-                            width: 4.0,
-                            color: ColorPalette.white,
-                          )),
-                      child: InkWell(
-                        onTap: () {
-                          print("Edit profile");
-                        },
-                        child: Icon(
-                          Icons.edit,
-                          color: ColorPalette.white,
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(height: 50),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.5 - 30,
-                  child: TextFieldWidget(
-                    hintText: 'First name',
-                    keyboardType: TextInputType.name,
-                    obscureText: false,
-                    onChanged: (value) {
-                      print(value);
-                    },
-                  ),
-                ),
-                widthGap(),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.5 - 30,
-                  child: TextFieldWidget(
-                    hintText: 'Last name',
-                    obscureText: false,
-                    keyboardType: TextInputType.name,
-                    onChanged: (value) {
-                      print(value);
-                    },
-                  ),
-                ),
-              ],
-            ),
-            heightGap(),
-            TextFieldWidgetwithIcon(
-                hintText: 'Email',
-                keyboardType: TextInputType.emailAddress,
-                obscureText: false,
-                prefixIconData: Icons.mail_outline,
-                onChanged: (value) {
-                  print(value);
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  print("change profile");
                 },
-                validator: (value) {
-                  Pattern pattern = r"[^@\t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+";
-                  bool validEmail = RegExp(pattern).hasMatch(value);
-                  return !validEmail ? 'Invalid email' : null;
-                }),
-            heightGap(),
-            TextFieldWidgetwithIcon(
-              hintText: 'Phone',
-              keyboardType: TextInputType.number,
-              obscureText: false,
-              prefixIconData: Icons.phone_android,
-              onChanged: (value) {
-                print(value);
-              },
-              validator: (value) =>
-                  value.length < 10 ? 'Incorrect number' : null,
-            ),
-            heightGap(),
-            ButtonWidget(title: 'Cancel', hasBorder: false, onPressed: () {}),
-            heightGap(),
-            ButtonWidget(title: 'Save', hasBorder: true, onPressed: () {}),
-            heightGap(),
-          ],
+                child: Container(
+                  width: 130,
+                  height: 130,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          "https://firebasestorage.googleapis.com/v0/b/pdf-generator-605e0.appspot.com/o/common_profile%2Fmale.png?alt=media&token=c77bda21-31be-40d5-bb4f-c491eefb0d88"),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+              Text(
+                'Ashish Pipaliya',
+                style: TextStyle(fontSize: 30),
+              ),
+              SizedBox(height: 50),
+              Text("Email"),
+              heightGap(),
+              Text("Phone"),
+              // heightGap(),
+              // ButtonWidget(
+              //     title: 'Cancel', hasBorder: false, onPressed: () {}),
+              // heightGap(),
+              // ButtonWidget(title: 'Save', hasBorder: true, onPressed: () {}),
+              // heightGap(),
+            ],
+          ),
         ),
       ),
     );

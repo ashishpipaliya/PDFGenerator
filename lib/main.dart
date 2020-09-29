@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:pdf_gen/services/auth/auth.dart';
+import 'package:pdf_gen/pages/login_redesign.dart';
+import 'package:pdf_gen/pages/profile.dart';
+import 'package:pdf_gen/pages/signup_redesign.dart';
+import 'file:///C:/Users/ashis/Documents/Flutter/Agile%20Infoways/pdf_gen/lib/services/auth.dart';
 import 'file:///C:/Users/ashis/Documents/Flutter/Agile%20Infoways/pdf_gen/lib/wrapper/wrapper.dart';
 import 'package:pdf_gen/shared/color_palette.dart';
 import 'package:provider/provider.dart';
@@ -28,8 +31,9 @@ class MyApp extends StatelessWidget {
               TargetPlatform.android: ZoomPageTransitionsBuilder(),
             },
           ),
-        ),
-        home: Wrapper(),
+        ).copyWith(textSelectionHandleColor: ColorPalette.darkPurple),
+        home: Profile(),
+        // home: Wrapper(),
       ),
     );
   }

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:pdf_gen/models/usermodel.dart';
 import 'package:pdf_gen/services/database.dart';
 import 'package:pdf_gen/utils/device_util.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider with ChangeNotifier {
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -52,6 +53,14 @@ class AuthProvider with ChangeNotifier {
         ),
       );
 
+      // store userdata locally using sharedprefs
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      try {
+        await prefs.setString('userEmail', email);
+      } catch (e) {
+        return e.message;
+      }
+
       // verify mail
       try {
         await userCredential.user.sendEmailVerification();
@@ -62,39 +71,27 @@ class AuthProvider with ChangeNotifier {
       }
 
       return userCredential.user != null;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        return 'The password provided is too weak.';
-      } else if (e.code == 'email-already-in-use') {
-        return 'The account already exists for that email.';
-      }
-      if (errorMessage != null) {
-        return errorMessage;
-      }
     } catch (e) {
       return e.toString();
     }
-
-    notifyListeners();
   }
 
-  // Signin using email and password
+  // Sign in using email and password
   Future login(String email, String password) async {
-    String errorMessage;
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
 
+      if (userCredential.user != null) {
+        // store userdata locally using sharedprefs
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        try {
+          await prefs.setString('userEmail', email);
+        } catch (e) {
+          return e.message;
+        }
+      }
       return userCredential.user != null;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-      }
-      if (errorMessage != null) {
-        return errorMessage;
-      }
     } catch (e) {
       print(e.toString());
     }
@@ -105,6 +102,14 @@ class AuthProvider with ChangeNotifier {
   Future signOut() async {
     try {
       _auth.signOut();
+
+      // remove userdata from sharedprefs
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      try {
+        await prefs.remove('userEmail');
+      } catch (e) {
+        return e.message;
+      }
     } catch (e) {
       print("Error signing out");
       return null;
