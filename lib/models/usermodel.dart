@@ -13,8 +13,8 @@ class UserModel {
   String zip;
   String country;
   String deviceType;
-  FieldValue createdAtServer;
-  DateTime createdAtClient;
+  Timestamp createdAtServer;
+  Timestamp createdAtClient;
 
   UserModel({
     this.uid,
@@ -52,6 +52,22 @@ class UserModel {
       createdAtServer: data['created_at_server'],
       createdAtClient: data['created_at_client'],
     );
+  }
+
+  factory UserModel.fromJson(Map<String, dynamic> data) {
+    return new UserModel(
+        firstName: data['first_name'],
+        lastname: data['last_name'],
+        email: data['email'],
+        image: data['image'],
+        city: data['city'],
+        state: data['state'],
+        zip: data['zip'],
+        country: data['country'],
+        phoneNumber: data['phone'],
+        deviceType: data['device_type'],
+        createdAtServer: data['created_at_server'],
+        createdAtClient: data['created_at_client']);
   }
 
   Map<String, dynamic> toJson() {

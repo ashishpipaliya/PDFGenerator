@@ -109,6 +109,8 @@ class UIUtils {
   Future<void> dismissProgressDialog(BuildContext context) {
     if (Navigator.of(context).canPop()) {
       Navigator.of(context).pop();
+    } else {
+      Navigator.of(context, rootNavigator: true).pop();
     }
   }
 

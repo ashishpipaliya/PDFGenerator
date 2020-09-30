@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf_gen/pages/homepage.dart';
 import 'package:pdf_gen/pages/login_redesign.dart';
+import 'package:pdf_gen/services/auth.dart';
 import 'package:provider/provider.dart';
 
 class Wrapper extends StatefulWidget {

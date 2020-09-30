@@ -187,8 +187,10 @@ class _LoginRedesignState extends State<LoginRedesign> {
         setState(() {
           _error = 'Please check your credentials and try again';
         });
+      } else {
+        _error = "";
       }
-      // Future.delayed(Duration(milliseconds: 1500), () {});
+
       UIUtils().dismissProgressDialog(context);
     }
   }

@@ -292,7 +292,7 @@ class _SignupRedesignState extends State<SignupRedesign> {
         _phone,
       );
 
-      Future.delayed(Duration(milliseconds: 0), () {
+      Future.delayed(Duration(milliseconds: 10), () {
         try {
           if (result != null) {
             if (result

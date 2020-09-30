@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:device_info/device_info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf_gen/models/usermodel.dart';
 import 'package:pdf_gen/services/database.dart';
 import 'package:pdf_gen/utils/device_util.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider with ChangeNotifier {
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -35,31 +33,24 @@ class AuthProvider with ChangeNotifier {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
 
-      await _db.createUser(
-        UserModel(
-          uid: userCredential.user.uid,
-          firstName: firstName,
-          lastname: lastName,
-          email: userCredential.user.email,
-          // image: 'image',
-          city: city,
-          state: state,
-          zip: zip,
-          country: county,
-          phoneNumber: phone,
-          deviceType: DeviceUtil().deviceType,
-          createdAtServer: FieldValue.serverTimestamp(),
-          createdAtClient: DateTime.now(),
-        ),
+      // store user values to database
+      UserModel userModel = UserModel(
+        uid: userCredential.user.uid,
+        firstName: firstName,
+        lastname: lastName,
+        email: userCredential.user.email,
+        // image: 'image',
+        city: city,
+        state: state,
+        zip: zip,
+        country: county,
+        phoneNumber: phone,
+        deviceType: DeviceUtil().deviceType,
+        createdAtServer: Timestamp.now(),
+        createdAtClient: Timestamp.fromMillisecondsSinceEpoch(
+            DateTime.now().millisecondsSinceEpoch),
       );
-
-      // store userdata locally using sharedprefs
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      try {
-        await prefs.setString('userEmail', email);
-      } catch (e) {
-        return e.message;
-      }
+      await _db.createUser(userModel);
 
       // verify mail
       try {
@@ -67,7 +58,7 @@ class AuthProvider with ChangeNotifier {
         return userCredential.user.uid;
       } catch (e) {
         print("An error occured while trying to send email verification");
-        print(e.message);
+        print(e.toString());
       }
 
       return userCredential.user != null;
@@ -82,15 +73,6 @@ class AuthProvider with ChangeNotifier {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
 
-      if (userCredential.user != null) {
-        // store userdata locally using sharedprefs
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        try {
-          await prefs.setString('userEmail', email);
-        } catch (e) {
-          return e.message;
-        }
-      }
       return userCredential.user != null;
     } catch (e) {
       print(e.toString());
@@ -101,15 +83,8 @@ class AuthProvider with ChangeNotifier {
   // Sign Out
   Future signOut() async {
     try {
-      _auth.signOut();
-
-      // remove userdata from sharedprefs
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      try {
-        await prefs.remove('userEmail');
-      } catch (e) {
-        return e.message;
-      }
+      final result = _auth.signOut();
+      return result == null;
     } catch (e) {
       print("Error signing out");
       return null;
@@ -123,9 +98,7 @@ class AuthProvider with ChangeNotifier {
         email: email,
       );
     } catch (e) {
-      return e.message;
+      return e.toString();
     }
   }
-
-//end
 }
