@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pdf_gen/models/usermodel.dart';
@@ -58,18 +59,20 @@ class _ProfileState extends State<Profile> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Material(
-                                child: InkWell(
-                                  onTap: () {},
-                                  child: CircleAvatar(
-                                      foregroundColor: Colors.transparent,
-                                      backgroundColor: Colors.transparent,
-                                      radius: width * 0.11,
-                                      child: CachedNetworkImage(
-                                        imageUrl: userdata.image,
-                                        fit: BoxFit.cover,
-                                      )),
-                                ),
+                              GestureDetector(
+                                onTap: () {
+                                  Database().uploadFile(user.uid, user.email);
+                                },
+                                child: CircleAvatar(
+                                    foregroundColor: Colors.transparent,
+                                    backgroundColor: Colors.transparent,
+                                    radius: width * 0.11,
+                                    child: CachedNetworkImage(
+                                      placeholder: (context, url) => Center(
+                                          child: CupertinoActivityIndicator()),
+                                      imageUrl: userdata.image,
+                                      fit: BoxFit.cover,
+                                    )),
                               ),
                               heightGap(),
                               Text(
@@ -123,7 +126,7 @@ class _ProfileState extends State<Profile> {
                         ))
                       ]));
                 }
-                return CircularProgressIndicator();
+                return Center(child: CircularProgressIndicator());
               },
             ),
           ),

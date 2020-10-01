@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pdf_gen/models/usermodel.dart';
 import 'package:pdf_gen/utils/logger.dart';
 
@@ -18,6 +22,36 @@ class Database {
     }
   }
 
+  uploadFile(String uid, String email) async {
+    final _storage = FirebaseStorage.instance;
+    final _picker = ImagePicker();
+    PickedFile _pickedFile;
+
+    _pickedFile = await _picker.getImage(source: ImageSource.gallery);
+    var file = File(_pickedFile.path);
+    if (_pickedFile != null) {
+      var snapshot = await _storage
+          .ref()
+          .child('profile_pictures/$uid.jpeg')
+          .putFile(file)
+          .onComplete;
+
+      var imageUrl = await snapshot.ref.getDownloadURL();
+      print(imageUrl);
+
+      try {
+        await FirebaseFirestore.instance.collection('users').doc(email).update(
+          {"image": "$imageUrl"},
+        );
+
+        Logger().d('image added to firebase');
+      } catch (e) {
+        Logger().d(e.toString());
+      }
+    } else {
+      print("No image selected");
+    }
+  }
 // Future<UserModel> saveInfo(UserModel userModel) async {
   //   SharedPreferences prefs = await SharedPreferences.getInstance();
   //
