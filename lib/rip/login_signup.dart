@@ -1,7 +1,7 @@
 // import 'package:flare_flutter/flare_actor.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
-// import 'package:pdf_gen/pages/forget_password.dart';
+// import 'package:pdf_gen/pages/forgot_password.dart';
 // import 'package:pdf_gen/pages/signup.dart';
 // import 'package:pdf_gen/services/auth/auth.dart';
 // import 'package:pdf_gen/shared/color_palette.dart';

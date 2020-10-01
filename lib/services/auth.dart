@@ -27,8 +27,6 @@ class AuthProvider with ChangeNotifier {
     String county,
     String phone,
   ) async {
-    String errorMessage;
-
     try {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
@@ -77,7 +75,6 @@ class AuthProvider with ChangeNotifier {
     } catch (e) {
       print(e.toString());
     }
-    notifyListeners();
   }
 
   // Sign Out

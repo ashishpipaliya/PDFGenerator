@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pdf_gen/pages/forget_password.dart';
+import 'package:pdf_gen/pages/forgot_password.dart';
 import 'package:pdf_gen/pages/signup_redesign.dart';
 import 'package:pdf_gen/services/auth.dart';
 import 'package:pdf_gen/services/validation.dart';
@@ -87,7 +87,7 @@ class _LoginRedesignState extends State<LoginRedesign> {
                           topLeft: Radius.circular(15),
                           topRight: Radius.circular(15))),
                   child: Padding(
-                    padding: EdgeInsets.all(15),
+                    padding: EdgeInsets.symmetric(horizontal: 15),
                     child: Form(
                       key: _formKey,
                       child: Align(
@@ -132,7 +132,7 @@ class _LoginRedesignState extends State<LoginRedesign> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  ForgetPassword()));
+                                                  ForgotPassword()));
                                     },
                                     child: Text(
                                       'Forgot password',
@@ -183,6 +183,7 @@ class _LoginRedesignState extends State<LoginRedesign> {
       FocusScope.of(context).unfocus();
       UIUtils().showProgressDialog(context);
       final result = await _auth.login(_email, _password);
+      UIUtils().dismissProgressDialog(context);
       if (result == null) {
         setState(() {
           _error = 'Please check your credentials and try again';
@@ -190,8 +191,6 @@ class _LoginRedesignState extends State<LoginRedesign> {
       } else {
         _error = "";
       }
-
-      UIUtils().dismissProgressDialog(context);
     }
   }
 

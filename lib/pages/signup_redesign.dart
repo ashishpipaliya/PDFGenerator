@@ -97,7 +97,7 @@ class _SignupRedesignState extends State<SignupRedesign> {
                           topLeft: Radius.circular(15),
                           topRight: Radius.circular(15))),
                   child: Padding(
-                    padding: EdgeInsets.all(15),
+                    padding: EdgeInsets.symmetric(horizontal: 15),
                     child: Form(
                       key: _formKey,
                       child: Align(

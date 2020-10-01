@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf_gen/models/usermodel.dart';
@@ -10,8 +11,6 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  Database _db = Database();
-
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
@@ -29,10 +28,26 @@ class _ProfileState extends State<Profile> {
         ),
         body: Scaffold(
           body: Container(
-            child: Column(
-              children: [
-                Text("data"),
-              ],
+            child: StreamBuilder<DocumentSnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection("users")
+                  .doc("${user.email}")
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final userdata = UserModel.fromFirestore(snapshot.data);
+                  return Column(
+                    children: [
+                      Text(userdata.email),
+                      Text(userdata.firstName),
+                      Text(userdata.lastname),
+                      Text(userdata.phoneNumber),
+                      Text(userdata.city),
+                    ],
+                  );
+                }
+                return CircularProgressIndicator();
+              },
             ),
           ),
         ));

@@ -9,12 +9,12 @@ import 'package:pdf_gen/utils/ui_utils.dart';
 import 'package:pdf_gen/widgets/button_widget.dart';
 import 'package:pdf_gen/widgets/textfield_widget.dart';
 
-class ForgetPassword extends StatefulWidget {
+class ForgotPassword extends StatefulWidget {
   @override
-  _ForgetPasswordState createState() => _ForgetPasswordState();
+  _ForgotPasswordState createState() => _ForgotPasswordState();
 }
 
-class _ForgetPasswordState extends State<ForgetPassword> {
+class _ForgotPasswordState extends State<ForgotPassword> {
   AuthProvider _auth = AuthProvider();
   String _email;
   final _formKey = GlobalKey<FormState>();
@@ -53,7 +53,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Forget Password",
+                            "Forgot Password",
                             style: TextStyle(
                                 color: ColorPalette.superlightPurple,
                                 fontSize: width * 0.1,
@@ -123,33 +123,46 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   }
 
   void _onSubmit(String email) async {
+    var result;
     if (_formKey.currentState.validate()) {
       FocusScope.of(context).unfocus();
       UIUtils().showProgressDialog(context);
 
-      final result = await _auth.resetPassword(email);
-      _emailController.clear();
-      UIUtils().dismissProgressDialog(context);
+      await _auth.resetPassword(email).then((value) {
+        print("result : $value");
+        result = value;
+        _emailController.clear();
+        UIUtils().dismissProgressDialog(context);
 
-      try {
-        if (result ==
-            "There is no user record corresponding to this identifier. The user may have been deleted.") {
-          UIUtils().myDialog(
+        try {
+          if (result.toString().contains(
+              "There is no user record corresponding to this identifier")) {
+            UIUtils().myDialog(
+                context,
+                "Error",
+                "No user found for this email. Please check your email address and try again.",
+                "Ok");
+          } else if (result
+              .toString()
+              .contains("The email address is badly formatted")) {
+            UIUtils().myDialog(
               context,
               "Error",
-              "No user found for this email. Please check your email address and try again.",
-              "Ok");
-        } else {
+              "The email address is badly formatted. Enter valid email",
+              "ok",
+            );
+          } else {
+            UIUtils().myDialog(
+                context,
+                "Successful",
+                "Password reset email sent successfully. Please check your inbox to reset password",
+                "ok");
+          }
+        } catch (e) {
           UIUtils().myDialog(
-              context,
-              "Successful",
-              "Password reset email sent successsfully. Please check your inbox to reset password",
-              "ok");
+              context, "Error Occurred", "Please try after sometime", "Ok");
         }
-      } catch (e) {
-        UIUtils().myDialog(
-            context, "Error Occurred", "Please try after sometime", "Ok");
-      }
+      });
     }
   }
 }
