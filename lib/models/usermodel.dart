@@ -41,8 +41,8 @@ class UserModel {
       firstName: data['first_name'],
       lastname: data['last_name'],
       email: data['email'],
-      // password: data['password'],
-      image: data['image'],
+      image: data['image'] ??
+          "https://firebasestorage.googleapis.com/v0/b/pdf-generator-605e0.appspot.com/o/common_profile%2Fmale.png?alt=media&token=5714cc0d-41ff-4ac3-9500-170be6bb6920",
       city: data['city'],
       state: data['state'],
       zip: data['zip'],

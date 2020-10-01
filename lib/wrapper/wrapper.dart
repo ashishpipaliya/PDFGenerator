@@ -19,6 +19,6 @@ class _WrapperState extends State<Wrapper> {
 
     bool loggedIn = user != null;
 
-    return !loggedIn ? LoginRedesign() : Profile();
+    return !loggedIn ? LoginRedesign() : HomePage();
   }
 }

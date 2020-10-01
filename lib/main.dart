@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:pdf_gen/pages/profile.dart';
 import 'file:///C:/Users/ashis/Documents/Flutter/Agile%20Infoways/pdf_gen/lib/services/auth.dart';
 import 'package:pdf_gen/shared/color_palette.dart';
 import 'package:pdf_gen/wrapper/wrapper.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'PDF Generator',
         theme: ThemeData(
-          primaryColor: ColorPalette.white,
+          primaryColor: ColorPalette.darkPurple,
           scaffoldBackgroundColor: ColorPalette.white,
           visualDensity: VisualDensity.adaptivePlatformDensity,
           pageTransitionsTheme: PageTransitionsTheme(
