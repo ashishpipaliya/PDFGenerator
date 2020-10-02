@@ -49,7 +49,6 @@ class _ProfileState extends State<Profile> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final userdata = UserModel.fromFirestore(snapshot.data);
-
                   return Container(
                       margin: EdgeInsets.symmetric(
                           horizontal: width * 0.03, vertical: height * 0.03),
@@ -63,16 +62,14 @@ class _ProfileState extends State<Profile> {
                                 onTap: () {
                                   Database().uploadFile(user.uid, user.email);
                                 },
-                                child: CircleAvatar(
-                                    foregroundColor: Colors.transparent,
-                                    backgroundColor: Colors.transparent,
-                                    radius: width * 0.11,
-                                    child: CachedNetworkImage(
-                                      placeholder: (context, url) => Center(
-                                          child: CupertinoActivityIndicator()),
-                                      imageUrl: userdata.image,
-                                      fit: BoxFit.cover,
-                                    )),
+                                child: Container(
+                                  child: CachedNetworkImage(
+                                    imageUrl: userdata.image,
+                                    placeholder: (context, url) => Center(
+                                      child: CupertinoActivityIndicator(),
+                                    ),
+                                  ),
+                                ),
                               ),
                               heightGap(),
                               Text(

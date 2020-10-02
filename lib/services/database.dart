@@ -2,8 +2,11 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pdf_gen/models/usermodel.dart';
+import 'package:pdf_gen/shared/color_palette.dart';
 import 'package:pdf_gen/utils/logger.dart';
 
 final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -26,14 +29,36 @@ class Database {
     final _storage = FirebaseStorage.instance;
     final _picker = ImagePicker();
     PickedFile _pickedFile;
+    File _croppedFile;
 
     _pickedFile = await _picker.getImage(source: ImageSource.gallery);
-    var file = File(_pickedFile.path);
     if (_pickedFile != null) {
+      var file = File(_pickedFile.path);
+      _croppedFile = await ImageCropper.cropImage(
+        sourcePath: _pickedFile.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        cropStyle: CropStyle.circle,
+        maxHeight: 500,
+        maxWidth: 500,
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Adjust Image',
+            toolbarColor: ColorPalette.darkPurple,
+            activeControlsWidgetColor: ColorPalette.darkPurple,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+      );
+
       var snapshot = await _storage
           .ref()
           .child('profile_pictures/$uid.jpeg')
-          .putFile(file)
+          .putFile(_croppedFile ?? file)
           .onComplete;
 
       var imageUrl = await snapshot.ref.getDownloadURL();
@@ -48,6 +73,8 @@ class Database {
       } catch (e) {
         Logger().d(e.toString());
       }
+
+      return _croppedFile ?? file;
     } else {
       print("No image selected");
     }
