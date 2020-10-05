@@ -36,23 +36,18 @@ class Database {
       var file = File(_pickedFile.path);
       _croppedFile = await ImageCropper.cropImage(
         sourcePath: _pickedFile.path,
-        aspectRatioPresets: [
-          CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio3x2,
-          CropAspectRatioPreset.original,
-          CropAspectRatioPreset.ratio4x3,
-          CropAspectRatioPreset.ratio16x9
-        ],
         cropStyle: CropStyle.circle,
         maxHeight: 500,
         maxWidth: 500,
+        aspectRatioPresets: [CropAspectRatioPreset.square],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Adjust Image',
             toolbarColor: ColorPalette.darkPurple,
             activeControlsWidgetColor: ColorPalette.darkPurple,
             toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.original,
-            lockAspectRatio: false),
+            initAspectRatio: CropAspectRatioPreset.square,
+            hideBottomControls: true,
+            lockAspectRatio: true),
       );
 
       var snapshot = await _storage

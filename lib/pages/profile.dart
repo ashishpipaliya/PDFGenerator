@@ -1,16 +1,10 @@
-import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:pdf_gen/models/usermodel.dart';
 import 'package:pdf_gen/services/database.dart';
-import 'package:pdf_gen/shared/color_palette.dart';
-import 'package:pdf_gen/utils/device_util.dart';
 import 'package:pdf_gen/utils/ui_utils.dart';
 import 'package:provider/provider.dart';
 
@@ -62,9 +56,13 @@ class _ProfileState extends State<Profile> {
                                 onTap: () {
                                   Database().uploadFile(user.uid, user.email);
                                 },
-                                child: Container(
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(100),
                                   child: CachedNetworkImage(
                                     imageUrl: userdata.image,
+                                    fit: BoxFit.cover,
+                                    width: width * 0.25,
+                                    height: width * 0.25,
                                     placeholder: (context, url) => Center(
                                       child: CupertinoActivityIndicator(),
                                     ),

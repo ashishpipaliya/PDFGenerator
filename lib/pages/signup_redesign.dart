@@ -1,12 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf_gen/pages/login_redesign.dart';
+import 'package:pdf_gen/services/auth.dart';
 import 'package:pdf_gen/services/validation.dart';
 import 'package:pdf_gen/shared/background_animation.dart';
-import 'file:///C:/Users/ashis/Documents/Flutter/Agile%20Infoways/pdf_gen/lib/services/auth.dart';
 import 'package:pdf_gen/shared/color_palette.dart';
 import 'package:pdf_gen/utils/ui_utils.dart';
 import 'package:pdf_gen/widgets/button_widget.dart';

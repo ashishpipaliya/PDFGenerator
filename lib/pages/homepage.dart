@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'file:///C:/Users/ashis/Documents/Flutter/Agile%20Infoways/pdf_gen/lib/services/auth.dart';
-import 'file:///C:/Users/ashis/Documents/Flutter/Agile%20Infoways/pdf_gen/lib/pages/profile.dart';
+import 'package:pdf_gen/pages/profile.dart';
+import 'package:pdf_gen/services/auth.dart';
 import 'package:pdf_gen/services/database.dart';
 import 'package:provider/provider.dart';
 
