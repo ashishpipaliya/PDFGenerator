@@ -6,6 +6,7 @@ class FormFieldWidget extends StatelessWidget {
   final TextEditingController controller;
   final void Function(String) onChanged;
   final void Function(String) onSubmitted;
+  final FocusNode focusNode;
 
   const FormFieldWidget({
     Key key,
@@ -13,6 +14,7 @@ class FormFieldWidget extends StatelessWidget {
     this.controller,
     this.onChanged,
     this.onSubmitted,
+    this.focusNode,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,7 @@ class FormFieldWidget extends StatelessWidget {
         textAlignVertical: TextAlignVertical.center,
         onChanged: onChanged,
         onFieldSubmitted: onSubmitted,
+        focusNode: focusNode,
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
             labelText: labelText,

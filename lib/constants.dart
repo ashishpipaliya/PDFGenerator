@@ -46,19 +46,20 @@ class SubHeading {
   String copyOfReferral = "Copy of referral by Specialist/CMO";
   String hospitalBreakup =
       "Whether the hospital has given breakup: for lab investigations";
-  String lostPapers =
+  String originalpapersLost =
       "Original papers have been lost & the following documents are submitted";
   String copiesOfClaimPapers = "I. Photocopies of claim papers";
   String affidavitOnStampPaper = "II. Affidavit on Stamp Paper";
 
   String inCaseOfDeath =
-      "(j) Incase of death of card holder the Following documents are submitted";
+      "Incase of death of card holder the Following documents are submitted";
   String affidavitOnStampPaper2 = "I. Affidavit on Stamp paper by Claimant";
   String noObjectionOnStampPaper =
       "II. No objection from other legal Heirs on Stamp papers";
   String copyOfDeathCerti = "III. Copy of death certificate";
 
 //page 2
+  String bankDetails = "Bank Details";
   String bankName = "Name of the Bank";
   String branch = "Branch";
   String accountNumber = "SB A/C No";
@@ -67,4 +68,4 @@ class SubHeading {
 }
 
 List<String> entitlement = ["Private", "Semi Private", "General"];
-List<String> status = ["Govt. Servant", "Member of Parliament"];
+List<String> status = ["Government Servant", "Member of Parliament"];
