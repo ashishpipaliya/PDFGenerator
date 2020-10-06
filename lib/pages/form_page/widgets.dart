@@ -3,19 +3,31 @@ import 'package:pdf_gen/shared/color_palette.dart';
 
 class FormFieldWidget extends StatelessWidget {
   final String labelText;
+  final TextEditingController controller;
+  final void Function(String) onChanged;
+  final void Function(String) onSubmitted;
 
   const FormFieldWidget({
     Key key,
     this.labelText,
+    this.controller,
+    this.onChanged,
+    this.onSubmitted,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.all(5),
       child: TextFormField(
+        controller: controller,
         textAlignVertical: TextAlignVertical.center,
+        onChanged: onChanged,
+        onFieldSubmitted: onSubmitted,
+        textInputAction: TextInputAction.next,
         decoration: InputDecoration(
             labelText: labelText,
             helperText: ' ',
+            filled: true,
             labelStyle:
                 TextStyle(fontSize: 15.0, color: ColorPalette.darkPurple),
             enabledBorder: UnderlineInputBorder(
@@ -37,6 +49,36 @@ class FormFieldWidget extends StatelessWidget {
               borderSide: BorderSide(color: ColorPalette.errorRed),
             ),
             focusColor: ColorPalette.darkPurple),
+      ),
+    );
+  }
+}
+
+class CheckBoxTile extends StatelessWidget {
+  final double width;
+  final bool value;
+  final Widget title;
+  final void Function(bool) onChanged;
+
+  const CheckBoxTile(
+      {Key key, this.width, this.value, this.title, this.onChanged})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Container(
+        width: width,
+        child: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+          return CheckboxListTile(
+            value: value,
+            title: title,
+            checkColor: ColorPalette.darkPurple,
+            activeColor: ColorPalette.white,
+            onChanged: onChanged,
+          );
+        }),
       ),
     );
   }
@@ -64,7 +106,7 @@ Widget normalTitleText(String title) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
-      SizedBox(height: 10),
+      SizedBox(height: 20),
       Text(
         title,
         textAlign: TextAlign.left,
@@ -79,12 +121,12 @@ Widget smallTitleText(String title) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
-      SizedBox(height: 10),
+      SizedBox(height: 50),
       Text(
         title,
         textAlign: TextAlign.left,
         style: TextStyle(
-            fontSize: 14, fontWeight: FontWeight.w500, color: Colors.black54),
+            fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black54),
       )
     ],
   );

@@ -244,6 +244,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.4.2"
+  flutter_datetime_picker:
+    dependency: "direct main"
+    description:
+      name: flutter_datetime_picker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.4.0"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -251,6 +258,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.11"
+  flutter_signature_pad:
+    dependency: "direct main"
+    description:
+      name: flutter_signature_pad
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
   flutter_spinkit:
     dependency: "direct main"
     description:

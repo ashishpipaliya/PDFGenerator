@@ -1,15 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_signature_pad/flutter_signature_pad.dart';
+import 'package:pdf_gen/constants.dart';
 import 'package:pdf_gen/pages/form_page/widgets.dart';
+import 'package:pdf_gen/shared/color_palette.dart';
 import 'package:pdf_gen/utils/ui_utils.dart';
 
-class FormPage extends StatelessWidget {
+class FormPage extends StatefulWidget {
+  @override
+  _FormPageState createState() => _FormPageState();
+}
+
+class _FormPageState extends State<FormPage> {
   @override
   Widget build(BuildContext context) {
     final height = UIUtils().size(context).height;
     final width = UIUtils().size(context).width;
 
+    MegaHeading megaHeading = MegaHeading();
+    Heading heading = Heading();
+    SubHeading subHeading = SubHeading();
+
+    TextEditingController tokenNo = TextEditingController();
+    TextEditingController place = TextEditingController();
+
     double twoFieldWidth = width * 0.45;
     double singleFieldWidth = width * 0.9;
+
+    // onChnaged variables for checkbox
+    bool _medical2004Form = false;
+    bool _hospitalBreakup = false;
+    bool _copyOfReferral = false;
+    bool _copyOfDischargeSummary = false;
+    bool _copyOfPrescription = false;
+    bool _copyOfPermissionLetter = false;
+    bool _copyOfCGHS = false;
+
+    bool _copiesOfClaimPapers = false;
+    bool _affidavitOnStampPaper = false;
+    bool _affidavitOnStampPaper2 = false;
+    bool _noObjectionOnStampPaper = false;
+    bool _copyOfDeathCerti = false;
+
+    String from = "From";
+    String to = "To";
+
+    Map<String, String> userInputs = {};
 
     return Scaffold(
       appBar: AppBar(
@@ -20,53 +55,67 @@ class FormPage extends StatelessWidget {
         height: height,
         child: SingleChildScrollView(
           padding: EdgeInsets.all(15.0),
-          physics: BouncingScrollPhysics(),
+          physics: ScrollPhysics(),
           child: Form(
               child: Column(
             children: [
-              titleText(
-                  "CENTRAL GOVERNMENT HEALTH SCHEME CHECK LIST FOR REIMBURSEMENT OF MEDICAL CLAIMS"),
-              normalTitleText("1. CGHS Token No. and place of issue"),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              titleText(megaHeading.megaTitle1),
+              normalTitleText(heading.tokenAndPlace),
+              Wrap(
+                direction: Axis.horizontal,
+                alignment: WrapAlignment.spaceBetween,
                 children: [
                   Container(
                     width: twoFieldWidth,
                     child: FormFieldWidget(
+                      controller: tokenNo,
                       labelText: "Token No.",
+                      onChanged: (value) {
+                        userInputs["token_no"] = value;
+                        print(userInputs);
+                      },
                     ),
                   ),
                   Container(
                     width: twoFieldWidth,
                     child: FormFieldWidget(
+                      controller: place,
                       labelText: "Place",
+                      onChanged: (value) {
+                        userInputs["place"] = value;
+                        print(userInputs);
+                      },
                     ),
                   ),
                 ],
               ),
-              normalTitleText("2. Validity of CGHS Card"),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              normalTitleText(heading.validityOfcghsCard),
+              Wrap(
+                //TODO
+                direction: Axis.horizontal,
+                alignment: WrapAlignment.spaceBetween,
                 children: [
                   Container(
                     width: twoFieldWidth,
-                    child: FormFieldWidget(
-                      labelText: "From",
-                      //  TODO: Date picker
+                    child: FlatButton(
+                      onPressed: () {},
+                      child: Text(from),
                     ),
                   ),
                   Container(
                     width: twoFieldWidth,
-                    child: FormFieldWidget(
-                      labelText: "To",
-                      //  TODO: Date picker
+                    child: FlatButton(
+                      onPressed: () {},
+                      child: Text(to),
                     ),
                   ),
                 ],
               ),
-              normalTitleText("3. Entitlement Pvt./Semi Pvt/General"),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              normalTitleText(heading.entitlement),
+              Wrap(
+                //TODO
+                direction: Axis.horizontal,
+                alignment: WrapAlignment.spaceBetween,
                 children: [
                   Container(
                     width: singleFieldWidth,
@@ -76,21 +125,27 @@ class FormPage extends StatelessWidget {
                   ),
                 ],
               ),
-              normalTitleText("4. Full name of the Card Holder"),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              normalTitleText(heading.fullName),
+              Wrap(
+                direction: Axis.horizontal,
+                alignment: WrapAlignment.spaceBetween,
                 children: [
                   Container(
                     width: singleFieldWidth,
                     child: FormFieldWidget(
                       labelText: "Full name",
+                      onChanged: (value) {
+                        userInputs["full_name"] = value;
+                        print(userInputs);
+                      },
                     ),
                   ),
                 ],
               ),
-              normalTitleText("5. Status (Govt.servent/Member of Parliament)"),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              normalTitleText(heading.status),
+              Wrap(
+                direction: Axis.horizontal,
+                alignment: WrapAlignment.spaceBetween,
                 children: [
                   Container(
                     width: singleFieldWidth,
@@ -101,130 +156,397 @@ class FormPage extends StatelessWidget {
                   ),
                 ],
               ),
-              normalTitleText("6. The following documents are submitted"),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
+              normalTitleText(heading.documentsAreSubmitted),
+              Wrap(
+                direction: Axis.horizontal,
+                alignment: WrapAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
-                  Container(
-                    width: twoFieldWidth,
-                    child: FormFieldWidget(
-                      labelText: "Medical 2004 Form",
-                      //  TODO: Checkbox
-                    ),
+                  Card(
+                    elevation: 0.5,
+                    child: StatefulBuilder(
+                        builder: (BuildContext context, StateSetter setState) {
+                      return CheckboxListTile(
+                        value: _medical2004Form,
+                        title: Text(subHeading.medical2004),
+                        checkColor: ColorPalette.darkPurple,
+                        activeColor: ColorPalette.white,
+                        onChanged: (value) {
+                          setState(() {
+                            _medical2004Form = value;
+                            userInputs["medical_2004_form"] = value.toString();
+                            print(userInputs);
+                          });
+                        },
+                      );
+                    }),
                   ),
-                  Container(
-                    width: twoFieldWidth,
-                    child: FormFieldWidget(
-                      labelText: "Photocopy of CGHS card",
-                      //  TODO: Checkbox
-                    ),
+                  Card(
+                    elevation: 0.5,
+                    child: StatefulBuilder(
+                        builder: (BuildContext context, StateSetter setState) {
+                      return CheckboxListTile(
+                        value: _copyOfCGHS,
+                        title: Text(subHeading.copyOfCGHS),
+                        checkColor: ColorPalette.darkPurple,
+                        activeColor: ColorPalette.white,
+                        onChanged: (value) {
+                          setState(() {
+                            _copyOfCGHS = value;
+                            userInputs["copy_of_cghs"] = value.toString();
+                            print(userInputs);
+                          });
+                        },
+                      );
+                    }),
                   ),
-                  Container(
-                    width: twoFieldWidth,
-                    child: FormFieldWidget(
-                      labelText: "Photocopy of permission letter",
-                      //  TODO: Checkbox
-                    ),
+                  Card(
+                    elevation: 0.5,
+                    child: StatefulBuilder(
+                        builder: (BuildContext context, StateSetter setState) {
+                      return CheckboxListTile(
+                        value: _copyOfPermissionLetter,
+                        title: Text(subHeading.copyOfPermissionLetter),
+                        checkColor: ColorPalette.darkPurple,
+                        activeColor: ColorPalette.white,
+                        onChanged: (value) {
+                          setState(() {
+                            _copyOfPermissionLetter = value;
+                            userInputs["copy_of_permission_letter"] =
+                                value.toString();
+                          });
+                        },
+                      );
+                    }),
                   ),
-                  Container(
-                    width: twoFieldWidth,
-                    child: FormFieldWidget(
-                      labelText: "Copy of prescription",
-                      //  TODO: Checkbox
-                    ),
+                  Card(
+                    elevation: 0.5,
+                    child: StatefulBuilder(
+                        builder: (BuildContext context, StateSetter setState) {
+                      return CheckboxListTile(
+                        value: _copyOfPrescription,
+                        title: Text(subHeading.copyOfPrescription),
+                        checkColor: ColorPalette.darkPurple,
+                        activeColor: ColorPalette.white,
+                        onChanged: (value) {
+                          setState(() {
+                            _copyOfPrescription = value;
+                            userInputs["copy_of_prescription"] =
+                                value.toString();
+                          });
+                        },
+                      );
+                    }),
                   ),
-                  Container(
-                    width: twoFieldWidth,
-                    child: FormFieldWidget(
-                      labelText: "Photocopy of permission letter",
-                      //  TODO: Checkbox
-                    ),
+                  Card(
+                    elevation: 0.5,
+                    child: StatefulBuilder(
+                        builder: (BuildContext context, StateSetter setState) {
+                      return CheckboxListTile(
+                        value: _copyOfDischargeSummary,
+                        title: Text(subHeading.copyOfDischargeSummary),
+                        checkColor: ColorPalette.darkPurple,
+                        activeColor: ColorPalette.white,
+                        onChanged: (value) {
+                          setState(() {
+                            _copyOfDischargeSummary = value;
+                            userInputs["copy_of_discharge_summary"] =
+                                value.toString();
+                          });
+                        },
+                      );
+                    }),
                   ),
-                  Container(
-                    width: twoFieldWidth,
-                    child: FormFieldWidget(
-                      labelText: "Copy of discharge summary",
-                      //  TODO: Checkbox
-                    ),
+                  Card(
+                    elevation: 0.5,
+                    child: StatefulBuilder(
+                        builder: (BuildContext context, StateSetter setState) {
+                      return CheckboxListTile(
+                        value: _copyOfReferral,
+                        title: Text(subHeading.copyOfReferral),
+                        checkColor: ColorPalette.darkPurple,
+                        activeColor: ColorPalette.white,
+                        onChanged: (value) {
+                          setState(() {
+                            _copyOfReferral = value;
+                            userInputs["copy_of_referral"] = value.toString();
+                          });
+                        },
+                      );
+                    }),
                   ),
-                  Container(
-                    width: twoFieldWidth,
-                    child: FormFieldWidget(
-                      labelText: "Copy of referral by Specialist/CMO",
-                      //  TODO: Checkbox  YES/NO
-                    ),
-                  ),
-                  Container(
-                    width: twoFieldWidth,
-                    child: FormFieldWidget(
-                      labelText: "Whether the hospital has given breakup",
-                      //  TODO: Checkbox
-                    ),
+                  Card(
+                    elevation: 0.5,
+                    child: StatefulBuilder(
+                        builder: (BuildContext context, StateSetter setState) {
+                      return CheckboxListTile(
+                        value: _hospitalBreakup,
+                        title: Text(subHeading.hospitalBreakup),
+                        checkColor: ColorPalette.darkPurple,
+                        activeColor: ColorPalette.white,
+                        onChanged: (value) {
+                          setState(() {
+                            _hospitalBreakup = value;
+                            userInputs["hospital_breakup"] = value.toString();
+                          });
+                        },
+                      );
+                    }),
                   ),
                   Container(
                     width: singleFieldWidth,
                     child: FormFieldWidget(
-                      labelText: "No. of Original Bills",
+                      labelText: subHeading.numberOfOriginalBills,
+                      onChanged: (value) {
+                        userInputs["number_of_original_bills"] = value;
+                        print(userInputs);
+                      },
                     ),
                   ),
                 ],
               ),
               smallTitleText(
                   "Original papers have been lost & the following documents are submitted"),
-              Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+              Wrap(
+                  direction: Axis.horizontal,
+                  alignment: WrapAlignment.center,
+                  crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
-                    Container(
-                      width: twoFieldWidth,
-                      child: FormFieldWidget(
-                        labelText: "I. Photocopies of claim papers",
-                        //  TODO: Checkbox
-                      ),
+                    Card(
+                      elevation: 0.5,
+                      child: StatefulBuilder(builder:
+                          (BuildContext context, StateSetter setState) {
+                        return CheckboxListTile(
+                          value: _copiesOfClaimPapers,
+                          title: Text(subHeading.copiesOfClaimPapers),
+                          checkColor: ColorPalette.darkPurple,
+                          activeColor: ColorPalette.white,
+                          onChanged: (value) {
+                            setState(() {
+                              _copiesOfClaimPapers = value;
+                              userInputs["copies_of_claim_papers"] =
+                                  value.toString();
+                              print(userInputs);
+                            });
+                          },
+                        );
+                      }),
                     ),
-                    Container(
-                      width: twoFieldWidth,
-                      child: FormFieldWidget(
-                        labelText: "II. Affidavit on Stamp Paper",
-                        //  TODO: Checkbox
-                      ),
+                    Card(
+                      elevation: 0.5,
+                      child: StatefulBuilder(builder:
+                          (BuildContext context, StateSetter setState) {
+                        return CheckboxListTile(
+                          value: _affidavitOnStampPaper,
+                          title: Text(subHeading.affidavitOnStampPaper),
+                          checkColor: ColorPalette.darkPurple,
+                          activeColor: ColorPalette.white,
+                          onChanged: (value) {
+                            setState(() {
+                              _affidavitOnStampPaper = value;
+                              userInputs["affidavit_on_stamppaper"] =
+                                  value.toString();
+                              print(userInputs);
+                            });
+                          },
+                        );
+                      }),
                     ),
                   ]),
               smallTitleText(
                   "Incase of death of card holder the following documents are submitted"),
-              Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+              Wrap(
+                  direction: Axis.horizontal,
+                  alignment: WrapAlignment.center,
+                  crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
-                    Container(
-                      width: twoFieldWidth,
-                      child: FormFieldWidget(
-                        labelText: "I. Affidavit on Stamp paper by Claimant",
-                        //  TODO: Checkbox
+                    Card(
+                      elevation: 0.5,
+                      child: StatefulBuilder(builder:
+                          (BuildContext context, StateSetter setState) {
+                        return CheckboxListTile(
+                          value: _affidavitOnStampPaper2,
+                          title: Text(subHeading.affidavitOnStampPaper2),
+                          checkColor: ColorPalette.darkPurple,
+                          activeColor: ColorPalette.white,
+                          onChanged: (value) {
+                            setState(() {
+                              _affidavitOnStampPaper2 = value;
+                              userInputs["affidavit_on_stamppaper2"] =
+                                  value.toString();
+                              print(userInputs);
+                            });
+                          },
+                        );
+                      }),
+                    ),
+                    Card(
+                      elevation: 0.5,
+                      child: StatefulBuilder(builder:
+                          (BuildContext context, StateSetter setState) {
+                        return CheckboxListTile(
+                          value: _noObjectionOnStampPaper,
+                          title: Text(subHeading.noObjectionOnStampPaper),
+                          checkColor: ColorPalette.darkPurple,
+                          activeColor: ColorPalette.white,
+                          onChanged: (value) {
+                            setState(() {
+                              _noObjectionOnStampPaper = value;
+                              userInputs["no_objection_on_stamppaper"] =
+                                  value.toString();
+                              print(userInputs);
+                            });
+                          },
+                        );
+                      }),
+                    ),
+                    Card(
+                      elevation: 0.5,
+                      child: StatefulBuilder(builder:
+                          (BuildContext context, StateSetter setState) {
+                        return CheckboxListTile(
+                          value: _copyOfDeathCerti,
+                          title: Text(subHeading.copyOfDeathCerti),
+                          checkColor: ColorPalette.darkPurple,
+                          activeColor: ColorPalette.white,
+                          onChanged: (value) {
+                            setState(() {
+                              _copyOfDeathCerti = value;
+                              userInputs["copy_of_death_certificate"] =
+                                  value.toString();
+                              print(userInputs);
+                            });
+                          },
+                        );
+                      }),
+                    ),
+                  ]),
+              Wrap(
+                direction: Axis.horizontal,
+                alignment: WrapAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  Container(
+                    width: singleFieldWidth,
+                    child: FormFieldWidget(
+                      labelText: "Dated",
+                      onChanged: (value) {
+                        //TODO
+                        userInputs["dated"] = value;
+                        print(userInputs);
+                      },
+                    ),
+                  ),
+                  Container(
+                    width: singleFieldWidth,
+                    child: FormFieldWidget(
+                      labelText: "Telephone No.",
+                      onChanged: (value) {
+                        userInputs["telephone_no"] = value;
+                        print(userInputs);
+                      },
+                    ),
+                  ),
+                  Container(
+                    width: singleFieldWidth,
+                    child: FormFieldWidget(
+                      labelText: "E-mail Address",
+                      onChanged: (value) {
+                        userInputs["email_address"] = value;
+                        print(userInputs);
+                      },
+                    ),
+                  ),
+                  Container(
+                    height: 200,
+                    color: ColorPalette.cream,
+                    width: singleFieldWidth,
+                    child: Center(
+                      //TODO
+                      child: Center(
+                        child: Text("Signature of CGHS card holder Logic Here"),
                       ),
                     ),
-                    Container(
-                      width: twoFieldWidth,
-                      child: FormFieldWidget(
-                        labelText:
-                            "II. No objection from other legal Heirs on Stamp papers",
-                        //  TODO: Checkbox
-                      ),
+                  ),
+                ],
+              ),
+              smallTitleText("Bank Details"),
+              Wrap(
+                direction: Axis.horizontal,
+                alignment: WrapAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  Container(
+                    width: singleFieldWidth,
+                    child: FormFieldWidget(
+                      labelText: subHeading.bankName,
+                      onChanged: (value) {
+                        userInputs["bank_name"] = value;
+                        print(userInputs);
+                      },
                     ),
-                    Container(
-                      width: twoFieldWidth,
-                      child: FormFieldWidget(
-                        labelText: "III. Copy of death certificate",
-                        //  TODO: Checkbox
-                      ),
+                  ),
+                  Container(
+                    width: singleFieldWidth,
+                    child: FormFieldWidget(
+                      labelText: subHeading.branch,
+                      onChanged: (value) {
+                        userInputs["bank_branch"] = value;
+                        print(userInputs);
+                      },
                     ),
-                  ])
+                  ),
+                  Container(
+                    width: singleFieldWidth,
+                    child: FormFieldWidget(
+                      labelText: subHeading.accountNumber,
+                      onChanged: (value) {
+                        userInputs["account_number"] = value;
+                        print(userInputs);
+                      },
+                    ),
+                  ),
+                  Container(
+                    width: singleFieldWidth,
+                    child: FormFieldWidget(
+                      labelText: subHeading.micrCode,
+                      onChanged: (value) {
+                        userInputs["micr_code"] = value;
+                        print(userInputs);
+                      },
+                    ),
+                  ),
+                  Container(
+                    width: singleFieldWidth,
+                    child: FormFieldWidget(
+                      labelText: subHeading.telephoneOfBankBranch,
+                      onChanged: (value) {
+                        userInputs["telephone_of_bankbranch"] = value;
+                        print(userInputs);
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ],
           )),
         ),
       ),
     );
+  }
+
+  DateTime dateFrom = DateTime.now();
+  DateTime dateTo = DateTime.now();
+
+  Future<Null> selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: dateFrom,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2022, 8));
+    if (picked != null && picked != dateFrom)
+      setState(() {
+        dateFrom = picked;
+      });
   }
 }
