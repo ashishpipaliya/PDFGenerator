@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'PDF Generator',
         theme: ThemeData(
-          primaryColor: ColorPalette.darkPurple,
+          primarySwatch: customSwatch,
           scaffoldBackgroundColor: ColorPalette.white,
           visualDensity: VisualDensity.adaptivePlatformDensity,
           pageTransitionsTheme: PageTransitionsTheme(

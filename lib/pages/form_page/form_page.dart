@@ -82,10 +82,11 @@ class _FormPageState extends State<FormPage> {
   bool _noObjectionOnStampPaper = false;
   bool _copyOfDeathCerti = false;
 
-  String from = "From";
-  String to = "To";
-
   Map<String, String> userInputs = {};
+
+  DateTime fromDate = DateTime.now();
+  DateTime toDate = DateTime.now();
+  DateTime dated = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -145,9 +146,44 @@ class _FormPageState extends State<FormPage> {
               normalTitleText(heading.validityOfcghsCard),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                //TODO datepicker
-
-                children: [Text("TODO: datepicker"), Text("TODO: datepicker")],
+                children: [
+                  Flexible(
+                      child: ListTile(
+                          title: Text(
+                              "${fromDate.day}/${fromDate.month}/${fromDate.year}"),
+                          subtitle: Text("From"),
+                          trailing: Icon(Icons.calendar_today),
+                          onTap: () async {
+                            DateTime picked = await showDatePicker(
+                              context: context,
+                              initialDate: fromDate,
+                              firstDate: DateTime(DateTime.now().year - 10),
+                              lastDate: DateTime(DateTime.now().year + 10),
+                            );
+                            if (picked != null)
+                              setState(() {
+                                fromDate = picked;
+                              });
+                          })),
+                  Flexible(
+                      child: ListTile(
+                          title: Text(
+                              "${toDate.day}/${toDate.month}/${toDate.year}"),
+                          subtitle: Text("To"),
+                          trailing: Icon(Icons.calendar_today),
+                          onTap: () async {
+                            DateTime picked = await showDatePicker(
+                              context: context,
+                              initialDate: toDate,
+                              firstDate: DateTime(DateTime.now().year - 10),
+                              lastDate: DateTime(DateTime.now().year + 10),
+                            );
+                            if (picked != null)
+                              setState(() {
+                                toDate = picked;
+                              });
+                          })),
+                ],
               ),
               normalTitleText(heading.entitlement),
               Row(
@@ -505,19 +541,23 @@ class _FormPageState extends State<FormPage> {
                   Row(
                     children: [
                       Flexible(
-                        child: FormFieldWidget(
-                          labelText: "Dated",
-                          onChanged: (value) {
-                            //TODO datepicker
-                            userInputs["dated"] = value;
-                            print(userInputs);
-                          },
-                          focusNode: datedNode,
-                          onSubmitted: (_) {
-                            FocusScope.of(context).requestFocus(telephoneNode);
-                          },
-                        ),
-                      ),
+                          child: ListTile(
+                              title: Text(
+                                  "${dated.day}/${dated.month}/${dated.year}"),
+                              subtitle: Text("Select date"),
+                              trailing: Icon(Icons.calendar_today),
+                              onTap: () async {
+                                DateTime picked = await showDatePicker(
+                                  context: context,
+                                  initialDate: dated,
+                                  firstDate: DateTime(DateTime.now().year - 10),
+                                  lastDate: DateTime(DateTime.now().year + 10),
+                                );
+                                if (picked != null)
+                                  setState(() {
+                                    dated = picked;
+                                  });
+                              })),
                     ],
                   ),
                   Row(
@@ -668,17 +708,16 @@ class _FormPageState extends State<FormPage> {
     );
   }
 
-  DateTime dateTo = DateTime.now();
-
-  selectDate(BuildContext context, String type) async {
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2022, 8));
+  selectDate(BuildContext context, DateTime dateType) async {
+    DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(DateTime.now().year - 10),
+      lastDate: DateTime(DateTime.now().year + 10),
+    );
     if (picked != null)
       setState(() {
-        type = picked.toLocal().toString().split(" ")[0];
+        dateType = picked;
       });
   }
 }
