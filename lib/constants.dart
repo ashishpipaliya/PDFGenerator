@@ -8,10 +8,10 @@ class MegaHeading {
 class Heading {
   // page 1
   String tokenAndPlace = "1. CGHS Token No. and place of issue";
-  String validityOfcghsCard = "2.Validity of CGHS Card";
+  String validityOfcghsCard = "2. Validity of CGHS Card";
   String entitlement = "3. EntitlementPvt./Semi Pvt/General";
   String fullName = "4. Full name of the Card Holder";
-  String status = "5. Status (Government Servent/Member of Parliament)";
+  String status = "5. Status (Government Servant/Member of Parliament)";
   String documentsAreSubmitted = "6. The following documents are submitted";
 
 // page 2
