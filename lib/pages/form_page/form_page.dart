@@ -737,7 +737,605 @@ class _FormPageState extends State<FormPage> {
                           )),
                     )
                   ],
-                )
+                ),
+                SizedBox(height: 50),
+
+                //  Page 2
+                titleText(megaHeading.megaTitle2),
+                smallTitleText(heading.toBeFilled),
+
+                normalTitleText(heading.computerNo),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Container(
+                        child: FormFieldWidget(
+                          labelText: heading.computerNo,
+                          onChanged: (value) {
+                            userInputs["computer_no"] = value;
+                            print(userInputs);
+                          },
+
+                          // onSubmitted: (_) {
+                          //   FocusScope.of(context).requestFocus(placeNode);
+                          // },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                normalTitleText(heading.tokenAndPlace2),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Container(
+                        child: FormFieldWidget(
+                          labelText: "Token No.",
+                          onChanged: (value) {
+                            userInputs["token_no2"] = value;
+                            print(userInputs);
+                          },
+                          // focusNode: tokenNumberNode,
+                          // onSubmitted: (_) {
+                          //   FocusScope.of(context).requestFocus(placeNode);
+                          // },
+                        ),
+                      ),
+                    ),
+                    Flexible(
+                      child: Container(
+                        child: FormFieldWidget(
+                          labelText: "Place",
+                          onChanged: (value) {
+                            userInputs["place2"] = value;
+                            print(userInputs);
+                          },
+                          // focusNode: placeNode,
+                          // onSubmitted: (_) {
+                          //   FocusScope.of(context).unfocus();
+                          // },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                normalTitleText(heading.validityOfcghsCard),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Flexible(
+                        child: ListTile(
+                            title: Text(
+                                "${fromDate.day}-${fromDate.month}-${fromDate.year}"),
+                            subtitle: Text("From"),
+                            trailing: Icon(Icons.calendar_today),
+                            onTap: () async {
+                              DateTime picked = await showDatePicker(
+                                context: context,
+                                initialDate: fromDate,
+                                firstDate: DateTime(DateTime.now().year - 10),
+                                lastDate: DateTime(DateTime.now().year + 10),
+                              );
+                              if (picked != null)
+                                setState(() {
+                                  fromDate = picked;
+                                  userInputs["from_date2"] =
+                                      DateFormat('dd-MM-yyyy').format(picked);
+                                  print(userInputs);
+                                });
+                            })),
+                    Flexible(
+                        child: ListTile(
+                            title: Text(
+                                "${toDate.day}-${toDate.month}-${toDate.year}"),
+                            subtitle: Text("To"),
+                            trailing: Icon(Icons.calendar_today),
+                            onTap: () async {
+                              DateTime picked = await showDatePicker(
+                                context: context,
+                                initialDate: toDate,
+                                firstDate: DateTime(DateTime.now().year - 10),
+                                lastDate: DateTime(DateTime.now().year + 10),
+                              );
+                              if (picked != null)
+                                setState(() {
+                                  toDate = picked;
+                                  userInputs["to_date2"] =
+                                      DateFormat('dd-MM-yyyy').format(picked);
+                                  print(userInputs);
+                                });
+                            })),
+                  ],
+                ),
+
+                normalTitleText(heading.entitlement2),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Expanded(
+                      child: DropdownButtonHideUnderline(
+                        child: Card(
+                          elevation: 3.0,
+                          child: DropdownButton(
+                            value: _entitlementSelected,
+                            items: entitlement.map((String item) {
+                              return DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(item),
+                              );
+                            }).toList(),
+                            onChanged: (String value) {
+                              setState(() {
+                                this._entitlementSelected = value;
+                                userInputs["entitlement2"] = value;
+                                print(userInputs);
+                              });
+                            },
+                            dropdownColor: ColorPalette.superlightPurple,
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+
+                normalTitleText(heading.fullName2),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Container(
+                        child: FormFieldWidget(
+                          labelText: heading.fullName2,
+                          onChanged: (value) {
+                            userInputs["full_name2"] = value;
+                            print(userInputs);
+                          },
+                          // focusNode: fullNameNode,
+                          // onSubmitted: (_) {
+                          //   FocusScope.of(context)
+                          //       .requestFocus(numberOfOriginalBillsNode);
+                          // },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                normalTitleText(heading.fullAddress),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Container(
+                        child: FormFieldWidget(
+                          labelText: heading.fullAddress,
+                          maxLines: null,
+                          onChanged: (value) {
+                            userInputs["full_address"] = value;
+                            print(userInputs);
+                          },
+                          // focusNode: fullNameNode,
+                          // onSubmitted: (_) {
+                          //   FocusScope.of(context)
+                          //       .requestFocus(numberOfOriginalBillsNode);
+                          // },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                      children: [
+                        Flexible(
+                          child: FormFieldWidget(
+                            labelText: "Telephone No.",
+                            onChanged: (value) {
+                              userInputs["telephone_no2"] = value;
+                              print(userInputs);
+                            },
+                            // focusNode: telephoneNode,
+                            // onSubmitted: (_) {
+                            //   FocusScope.of(context).requestFocus(emailNode);
+                            // },
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Flexible(
+                          child: FormFieldWidget(
+                            labelText: "E-mail Address",
+                            onChanged: (value) {
+                              userInputs["email_address2"] = value;
+                              print(userInputs);
+                            },
+                            // focusNode: emailNode,
+                            // onSubmitted: (_) {
+                            //   FocusScope.of(context).requestFocus(bankNameNode);
+                            // },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+
+                smallTitleText(subHeading.bankDetails),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                      children: [
+                        Flexible(
+                          child: FormFieldWidget(
+                            labelText: subHeading.bankName,
+                            onChanged: (value) {
+                              userInputs["bank_name2"] = value;
+                              print(userInputs);
+                            },
+                            // focusNode: bankNameNode,
+                            // onSubmitted: (_) {
+                            //   FocusScope.of(context).requestFocus(branchNode);
+                            // },
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Flexible(
+                          child: FormFieldWidget(
+                            labelText: subHeading.branch,
+                            onChanged: (value) {
+                              userInputs["bank_branch2"] = value;
+                              print(userInputs);
+                            },
+                            // focusNode: branchNode,
+                            // onSubmitted: (_) {
+                            //   FocusScope.of(context)
+                            //       .requestFocus(accountNumberNode);
+                            // },
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Flexible(
+                          child: FormFieldWidget(
+                            labelText: subHeading.accountNumber,
+                            onChanged: (value) {
+                              userInputs["account_number2"] = value;
+                              print(userInputs);
+                            },
+                            // focusNode: accountNumberNode,
+                            // onSubmitted: (_) {
+                            //   FocusScope.of(context).requestFocus(micrCodeNode);
+                            // },
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Flexible(
+                          child: FormFieldWidget(
+                            labelText: subHeading.micrCode,
+                            onChanged: (value) {
+                              userInputs["micr_code2"] = value;
+                              print(userInputs);
+                            },
+                            // focusNode: micrCodeNode,
+                            // onSubmitted: (_) {
+                            //   FocusScope.of(context)
+                            //       .requestFocus(telephoneOfBankBranchNode);
+                            // },
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Flexible(
+                          child: FormFieldWidget(
+                            labelText: subHeading.telephoneOfBankBranch,
+                            onChanged: (value) {
+                              userInputs["telephone_of_bankbranch2"] = value;
+                              print(userInputs);
+                            },
+                            // focusNode: telephoneOfBankBranchNode,
+                            // onSubmitted: (_) {
+                            //   FocusScope.of(context).unfocus();
+                            // },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+
+                normalTitleText(heading.nameAndRelationship),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Container(
+                        child: FormFieldWidget(
+                          labelText: "Patient name",
+                          onChanged: (value) {
+                            userInputs["patient_name"] = value;
+                            print(userInputs);
+                          },
+                          // focusNode: tokenNumberNode,
+                          // onSubmitted: (_) {
+                          //   FocusScope.of(context).requestFocus(placeNode);
+                          // },
+                        ),
+                      ),
+                    ),
+                    Flexible(
+                      child: Container(
+                        child: FormFieldWidget(
+                          labelText: "Relationship",
+                          onChanged: (value) {
+                            userInputs["relationship"] = value;
+                            print(userInputs);
+                          },
+                          // focusNode: placeNode,
+                          // onSubmitted: (_) {
+                          //   FocusScope.of(context).unfocus();
+                          // },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                normalTitleText(heading.status2),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Expanded(
+                      child: DropdownButtonHideUnderline(
+                        child: Card(
+                          elevation: 3.0,
+                          child: DropdownButton(
+                            value: _entitlementSelected,
+                            items: entitlement.map((String item) {
+                              return DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(item),
+                              );
+                            }).toList(),
+                            onChanged: (String value) {
+                              setState(() {
+                                this._entitlementSelected = value;
+                                userInputs["status2"] = value;
+                                print(userInputs);
+                              });
+                            },
+                            dropdownColor: ColorPalette.superlightPurple,
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+
+                normalTitleText(heading.basicPay),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Container(
+                        child: FormFieldWidget(
+                          labelText: heading.basicPay,
+                          onChanged: (value) {
+                            userInputs["basic_pay"] = value;
+                            print(userInputs);
+                          },
+                          // focusNode: fullNameNode,
+                          // onSubmitted: (_) {
+                          //   FocusScope.of(context)
+                          //       .requestFocus(numberOfOriginalBillsNode);
+                          // },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                normalTitleText(heading.hospitalname),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Container(
+                        child: FormFieldWidget(
+                          labelText: subHeading.opdTreatment,
+                          maxLines: null,
+                          onChanged: (value) {
+                            userInputs["opd_treatment"] = value;
+                            print(userInputs);
+                          },
+                          // focusNode: fullNameNode,
+                          // onSubmitted: (_) {
+                          //   FocusScope.of(context)
+                          //       .requestFocus(numberOfOriginalBillsNode);
+                          // },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Container(
+                        child: FormFieldWidget(
+                          labelText: subHeading.indoorTreatment,
+                          maxLines: null,
+                          onChanged: (value) {
+                            userInputs["indoor_treatment"] = value;
+                            print(userInputs);
+                          },
+                          // focusNode: fullNameNode,
+                          // onSubmitted: (_) {
+                          //   FocusScope.of(context)
+                          //       .requestFocus(numberOfOriginalBillsNode);
+                          // },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                normalTitleText(heading.admitAndDischargeDate),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Flexible(
+                        child: ListTile(
+                            title: Text(
+                                "${fromDate.day}-${fromDate.month}-${fromDate.year}"),
+                            subtitle: Text("admission"),
+                            trailing: Icon(Icons.calendar_today),
+                            onTap: () async {
+                              DateTime picked = await showDatePicker(
+                                context: context,
+                                initialDate: fromDate,
+                                firstDate: DateTime(DateTime.now().year - 10),
+                                lastDate: DateTime(DateTime.now().year + 10),
+                              );
+                              if (picked != null)
+                                setState(() {
+                                  fromDate = picked;
+                                  userInputs["admission"] =
+                                      DateFormat('dd-MM-yyyy').format(picked);
+                                  print(userInputs);
+                                });
+                            })),
+                    Flexible(
+                        child: ListTile(
+                            title: Text(
+                                "${toDate.day}-${toDate.month}-${toDate.year}"),
+                            subtitle: Text("discharge"),
+                            trailing: Icon(Icons.calendar_today),
+                            onTap: () async {
+                              DateTime picked = await showDatePicker(
+                                context: context,
+                                initialDate: toDate,
+                                firstDate: DateTime(DateTime.now().year - 10),
+                                lastDate: DateTime(DateTime.now().year + 10),
+                              );
+                              if (picked != null)
+                                setState(() {
+                                  toDate = picked;
+                                  userInputs["date_discharge"] =
+                                      DateFormat('dd-MM-yyyy').format(picked);
+                                  print(userInputs);
+                                });
+                            })),
+                  ],
+                ),
+
+                normalTitleText(heading.totalAmountClaimed),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Container(
+                        child: FormFieldWidget(
+                          labelText: "OPD Treatment",
+                          onChanged: (value) {
+                            userInputs["amount_claimed_opd_treatment"] = value;
+                            print(userInputs);
+                          },
+                          // focusNode: tokenNumberNode,
+                          // onSubmitted: (_) {
+                          //   FocusScope.of(context).requestFocus(placeNode);
+                          // },
+                        ),
+                      ),
+                    ),
+                    Flexible(
+                      child: Container(
+                        child: FormFieldWidget(
+                          labelText: "Indoor Treatment",
+                          onChanged: (value) {
+                            userInputs["amount_claimed_indoor_treatment"] =
+                                value;
+                            print(userInputs);
+                          },
+                          // focusNode: placeNode,
+                          // onSubmitted: (_) {
+                          //   FocusScope.of(context).unfocus();
+                          // },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                normalTitleText(heading.referralDetails),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Container(
+                        child: FormFieldWidget(
+                          labelText: heading.referralDetails,
+                          maxLines: null,
+                          onChanged: (value) {
+                            userInputs["details_of_referral"] = value;
+                            print(userInputs);
+                          },
+                          // focusNode: fullNameNode,
+                          // onSubmitted: (_) {
+                          //   FocusScope.of(context)
+                          //       .requestFocus(numberOfOriginalBillsNode);
+                          // },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                normalTitleText(heading.medicalAdvance),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Container(
+                        child: FormFieldWidget(
+                          labelText: heading.medicalAdvance,
+                          maxLines: null,
+                          onChanged: (value) {
+                            userInputs["details_of_medical_advance"] = value;
+                            print(userInputs);
+                          },
+                          // focusNode: fullNameNode,
+                          // onSubmitted: (_) {
+                          //   FocusScope.of(context)
+                          //       .requestFocus(numberOfOriginalBillsNode);
+                          // },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             )),
           ),

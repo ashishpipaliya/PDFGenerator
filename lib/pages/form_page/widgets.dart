@@ -3,6 +3,7 @@ import 'package:pdf_gen/shared/color_palette.dart';
 
 class FormFieldWidget extends StatelessWidget {
   final String labelText;
+  final int maxLines;
   final TextEditingController controller;
   final void Function(String) onChanged;
   final void Function(String) onSubmitted;
@@ -11,6 +12,7 @@ class FormFieldWidget extends StatelessWidget {
   const FormFieldWidget({
     Key key,
     this.labelText,
+    this.maxLines = 1,
     this.controller,
     this.onChanged,
     this.onSubmitted,
@@ -22,6 +24,7 @@ class FormFieldWidget extends StatelessWidget {
       margin: EdgeInsets.all(5),
       child: TextFormField(
         controller: controller,
+        maxLines: maxLines,
         textAlignVertical: TextAlignVertical.center,
         onChanged: onChanged,
         onFieldSubmitted: onSubmitted,

@@ -15,7 +15,7 @@ class Heading {
   String documentsAreSubmitted = "6. The following documents are submitted";
 
 // page 2
-  String heading = "Computer No.";
+  String computerNo = "Computer No.";
   String toBeFilled = "To be filled by the claimant";
   String tokenAndPlace2 = "1. CGHS Token No and Place of issue";
   String cardValidity2 = "2. Validity of CGHS Token Card";
@@ -29,7 +29,8 @@ class Heading {
   String status2 = "9. Status";
   String basicPay = "10. Basic Pay/Basic Pension";
   String hospitalname = "11. Name of the Hospital with Address";
-  String admitAndDischargeDate = "12. Date of admission and  discharge";
+  String admitAndDischargeDate =
+      "12. Date of admission and  discharge (In case of Indoor treatment only)";
   String totalAmountClaimed = "13. Total amount Claimed";
   String referralDetails = "14. Details of Referral";
   String medicalAdvance = "15. Details of Medical advance if, any";
@@ -65,6 +66,9 @@ class SubHeading {
   String accountNumber = "SB A/C No";
   String micrCode = "Branch MICR Code";
   String telephoneOfBankBranch = "Telephone No. of Bank Branch";
+
+  String opdTreatment = "OPD treatment and investigation";
+  String indoorTreatment = "Indoor treatment";
 }
 
 List<String> entitlement = ["Private", "Semi Private", "General"];

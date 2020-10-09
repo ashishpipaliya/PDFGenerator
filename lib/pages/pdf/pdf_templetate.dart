@@ -12,14 +12,15 @@ pdfTemplate(context, Map userInputs) async {
   MegaHeading megaHeading = MegaHeading();
   Heading heading = Heading();
   SubHeading subHeading = SubHeading();
+  final blank = "...............";
 
-  final tokenNo = userInputs['token_no'];
-  final place = userInputs['place'];
-  final fromDate = userInputs['from_date'];
-  final toDate = userInputs['to_date'];
-  final entitlement = userInputs['entitlement'];
-  final fullName = userInputs['full_name'];
-  final status = userInputs['status'];
+  final tokenNo = userInputs['token_no'] ?? blank;
+  final place = userInputs['place'] ?? blank;
+  final fromDate = userInputs['from_date'] ?? blank;
+  final toDate = userInputs['to_date'] ?? blank;
+  final entitlement = userInputs['entitlement'] ?? blank;
+  final fullName = userInputs['full_name'] ?? blank;
+  final status = userInputs['status'] ?? blank;
   final medical2004Form = userInputs['medical_2004_form'] ?? "No";
   final copyOfCGHS = userInputs['copy_of_cghs'] ?? "No";
   final copyOfPermissionLetter =
@@ -29,7 +30,7 @@ pdfTemplate(context, Map userInputs) async {
       userInputs['copy_of_discharge_summary'] ?? "No";
   final copyOfReferral = userInputs['copy_of_referral'] ?? "No";
   final hospitalBreakup = userInputs['hospital_breakup'] ?? "No";
-  final numberOfOriginalBills = userInputs['number_of_original_bills'];
+  final numberOfOriginalBills = userInputs['number_of_original_bills'] ?? blank;
   final copiesOfClaimPapers = userInputs['copies_of_claim_papers'] ?? "No";
   final affidavitOnStampPaper = userInputs['affidavit_on_stamppaper'] ?? "No";
   final affidavitOnStampPaper2 = userInputs['affidavit_on_stamppaper2'] ?? "No";
@@ -37,14 +38,14 @@ pdfTemplate(context, Map userInputs) async {
       userInputs['no_objection_on_stamppaper'] ?? "No";
   final copyOfDeathCertificate =
       userInputs['copy_of_death_certificate'] ?? "No";
-  final telephoneNo = userInputs['telephone_no'];
-  final emailAddress = userInputs['email_address'];
-  final dated = userInputs['dated'];
-  final bankName = userInputs['bank_name'];
-  final bankBranch = userInputs['bank_branch'];
-  final accountNumber = userInputs['account_number'];
-  final micrCode = userInputs['micr_code'];
-  final telephoneOfBankBranch = userInputs['telephone_of_bankbranch'];
+  final telephoneNo = userInputs['telephone_no'] ?? blank;
+  final emailAddress = userInputs['email_address'] ?? blank;
+  final dated = userInputs['dated'] ?? blank;
+  final bankName = userInputs['bank_name'] ?? blank;
+  final bankBranch = userInputs['bank_branch'] ?? blank;
+  final accountNumber = userInputs['account_number'] ?? blank;
+  final micrCode = userInputs['micr_code'] ?? blank;
+  final telephoneOfBankBranch = userInputs['telephone_of_bankbranch'] ?? blank;
 
   pdf.addPage(
     MultiPage(
