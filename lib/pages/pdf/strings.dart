@@ -19,7 +19,7 @@ class Heading {
   String toBeFilled = "To be filled by the claimant";
   String tokenAndPlace2 = "CGHS Token No and Place of issue";
   String cardValidity2 = "Validity of CGHS Token Card";
-  String entitlement2 = "EntitlementPrivate/Semi Private/General";
+  String entitlement2 = "Entitlement Private/Semi Private/General";
   String fullName2 = "Full name of the Card Holder";
   String fullAddress = "Full address";
   String telephone = "Telephone no";
@@ -60,7 +60,7 @@ class SubHeading {
 //page 2
   String bankDetails = "Bank Details";
   String bankName = "Name of the Bank";
-  String branch = "Branch";
+  String bankBranch = "Branch";
   String accountNumber = "SB A/C No";
   String micrCode = "Branch MICR Code";
   String telephoneOfBankBranch = "Telephone No. of Bank Branch";

@@ -47,145 +47,215 @@ pdfTemplate(context, Map userInputs) async {
   final micrCode = userInputs['micr_code'] ?? blank;
   final telephoneOfBankBranch = userInputs['telephone_of_bankbranch'] ?? blank;
 
+  //Page 2
+  final tokenNo2 = userInputs['token_no2'] ?? blank;
+  final place2 = userInputs['place2'] ?? blank;
+  final fromDate2 = userInputs['from_date2'] ?? blank;
+  final toDate2 = userInputs['to_date2'] ?? blank;
+  final entitlement2 = userInputs['entitlement'] ?? blank;
+
+  final patientName = userInputs['patient_name2'] ?? blank;
+
   pdf.addPage(
-    MultiPage(
+    Page(
       theme: ThemeData(defaultTextStyle: TextStyle(fontSize: 11)),
       pageFormat:
           PdfPageFormat.a4.copyWith(marginBottom: 1.0 * PdfPageFormat.cm),
-      crossAxisAlignment: CrossAxisAlignment.start,
-      // header: (Context context) {
-      //   return Container(
-      //       alignment: Alignment.centerRight,
-      //       margin: const EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
-      //       padding: const EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
-      //       decoration: const BoxDecoration(
-      //           border:
-      //               BoxBorder(bottom: true, width: 0.5, color: PdfColors.grey)),
-      //       child: Text(MegaHeading().megaTitle1,
-      //           style: Theme.of(context)
-      //               .defaultTextStyle
-      //               .copyWith(color: PdfColors.grey)));
-      // },
-
-      build: (Context context) => <Widget>[
-        Header(
-            level: 3,
-            margin: EdgeInsets.symmetric(horizontal: 3.0 * PdfPageFormat.cm),
-            child: Text(megaHeading.megaTitle1,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    lineSpacing: 2,
-                    decorationThickness: 2.0))),
-        SizedBox(height: containerHeight),
-        leftRightContent(
-          "1",
-          heading.tokenAndPlace,
-          tokenNo + "    " + place,
-        ),
-        leftRightContent(
-          "2",
-          heading.validityOfcghsCard,
-          "from : $fromDate" + "    " + "to : $toDate",
-        ),
-        leftRightContent(
-          "3",
-          heading.entitlement,
-          "$entitlement",
-        ),
-        leftRightContent(
-          "4",
-          heading.fullName,
-          "$fullName",
-        ),
-        leftRightContent(
-          "5",
-          heading.status,
-          status,
-        ),
-        leftRightContent(
-          "6",
-          heading.documentsAreSubmitted,
-          "(Please tick the relevant column)",
-        ),
-
-        heightGap(),
-        //  Nested lines with a, b, c, d...
-        nestedContent("a", subHeading.medical2004, "$medical2004Form"),
-        nestedContent("b", subHeading.copyOfCGHS, "$copyOfCGHS"),
-        nestedContent(
-            "c", subHeading.copyOfPermissionLetter, "$copyOfPermissionLetter"),
-        nestedContent(
-            "d", subHeading.numberOfOriginalBills, "$numberOfOriginalBills"),
-        nestedContent(
-            "e", subHeading.copyOfPrescription, "$copyOfPrescription"),
-        nestedContent(
-            "f", subHeading.copyOfDischargeSummary, "$copyOfDischargeSummary"),
-        nestedContent("g", subHeading.copyOfReferral, "$copyOfReferral"),
-        nestedContent("h", subHeading.hospitalBreakup, "$hospitalBreakup"),
-        nestedContent("i", subHeading.originalpapersLost, ""),
-
-        //deeply nested I, II, ....
-        deeplyNestedContent(
-            "I", subHeading.copiesOfClaimPapers, "$copiesOfClaimPapers"),
-        deeplyNestedContent(
-            "II", subHeading.affidavitOnStampPaper, "$affidavitOnStampPaper"),
-        heightGap(),
-        //  Nested lines with a, b, c, d...
-        nestedContent("j", subHeading.inCaseOfDeath, ""),
-        //deeply nested I, II, ....
-        deeplyNestedContent(
-            "I", subHeading.affidavitOnStampPaper2, "$affidavitOnStampPaper2"),
-        deeplyNestedContent("II", subHeading.noObjectionOnStampPaper,
-            "$noObjectionOnStampPaper"),
-        deeplyNestedContent(
-            "III", subHeading.copyOfDeathCerti, "$copyOfDeathCertificate"),
-        heightGap(),
-
-        // bottom stuffs
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 1 * PdfPageFormat.cm),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                flex: 3,
-                child: Text("Dated   : $dated"),
-              ),
-              Expanded(
-                  flex: 2,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 100,
-                        height: 50,
-                        color: PdfColor.fromHex("#000"),
-                        child: Text("Signature of CGHS card holder"),
-                      ),
-                      Text("Tel. No.  : $telephoneNo"),
-                      Text("e-mail address  : $emailAddress"),
-                    ],
-                  )),
-            ],
+      build: (Context context) => Column(
+        children: [
+          Header(
+              level: 3,
+              margin: EdgeInsets.symmetric(horizontal: 3.0 * PdfPageFormat.cm),
+              child: Text(megaHeading.megaTitle1,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline,
+                      lineSpacing: 2,
+                      decorationThickness: 2.0))),
+          SizedBox(height: containerHeight),
+          leftRightContent(
+            "1",
+            heading.tokenAndPlace,
+            tokenNo + "    " + place,
           ),
-        ),
-        heightGap(),
-        //  bottom paragraph
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 1 * PdfPageFormat.cm),
-          child: Paragraph(
-              text:
-                  "Name of the Bank : $bankName Branch : $bankBranch SB A/C No : $accountNumber Name of the Bank : Bank Name here Branch : Yogichowk SB A/C No : 91516261611 Branch MICR Code : $micrCode Tel.No. of Bank Branch : $telephoneOfBankBranch"),
-        ),
+          leftRightContent(
+            "2",
+            heading.validityOfcghsCard,
+            "from : $fromDate" + "    " + "to : $toDate",
+          ),
+          leftRightContent(
+            "3",
+            heading.entitlement,
+            "$entitlement",
+          ),
+          leftRightContent(
+            "4",
+            heading.fullName,
+            "$fullName",
+          ),
+          leftRightContent(
+            "5",
+            heading.status,
+            status,
+          ),
+          leftRightContent(
+            "6",
+            heading.documentsAreSubmitted,
+            "(Please tick the relevant column)",
+          ),
 
-        //  Page 1 end
-      ],
+          heightGap(),
+          //  Nested lines with a, b, c, d...
+          nestedContent("a", subHeading.medical2004, "$medical2004Form"),
+          nestedContent("b", subHeading.copyOfCGHS, "$copyOfCGHS"),
+          nestedContent("c", subHeading.copyOfPermissionLetter,
+              "$copyOfPermissionLetter"),
+          nestedContent(
+              "d", subHeading.numberOfOriginalBills, "$numberOfOriginalBills"),
+          nestedContent(
+              "e", subHeading.copyOfPrescription, "$copyOfPrescription"),
+          nestedContent("f", subHeading.copyOfDischargeSummary,
+              "$copyOfDischargeSummary"),
+          nestedContent("g", subHeading.copyOfReferral, "$copyOfReferral"),
+          nestedContent("h", subHeading.hospitalBreakup, "$hospitalBreakup"),
+          nestedContent("i", subHeading.originalpapersLost, ""),
+
+          //deeply nested I, II, ....
+          deeplyNestedContent(
+              "I", subHeading.copiesOfClaimPapers, "$copiesOfClaimPapers"),
+          deeplyNestedContent(
+              "II", subHeading.affidavitOnStampPaper, "$affidavitOnStampPaper"),
+          heightGap(),
+          //  Nested lines with a, b, c, d...
+          nestedContent("j", subHeading.inCaseOfDeath, ""),
+          //deeply nested I, II, ....
+          deeplyNestedContent("I", subHeading.affidavitOnStampPaper2,
+              "$affidavitOnStampPaper2"),
+          deeplyNestedContent("II", subHeading.noObjectionOnStampPaper,
+              "$noObjectionOnStampPaper"),
+          deeplyNestedContent(
+              "III", subHeading.copyOfDeathCerti, "$copyOfDeathCertificate"),
+          heightGap(),
+
+          // bottom stuffs
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 1 * PdfPageFormat.cm),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: Text("Dated   : $dated"),
+                ),
+                Expanded(
+                    flex: 2,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: 100,
+                          height: 50,
+                          color: PdfColor.fromHex("#000"),
+                          child: Text("Signature of CGHS card holder"),
+                        ),
+                        Text("Tel. No.  : $telephoneNo"),
+                        Text("e-mail address  : $emailAddress"),
+                      ],
+                    )),
+              ],
+            ),
+          ),
+          heightGap(),
+          //  bottom paragraph
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 1 * PdfPageFormat.cm),
+            child: RichText(
+                text: TextSpan(children: [
+              TextSpan(text: "${subHeading.bankName}  ", children: [
+                TextSpan(
+                    text: "$bankName  ",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline))
+              ]),
+              TextSpan(text: "${subHeading.bankBranch}  ", children: [
+                TextSpan(
+                    text: "$bankBranch  ",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline))
+              ]),
+              TextSpan(text: " ${subHeading.accountNumber}  ", children: [
+                TextSpan(
+                    text: "$accountNumber  ",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline))
+              ]),
+              TextSpan(text: " ${subHeading.micrCode}  ", children: [
+                TextSpan(
+                    text: "$micrCode  ",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline))
+              ]),
+              TextSpan(
+                  text: "${subHeading.telephoneOfBankBranch}  ",
+                  children: [
+                    TextSpan(
+                        text: "$telephoneOfBankBranch  ",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.underline))
+                  ]),
+            ])),
+          ),
+        ],
+      ),
     ),
   );
+
+  pdf.addPage(
+    Page(
+      theme: ThemeData(defaultTextStyle: TextStyle(fontSize: 11)),
+      pageFormat:
+          PdfPageFormat.a4.copyWith(marginBottom: 1.0 * PdfPageFormat.cm),
+      build: (context) => Column(
+        children: [
+          Header(
+              level: 3,
+              margin: EdgeInsets.symmetric(horizontal: 3.0 * PdfPageFormat.cm),
+              child: Text(megaHeading.megaTitle2,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    lineSpacing: 2,
+                  ))),
+          SizedBox(height: containerHeight),
+          leftRightContent(
+            "1",
+            heading.tokenAndPlace,
+            tokenNo2 + "    " + place2,
+          ),
+          leftRightContent(
+            "2",
+            heading.validityOfcghsCard,
+            "from : $fromDate2" + "    " + "to : $toDate2",
+          ),
+          leftRightContent(
+            "2",
+            heading.entitlement2,
+            "$entitlement2",
+          ),
+        ],
+      ),
+    ),
+  );
+
   //save PDF
-  final String dir = (await getExternalStorageDirectory()).path;
+  final String dir = (await getApplicationDocumentsDirectory()).absolute.path;
   var fileName = DateTime.now()
       .toLocal()
       .toString()

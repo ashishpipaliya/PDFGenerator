@@ -137,3 +137,17 @@ Widget smallTitleText(String title) {
     ],
   );
 }
+
+Widget paragraphText(String paragraph) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      Text(
+        paragraph,
+        textAlign: TextAlign.left,
+        style: TextStyle(
+            fontSize: 12, fontWeight: FontWeight.w400, color: Colors.black45),
+      )
+    ],
+  );
+}
