@@ -79,7 +79,7 @@ class SubHeading {
 
   String bankDetails = "Bank Details";
   String bankName = "Name of the Bank";
-  String branch = "Branch";
+  String bankBranch = "Branch";
   String accountNumber = "SB A/C No";
   String micrCode = "Branch MICR Code";
   String telephoneOfBankBranch = "Telephone No. of Bank Branch";

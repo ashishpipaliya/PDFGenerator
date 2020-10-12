@@ -127,7 +127,6 @@ class _FormPageState extends State<FormPage> {
                           labelText: "Token No.",
                           onChanged: (value) {
                             userInputs["token_no"] = value;
-                            print(" ");
                           },
                           onSubmitted: (_) => unfocusScope(),
                         ),
@@ -139,7 +138,6 @@ class _FormPageState extends State<FormPage> {
                           labelText: "Place",
                           onChanged: (value) {
                             userInputs["place"] = value;
-                            print(" ");
                           },
                           onSubmitted: (_) => unfocusScope(),
                         ),
@@ -170,7 +168,6 @@ class _FormPageState extends State<FormPage> {
                                   fromDate = picked;
                                   userInputs["from_date"] =
                                       DateFormat('dd-MM-yyyy').format(picked);
-                                  print(" ");
                                 });
                             })),
                     Flexible(
@@ -191,7 +188,6 @@ class _FormPageState extends State<FormPage> {
                                   toDate = picked;
                                   userInputs["to_date"] =
                                       DateFormat('dd-MM-yyyy').format(picked);
-                                  print(" ");
                                 });
                             })),
                   ],
@@ -217,7 +213,6 @@ class _FormPageState extends State<FormPage> {
                               setState(() {
                                 this._entitlementSelected = value;
                                 userInputs["entitlement"] = value;
-                                print(" ");
                               });
                             },
                             dropdownColor: ColorPalette.superlightPurple,
@@ -238,7 +233,6 @@ class _FormPageState extends State<FormPage> {
                           labelText: "Full name",
                           onChanged: (value) {
                             userInputs["full_name"] = value;
-                            print(" ");
                           },
                           onSubmitted: (_) => unfocusScope(),
                         ),
@@ -267,7 +261,6 @@ class _FormPageState extends State<FormPage> {
                               setState(() {
                                 this._statusSelected = value;
                                 userInputs["status"] = value;
-                                print(" ");
                               });
                             },
                             dropdownColor: ColorPalette.superlightPurple,
@@ -297,7 +290,6 @@ class _FormPageState extends State<FormPage> {
                               _medical2004Form = value;
                               userInputs["medical_2004_form"] =
                                   value ? "Yes" : "No";
-                              print(" ");
                             });
                           },
                         );
@@ -316,7 +308,6 @@ class _FormPageState extends State<FormPage> {
                             setState(() {
                               _copyOfCGHS = value;
                               userInputs["copy_of_cghs"] = value ? "Yes" : "No";
-                              print(" ");
                             });
                           },
                         );
@@ -424,7 +415,6 @@ class _FormPageState extends State<FormPage> {
                             labelText: subHeading.numberOfOriginalBills,
                             onChanged: (value) {
                               userInputs["number_of_original_bills"] = value;
-                              print(" ");
                             },
                             focusNode: numberOfOriginalBillsNode,
                             onSubmitted: (_) {
@@ -456,7 +446,6 @@ class _FormPageState extends State<FormPage> {
                                 _copiesOfClaimPapers = value;
                                 userInputs["copies_of_claim_papers"] =
                                     value ? "Yes" : "No";
-                                print(" ");
                               });
                             },
                           );
@@ -476,7 +465,6 @@ class _FormPageState extends State<FormPage> {
                                 _affidavitOnStampPaper = value;
                                 userInputs["affidavit_on_stamppaper"] =
                                     value ? "Yes" : "No";
-                                print(" ");
                               });
                             },
                           );
@@ -503,7 +491,6 @@ class _FormPageState extends State<FormPage> {
                                 _affidavitOnStampPaper2 = value;
                                 userInputs["affidavit_on_stamppaper2"] =
                                     value ? "Yes" : "No";
-                                print(" ");
                               });
                             },
                           );
@@ -523,7 +510,6 @@ class _FormPageState extends State<FormPage> {
                                 _noObjectionOnStampPaper = value;
                                 userInputs["no_objection_on_stamppaper"] =
                                     value ? "Yes" : "No";
-                                print(" ");
                               });
                             },
                           );
@@ -543,7 +529,6 @@ class _FormPageState extends State<FormPage> {
                                 _copyOfDeathCerti = value;
                                 userInputs["copy_of_death_certificate"] =
                                     value ? "Yes" : "No";
-                                print(" ");
                               });
                             },
                           );
@@ -562,7 +547,6 @@ class _FormPageState extends State<FormPage> {
                             labelText: "Telephone No.",
                             onChanged: (value) {
                               userInputs["telephone_no"] = value;
-                              print(" ");
                             },
                             onSubmitted: (_) => unfocusScope(),
                           ),
@@ -576,7 +560,6 @@ class _FormPageState extends State<FormPage> {
                             labelText: "E-mail Address",
                             onChanged: (value) {
                               userInputs["email_address"] = value;
-                              print(" ");
                             },
                             focusNode: emailNode,
                             onSubmitted: (_) {
@@ -609,7 +592,6 @@ class _FormPageState extends State<FormPage> {
                                       userInputs["dated"] =
                                           DateFormat('dd-MM-yyyy')
                                               .format(picked);
-                                      print(" ");
                                     });
                                 })),
                       ],
@@ -641,7 +623,6 @@ class _FormPageState extends State<FormPage> {
                             labelText: subHeading.bankName,
                             onChanged: (value) {
                               userInputs["bank_name"] = value;
-                              print(" ");
                             },
                             onSubmitted: (_) => unfocusScope(),
                           ),
@@ -652,10 +633,9 @@ class _FormPageState extends State<FormPage> {
                       children: [
                         Flexible(
                           child: FormFieldWidget(
-                            labelText: subHeading.branch,
+                            labelText: subHeading.bankBranch,
                             onChanged: (value) {
                               userInputs["bank_branch"] = value;
-                              print(" ");
                             },
                             onSubmitted: (_) => unfocusScope(),
                           ),
@@ -669,7 +649,6 @@ class _FormPageState extends State<FormPage> {
                             labelText: subHeading.accountNumber,
                             onChanged: (value) {
                               userInputs["account_number"] = value;
-                              print(" ");
                             },
                             focusNode: accountNumberNode,
                             onSubmitted: (_) {
@@ -686,7 +665,6 @@ class _FormPageState extends State<FormPage> {
                             labelText: subHeading.micrCode,
                             onChanged: (value) {
                               userInputs["micr_code"] = value;
-                              print(" ");
                             },
                             focusNode: micrCodeNode,
                             onSubmitted: (_) {
@@ -704,7 +682,6 @@ class _FormPageState extends State<FormPage> {
                             labelText: subHeading.telephoneOfBankBranch,
                             onChanged: (value) {
                               userInputs["telephone_of_bankbranch"] = value;
-                              print(" ");
                             },
                             focusNode: telephoneOfBankBranchNode,
                             onSubmitted: (_) {
@@ -733,7 +710,6 @@ class _FormPageState extends State<FormPage> {
                           labelText: heading.computerNo,
                           onChanged: (value) {
                             userInputs["computer_no"] = value;
-                            print(" ");
                           },
                           onSubmitted: (_) => unfocusScope(),
                         ),
@@ -752,7 +728,6 @@ class _FormPageState extends State<FormPage> {
                           labelText: "Token No.",
                           onChanged: (value) {
                             userInputs["token_no2"] = value;
-                            print(" ");
                           },
                           onSubmitted: (_) => unfocusScope(),
                         ),
@@ -764,7 +739,6 @@ class _FormPageState extends State<FormPage> {
                           labelText: "Place",
                           onChanged: (value) {
                             userInputs["place2"] = value;
-                            print(" ");
                           },
                           // focusNode: placeNode,
                           // onSubmitted: (_) {
@@ -798,7 +772,6 @@ class _FormPageState extends State<FormPage> {
                                   fromDate = picked;
                                   userInputs["from_date2"] =
                                       DateFormat('dd-MM-yyyy').format(picked);
-                                  print(" ");
                                 });
                             })),
                     Flexible(
@@ -819,7 +792,6 @@ class _FormPageState extends State<FormPage> {
                                   toDate = picked;
                                   userInputs["to_date2"] =
                                       DateFormat('dd-MM-yyyy').format(picked);
-                                  print(" ");
                                 });
                             })),
                   ],
@@ -845,7 +817,6 @@ class _FormPageState extends State<FormPage> {
                               setState(() {
                                 this._entitlementSelected2 = value;
                                 userInputs["entitlement2"] = value;
-                                print(" ");
                               });
                             },
                             dropdownColor: ColorPalette.superlightPurple,
@@ -866,7 +837,6 @@ class _FormPageState extends State<FormPage> {
                           labelText: "Full name",
                           onChanged: (value) {
                             userInputs["full_name2"] = value;
-                            print(" ");
                           },
                           onSubmitted: (_) => unfocusScope(),
                         ),
@@ -885,8 +855,7 @@ class _FormPageState extends State<FormPage> {
                           labelText: "Full address",
                           maxLines: null,
                           onChanged: (value) {
-                            userInputs["full_address"] = value;
-                            print(" ");
+                            userInputs["full_address2"] = value;
                           },
                           onSubmitted: (_) => unfocusScope(),
                         ),
@@ -904,7 +873,6 @@ class _FormPageState extends State<FormPage> {
                         labelText: "Telephone No.",
                         onChanged: (value) {
                           userInputs["telephone_no2"] = value;
-                          print(" ");
                         },
                         onSubmitted: (_) => unfocusScope(),
                       ),
@@ -921,7 +889,6 @@ class _FormPageState extends State<FormPage> {
                         labelText: "E-mail Address",
                         onChanged: (value) {
                           userInputs["email_address2"] = value;
-                          print(" ");
                         },
                         onSubmitted: (_) => unfocusScope(),
                       ),
@@ -941,7 +908,6 @@ class _FormPageState extends State<FormPage> {
                             labelText: subHeading.bankName,
                             onChanged: (value) {
                               userInputs["bank_name2"] = value;
-                              print(" ");
                             },
                             onSubmitted: (_) => unfocusScope(),
                           ),
@@ -952,10 +918,9 @@ class _FormPageState extends State<FormPage> {
                       children: [
                         Flexible(
                           child: FormFieldWidget(
-                            labelText: subHeading.branch,
+                            labelText: subHeading.bankBranch,
                             onChanged: (value) {
                               userInputs["bank_branch2"] = value;
-                              print(" ");
                             },
                             // focusNode: branchNode,
                             // onSubmitted: (_) {
@@ -973,7 +938,6 @@ class _FormPageState extends State<FormPage> {
                             labelText: subHeading.accountNumber,
                             onChanged: (value) {
                               userInputs["account_number2"] = value;
-                              print(" ");
                             },
                             // focusNode: accountNumberNode,
                             // onSubmitted: (_) {
@@ -990,7 +954,6 @@ class _FormPageState extends State<FormPage> {
                             labelText: subHeading.micrCode,
                             onChanged: (value) {
                               userInputs["micr_code2"] = value;
-                              print(" ");
                             },
                             // focusNode: micrCodeNode,
                             // onSubmitted: (_) {
@@ -1008,7 +971,6 @@ class _FormPageState extends State<FormPage> {
                             labelText: subHeading.telephoneOfBankBranch,
                             onChanged: (value) {
                               userInputs["telephone_of_bankbranch2"] = value;
-                              print(" ");
                             },
                             // focusNode: telephoneOfBankBranchNode,
                             // onSubmitted: (_) {
@@ -1030,8 +992,8 @@ class _FormPageState extends State<FormPage> {
                         child: FormFieldWidget(
                           labelText: "Patient name",
                           onChanged: (value) {
-                            userInputs["patient_name"] = value;
-                            print(" ");
+                            userInputs["patient_name2"] = value;
+
                             Logger().v(userInputs);
                           },
                           onSubmitted: (_) => unfocusScope(),
@@ -1043,8 +1005,7 @@ class _FormPageState extends State<FormPage> {
                         child: FormFieldWidget(
                           labelText: "Relationship",
                           onChanged: (value) {
-                            userInputs["relationship"] = value;
-                            print(" ");
+                            userInputs["relationship2"] = value;
                           },
                           // focusNode: placeNode,
                           // onSubmitted: (_) {
@@ -1077,7 +1038,6 @@ class _FormPageState extends State<FormPage> {
                                 setState(() {
                                   this._statusSelected2 = value;
                                   userInputs["status2"] = value;
-                                  print(" ");
                                 });
                               },
                               dropdownColor: ColorPalette.superlightPurple,
@@ -1098,8 +1058,7 @@ class _FormPageState extends State<FormPage> {
                         child: FormFieldWidget(
                           labelText: "Basic pay / Basic pension",
                           onChanged: (value) {
-                            userInputs["basic_pay"] = value;
-                            print(" ");
+                            userInputs["basic_pay2"] = value;
                           },
                           onSubmitted: (_) => unfocusScope(),
                         ),
@@ -1118,8 +1077,7 @@ class _FormPageState extends State<FormPage> {
                           labelText: subHeading.opdTreatment,
                           maxLines: null,
                           onChanged: (value) {
-                            userInputs["opd_treatment"] = value;
-                            print(" ");
+                            userInputs["opd_treatment2"] = value;
                           },
                           onSubmitted: (_) => unfocusScope(),
                         ),
@@ -1136,8 +1094,7 @@ class _FormPageState extends State<FormPage> {
                           labelText: subHeading.indoorTreatment,
                           maxLines: null,
                           onChanged: (value) {
-                            userInputs["indoor_treatment"] = value;
-                            print(" ");
+                            userInputs["indoor_treatment2"] = value;
                           },
                           onSubmitted: (_) => unfocusScope(),
                         ),
@@ -1166,9 +1123,8 @@ class _FormPageState extends State<FormPage> {
                               if (picked != null)
                                 setState(() {
                                   fromDate = picked;
-                                  userInputs["admission"] =
+                                  userInputs["date_admission2"] =
                                       DateFormat('dd-MM-yyyy').format(picked);
-                                  print(" ");
                                 });
                             })),
                     Flexible(
@@ -1187,9 +1143,8 @@ class _FormPageState extends State<FormPage> {
                               if (picked != null)
                                 setState(() {
                                   toDate = picked;
-                                  userInputs["date_discharge"] =
+                                  userInputs["date_discharge2"] =
                                       DateFormat('dd-MM-yyyy').format(picked);
-                                  print(" ");
                                 });
                             })),
                   ],
@@ -1204,8 +1159,7 @@ class _FormPageState extends State<FormPage> {
                         child: FormFieldWidget(
                           labelText: "OPD Treatment",
                           onChanged: (value) {
-                            userInputs["amount_claimed_opd_treatment"] = value;
-                            print(" ");
+                            userInputs["amount_claimed_opd_treatment2"] = value;
                           },
                           onSubmitted: (_) => unfocusScope(),
                         ),
@@ -1216,9 +1170,8 @@ class _FormPageState extends State<FormPage> {
                         child: FormFieldWidget(
                           labelText: "Indoor Treatment",
                           onChanged: (value) {
-                            userInputs["amount_claimed_indoor_treatment"] =
+                            userInputs["amount_claimed_indoor_treatment2"] =
                                 value;
-                            print(" ");
                           },
                           // focusNode: placeNode,
                           // onSubmitted: (_) {
@@ -1240,8 +1193,7 @@ class _FormPageState extends State<FormPage> {
                           labelText: "Detail of referral",
                           maxLines: null,
                           onChanged: (value) {
-                            userInputs["details_of_referral"] = value;
-                            print(" ");
+                            userInputs["details_of_referral2"] = value;
                           },
                           onSubmitted: (_) => unfocusScope(),
                         ),
@@ -1260,8 +1212,7 @@ class _FormPageState extends State<FormPage> {
                           labelText: "Details of medical advance",
                           maxLines: null,
                           onChanged: (value) {
-                            userInputs["details_of_medical_advance"] = value;
-                            print(" ");
+                            userInputs["details_of_medical_advance2"] = value;
                           },
                           onSubmitted: (_) => unfocusScope(),
                         ),
@@ -1284,7 +1235,6 @@ class _FormPageState extends State<FormPage> {
                             labelText: "Name",
                             onChanged: (value) {
                               userInputs["name2"] = value;
-                              print(" ");
                             },
                             onSubmitted: (_) => unfocusScope(),
                           ),
@@ -1314,7 +1264,6 @@ class _FormPageState extends State<FormPage> {
                                       userInputs["dated2"] =
                                           DateFormat('dd-MM-yyyy')
                                               .format(picked);
-                                      print(" ");
                                     });
                                 })),
                       ],
