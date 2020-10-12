@@ -54,8 +54,6 @@ pdfTemplate(context, Map userInputs) async {
   final toDate2 = userInputs['to_date2'] ?? blank;
   final entitlement2 = userInputs['entitlement'] ?? blank;
 
-  final patientName = userInputs['patient_name2'] ?? blank;
-
   pdf.addPage(
     Page(
       theme: ThemeData(defaultTextStyle: TextStyle(fontSize: 11)),
