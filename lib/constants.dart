@@ -88,11 +88,12 @@ class SubHeading {
   String indoorTreatment = "Indoor treatment";
 }
 
-List<String> entitlement = ["Private", "Semi Private", "General"];
-List<String> status = ["Government Servant", "Member of Parliament"];
+List<String> entitlement = ["Select", "Private", "Semi Private", "General"];
+List<String> status = ["Select", "Government Servant", "Member of Parliament"];
 
-List<String> entitlement2 = ["Private", "Semi Private", "General"];
+List<String> entitlement2 = ["Select", "Private", "Semi Private", "General"];
 List<String> status2 = [
+  "Select",
   "Govt. Servant",
   "Pensioner",
   "Serving employee or pension of autonomous body",
@@ -101,3 +102,7 @@ List<String> status2 = [
   "Legal heir",
   "others"
 ];
+
+List<String> iRelation = ["Select", "husband", "wife", "son", "daughter"];
+List<String> iRelation2 = ["Select", "husband", "wife", "father", "mother"];
+List<String> iSlug = ["Select", "Shri", "Smt"];

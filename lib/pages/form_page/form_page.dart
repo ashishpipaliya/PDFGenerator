@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf_gen/constants.dart';
@@ -7,6 +9,7 @@ import 'package:pdf_gen/shared/color_palette.dart';
 import 'package:pdf_gen/utils/logger.dart';
 import 'package:pdf_gen/utils/ui_utils.dart';
 import 'package:intl/intl.dart';
+import 'package:pdf_gen/widgets/textfield_widget.dart';
 
 class FormPage extends StatefulWidget {
   @override
@@ -89,12 +92,16 @@ class _FormPageState extends State<FormPage> {
   // onChanged variables for Dropdowns
   String _entitlementSelected2 = entitlement2[0];
   String _statusSelected2 = status2[0];
+  String _iRelation = iRelation[0];
+  String _iRelation2 = iRelation2[0];
+  String _iSlug = iSlug[0];
 
   Map<String, String> userInputs = {};
 
   DateTime fromDate = DateTime.now();
   DateTime toDate = DateTime.now();
   DateTime dated = DateTime.now();
+  DateTime expiredOn = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -1289,6 +1296,429 @@ class _FormPageState extends State<FormPage> {
                 paragraphText(heading.obtainBreakupFor),
                 paragraphText(heading.draftAnnexure1),
                 paragraphText(heading.draftAnnexure2),
+
+                //Page 4
+
+                // normalTitleText(heading.draftAnnexure1),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     Flexible(
+                //       child: Container(
+                //         child: FormFieldWidget(
+                //           labelText: "Name",
+                //           onChanged: (value) {
+                //             userInputs["i_name"] = value;
+                //           },
+                //           onSubmitted: (_) => unfocusScope(),
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                // Row(
+                //   mainAxisSize: MainAxisSize.min,
+                //   children: [
+                //     Expanded(
+                //       child: Card(
+                //         elevation: 3.0,
+                //         child: DropdownButtonHideUnderline(
+                //           child: DropdownButton(
+                //             value: _iRelation,
+                //             items: iRelation.map((String dropdownItem) {
+                //               return DropdownMenuItem<String>(
+                //                 value: dropdownItem,
+                //                 child: Text(dropdownItem),
+                //               );
+                //             }).toList(),
+                //             onChanged: (String value) {
+                //               setState(() {
+                //                 this._iRelation = value;
+                //                 userInputs["i_relation"] = value;
+                //               });
+                //             },
+                //             dropdownColor: ColorPalette.superlightPurple,
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     Flexible(
+                //       child: Container(
+                //         child: FormFieldWidget(
+                //           labelText: "Parent Name",
+                //           onChanged: (value) {
+                //             userInputs["i_parent_name"] = value;
+                //           },
+                //           onSubmitted: (_) => unfocusScope(),
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     Flexible(
+                //       child: Container(
+                //         child: FormFieldWidget(
+                //           labelText: "Resident of",
+                //           onChanged: (value) {
+                //             userInputs["i_resident_of"] = value;
+                //           },
+                //           onSubmitted: (_) => unfocusScope(),
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                //
+                // normalTitleText(heading.draftAnnexure2),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     Flexible(
+                //       child: Container(
+                //         child: FormFieldWidget(
+                //           labelText: "Name",
+                //           onChanged: (value) {
+                //             userInputs["i_name"] = value;
+                //           },
+                //           onSubmitted: (_) => unfocusScope(),
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                // Row(
+                //   mainAxisSize: MainAxisSize.min,
+                //   children: [
+                //     Expanded(
+                //       child: Card(
+                //         elevation: 3.0,
+                //         child: DropdownButtonHideUnderline(
+                //           child: DropdownButton(
+                //             value: _iRelation2,
+                //             items: iRelation2.map((String dropdownItem) {
+                //               return DropdownMenuItem<String>(
+                //                 value: dropdownItem,
+                //                 child: Text(dropdownItem),
+                //               );
+                //             }).toList(),
+                //             onChanged: (String value) {
+                //               setState(() {
+                //                 this._iRelation2 = value;
+                //                 userInputs["i_relation2"] = value;
+                //               });
+                //             },
+                //             dropdownColor: ColorPalette.superlightPurple,
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     Flexible(
+                //       child: Container(
+                //         child: FormFieldWidget(
+                //           labelText: "Parent Name",
+                //           onChanged: (value) {
+                //             userInputs["i_parent_name"] = value;
+                //           },
+                //           onSubmitted: (_) => unfocusScope(),
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     Flexible(
+                //       child: Container(
+                //         child: FormFieldWidget(
+                //           labelText: "Resident of",
+                //           onChanged: (value) {
+                //             userInputs["i_resident_of"] = value;
+                //           },
+                //           onSubmitted: (_) => unfocusScope(),
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                // Row(
+                //   mainAxisSize: MainAxisSize.min,
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     Expanded(
+                //       child: Card(
+                //         elevation: 3.0,
+                //         child: DropdownButtonHideUnderline(
+                //           child: DropdownButton(
+                //             value: _iRelation2,
+                //             items: iRelation2.map((String dropdownItem) {
+                //               return DropdownMenuItem<String>(
+                //                 value: dropdownItem,
+                //                 child: Text(dropdownItem),
+                //               );
+                //             }).toList(),
+                //             onChanged: (String value) {
+                //               setState(() {
+                //                 this._iRelation2 = value;
+                //                 userInputs["i_relation2"] = value;
+                //               });
+                //             },
+                //             dropdownColor: ColorPalette.superlightPurple,
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                // Row(
+                //   mainAxisSize: MainAxisSize.min,
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     Expanded(
+                //       child: Card(
+                //         elevation: 3.0,
+                //         child: DropdownButtonHideUnderline(
+                //           child: DropdownButton(
+                //             value: _iSlug,
+                //             items: iSlug.map((String dropdownItem) {
+                //               return DropdownMenuItem<String>(
+                //                 value: dropdownItem,
+                //                 child: Text(dropdownItem),
+                //               );
+                //             }).toList(),
+                //             onChanged: (String value) {
+                //               setState(() {
+                //                 this._iSlug = value;
+                //                 userInputs["i_slug"] = value;
+                //               });
+                //             },
+                //             dropdownColor: ColorPalette.superlightPurple,
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                // Row(
+                //   children: [
+                //     Flexible(
+                //         child: ListTile(
+                //             title: Text(
+                //                 "${dated.day}-${dated.month}-${dated.year}"),
+                //             subtitle: Text("Expired on"),
+                //             trailing: Icon(Icons.calendar_today),
+                //             onTap: () async {
+                //               DateTime picked = await showDatePicker(
+                //                 context: context,
+                //                 initialDate: dated,
+                //                 firstDate: DateTime(DateTime.now().year - 50),
+                //                 lastDate: DateTime(DateTime.now().year + 10),
+                //               );
+                //               if (picked != null)
+                //                 setState(() {
+                //                   expiredOn = picked;
+                //                   userInputs["i_expired_on"] =
+                //                       DateFormat('dd-MM-yyyy').format(picked);
+                //                 });
+                //             })),
+                //   ],
+                // ),
+
+                normalTitleText(
+                    "Draft for Affidavit for Duplicate Claim Papers/bills on stamp Paper (Annexure —I)"),
+                Container(
+                  width: width,
+                  child: Wrap(
+                    direction: Axis.horizontal,
+                    alignment: WrapAlignment.start,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      Text("I, "),
+                      SimpleFormField(),
+                      DropdownButtonHideUnderline(
+                        child: DropdownButton(
+                          value: _iRelation,
+                          // icon: SizedBox.shrink(),
+                          items: iRelation.map((String dropdownItem) {
+                            return DropdownMenuItem<String>(
+                              value: dropdownItem,
+                              child: Text(dropdownItem),
+                            );
+                          }).toList(),
+                          onChanged: (String value) {
+                            setState(() {
+                              this._iRelation = value;
+                              userInputs["i_relation"] = value;
+                            });
+                          },
+                          dropdownColor: ColorPalette.superlightPurple,
+                        ),
+                      ),
+                      Text(" of "),
+                      SimpleFormField(),
+                      Text(" and resident of "),
+                      Container(width: 300, child: SimpleFormField()),
+                      Text(
+                          "lost/misplaced the original paper or the same are not traceable. I hereby give an undertaking that I have not received any payment against original bills/claim papers from any source and that if the original papers are traced I shall not stake claim against original bills in future and that in the event. If I receive any cheque against original bills in future I shall return the same to competent authority. "),
+
+                      // Expanded(child: null),
+                    ],
+                  ),
+                ),
+
+                normalTitleText(
+                    "Draft for Affidavit on Stamp Paper for claiming medical reimbursement ( Annexure-II)"),
+                Container(
+                  width: width,
+                  child: Wrap(
+                    direction: Axis.horizontal,
+                    alignment: WrapAlignment.start,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      Row(children: [
+                        Text("I, "),
+                        Expanded(child: SimpleFormField(hintText: "name")),
+                        DropdownButtonHideUnderline(
+                          child: DropdownButton(
+                            value: _iRelation,
+                            // icon: SizedBox.shrink(),
+                            items: iRelation.map((String dropdownItem) {
+                              return DropdownMenuItem<String>(
+                                value: dropdownItem,
+                                child: Text(dropdownItem),
+                              );
+                            }).toList(),
+                            onChanged: (String value) {
+                              setState(() {
+                                this._iRelation = value;
+                                userInputs["i_relation"] = value;
+                              });
+                            },
+                            dropdownColor: ColorPalette.superlightPurple,
+                          ),
+                        ),
+                      ]),
+                      Row(children: [
+                        Text("of Late"),
+                        Expanded(child: SimpleFormField())
+                      ]),
+                      Row(children: [
+                        Text("and resident of "),
+                        Expanded(child: SimpleFormField()),
+                      ]),
+                      Text(
+                          "hereby submit the medical claim papers pertaining to treatment of my "),
+                      Row(children: [
+                        DropdownButtonHideUnderline(
+                          child: DropdownButton(
+                            value: _iRelation2,
+                            // icon: SizedBox.shrink(),
+                            items: iRelation2.map((String dropdownItem) {
+                              return DropdownMenuItem<String>(
+                                value: dropdownItem,
+                                child: Text(dropdownItem),
+                              );
+                            }).toList(),
+                            onChanged: (String value) {
+                              setState(() {
+                                this._iRelation2 = value;
+                                userInputs["i_relation2"] = value;
+                              });
+                            },
+                            dropdownColor: ColorPalette.superlightPurple,
+                          ),
+                        ),
+                        Text("Late "),
+                        DropdownButtonHideUnderline(
+                          child: DropdownButton(
+                            value: _iSlug,
+                            // icon: SizedBox.shrink(),
+                            items: iSlug.map((String dropdownItem) {
+                              return DropdownMenuItem<String>(
+                                value: dropdownItem,
+                                child: Text(dropdownItem),
+                              );
+                            }).toList(),
+                            onChanged: (String value) {
+                              setState(() {
+                                this._iSlug = value;
+                                userInputs["i_slug"] = value;
+                              });
+                            },
+                            dropdownColor: ColorPalette.superlightPurple,
+                          ),
+                        ),
+                        Expanded(child: SimpleFormField(hintText: "Name"))
+                      ]),
+                      Row(
+                        children: [
+                          Text("who has expired on "),
+                          Flexible(
+                              child: ListTile(
+                                  title: Text(
+                                      "${dated.day}-${dated.month}-${dated.year}"),
+                                  subtitle: Text("Expired on"),
+                                  trailing: Icon(Icons.calendar_today),
+                                  onTap: () async {
+                                    DateTime picked = await showDatePicker(
+                                      context: context,
+                                      initialDate: dated,
+                                      firstDate:
+                                          DateTime(DateTime.now().year - 50),
+                                      lastDate:
+                                          DateTime(DateTime.now().year + 10),
+                                    );
+                                    if (picked != null)
+                                      setState(() {
+                                        expiredOn = picked;
+                                        userInputs["i_expired_on"] =
+                                            DateFormat('dd-MM-yyyy')
+                                                .format(picked);
+                                      });
+                                  }))
+                        ],
+                      ),
+                      Row(children: [
+                        Text("Late "),
+                        DropdownButtonHideUnderline(
+                          child: DropdownButton(
+                            value: _iSlug,
+                            // icon: SizedBox.shrink(),
+                            items: iSlug.map((String dropdownItem) {
+                              return DropdownMenuItem<String>(
+                                value: dropdownItem,
+                                child: Text(dropdownItem),
+                              );
+                            }).toList(),
+                            onChanged: (String value) {
+                              setState(() {
+                                this._iSlug = value;
+                                userInputs["i_slug"] = value;
+                              });
+                            },
+                            dropdownColor: ColorPalette.superlightPurple,
+                          ),
+                        ),
+                        Expanded(child: SimpleFormField(hintText: "Name")),
+                      ]),
+                      Text(
+                          "has left behind the following other legal heirs none of whom have any objection if the entire amount reimbursable is paid to me. "),
+                    ],
+                  ),
+                ),
 
                 //Submit button
                 Row(

@@ -86,9 +86,10 @@ pdfTemplate(context, Map userInputs) async {
   //Page 4
   final iName = userInputs['i_name'] ?? blank;
   final iRelation = userInputs['i_relation'] ?? blank;
+  final iRelation2 = userInputs['i_relation2'] ?? blank;
   final iParentName = userInputs['i_parent_name'] ?? blank;
   final iResidentOf = userInputs['i_resident_of'] ?? blank;
-  final iDeathDate = userInputs['i_death_date'] ?? blank;
+  final iDeathDate = userInputs['i_expired_on'] ?? blank;
   final iSlug = userInputs['i_slug'] ?? blank;
 
   pdf.addPage(
