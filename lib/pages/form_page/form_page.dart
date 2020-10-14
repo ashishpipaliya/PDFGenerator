@@ -1546,31 +1546,57 @@ class _FormPageState extends State<FormPage> {
                     alignment: WrapAlignment.start,
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
-                      Text("I, "),
-                      SimpleFormField(),
-                      DropdownButtonHideUnderline(
-                        child: DropdownButton(
-                          value: _iRelation,
-                          // icon: SizedBox.shrink(),
-                          items: iRelation.map((String dropdownItem) {
-                            return DropdownMenuItem<String>(
-                              value: dropdownItem,
-                              child: Text(dropdownItem),
-                            );
-                          }).toList(),
-                          onChanged: (String value) {
-                            setState(() {
-                              this._iRelation = value;
-                              userInputs["i_relation"] = value;
-                            });
+                      Row(children: [
+                        Text("I, "),
+                        Expanded(
+                            child: SimpleFormField(
+                          onChanged: (value) {
+                            userInputs["i_name"] = value;
                           },
-                          dropdownColor: ColorPalette.superlightPurple,
+                          onSubmitted: (_) => unfocusScope(),
+                        ))
+                      ]),
+                      Row(children: [
+                        DropdownButtonHideUnderline(
+                          child: DropdownButton(
+                            value: _iRelation,
+                            // icon: SizedBox.shrink(),
+                            items: iRelation.map((String dropdownItem) {
+                              return DropdownMenuItem<String>(
+                                value: dropdownItem,
+                                child: Text(dropdownItem),
+                              );
+                            }).toList(),
+                            onChanged: (String value) {
+                              setState(() {
+                                this._iRelation = value;
+                                userInputs["i_relation"] = value;
+                              });
+                            },
+                            dropdownColor: ColorPalette.superlightPurple,
+                          ),
                         ),
-                      ),
-                      Text(" of "),
-                      SimpleFormField(),
-                      Text(" and resident of "),
-                      Container(width: 300, child: SimpleFormField()),
+                        Text(" of "),
+                        Expanded(
+                            child: SimpleFormField(
+                          hintText: "patient name",
+                          onChanged: (value) {
+                            userInputs["i_patient_name"] = value;
+                          },
+                          onSubmitted: (_) => unfocusScope(),
+                        ))
+                      ]),
+                      Row(children: [
+                        Text(" and resident of "),
+                        Expanded(
+                            child: SimpleFormField(
+                          hintText: "residence",
+                          onChanged: (value) {
+                            userInputs["i_resident_of"] = value;
+                          },
+                          onSubmitted: (_) => unfocusScope(),
+                        ))
+                      ]),
                       Text(
                           "lost/misplaced the original paper or the same are not traceable. I hereby give an undertaking that I have not received any payment against original bills/claim papers from any source and that if the original papers are traced I shall not stake claim against original bills in future and that in the event. If I receive any cheque against original bills in future I shall return the same to competent authority. "),
 
@@ -1613,11 +1639,25 @@ class _FormPageState extends State<FormPage> {
                       ]),
                       Row(children: [
                         Text("of Late"),
-                        Expanded(child: SimpleFormField())
+                        Expanded(
+                            child: SimpleFormField(
+                          hintText: "name",
+                          onChanged: (value) {
+                            userInputs["i_patient_name"] = value;
+                          },
+                          onSubmitted: (_) => unfocusScope(),
+                        ))
                       ]),
                       Row(children: [
                         Text("and resident of "),
-                        Expanded(child: SimpleFormField()),
+                        Expanded(
+                            child: SimpleFormField(
+                          hintText: "residence",
+                          onChanged: (value) {
+                            userInputs["i_resident_of"] = value;
+                          },
+                          onSubmitted: (_) => unfocusScope(),
+                        )),
                       ]),
                       Text(
                           "hereby submit the medical claim papers pertaining to treatment of my "),
@@ -1661,7 +1701,14 @@ class _FormPageState extends State<FormPage> {
                             dropdownColor: ColorPalette.superlightPurple,
                           ),
                         ),
-                        Expanded(child: SimpleFormField(hintText: "Name"))
+                        Expanded(
+                            child: SimpleFormField(
+                          hintText: "Name",
+                          onChanged: (value) {
+                            userInputs["i_patient_name"] = value;
+                          },
+                          onSubmitted: (_) => unfocusScope(),
+                        ))
                       ]),
                       Row(
                         children: [
@@ -1712,10 +1759,110 @@ class _FormPageState extends State<FormPage> {
                             dropdownColor: ColorPalette.superlightPurple,
                           ),
                         ),
-                        Expanded(child: SimpleFormField(hintText: "Name")),
+                        Expanded(
+                            child: SimpleFormField(
+                          hintText: "Name",
+                          onChanged: (value) {
+                            userInputs["i_patient_name"] = value;
+                          },
+                          onSubmitted: (_) => unfocusScope(),
+                        )),
                       ]),
                       Text(
                           "has left behind the following other legal heirs none of whom have any objection if the entire amount reimbursable is paid to me. "),
+                    ],
+                  ),
+                ),
+
+                normalTitleText(
+                    "Draft for No Objection Certificate on Stamp Paper."),
+                Container(
+                  width: width,
+                  child: Wrap(
+                    direction: Axis.horizontal,
+                    alignment: WrapAlignment.start,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      Row(children: [
+                        Text("We, "),
+                        Expanded(child: SimpleFormField(hintText: "name")),
+                        Text("S/o D/o Late Shri"),
+                        Expanded(child: SimpleFormField(hintText: "name")),
+                      ]),
+                      Row(children: [
+                        Expanded(child: SimpleFormField(hintText: "name")),
+                        Text("S/o D/o Late Shri"),
+                        Expanded(child: SimpleFormField(hintText: "name")),
+                      ]),
+                      Row(children: [
+                        Expanded(child: SimpleFormField(hintText: "name")),
+                        Text("S/o D/o Late Shri"),
+                        Expanded(child: SimpleFormField(hintText: "name")),
+                      ]),
+                      Row(children: [
+                        Expanded(child: SimpleFormField(hintText: "name")),
+                        Text("S/o D/o Late Shri"),
+                        Expanded(child: SimpleFormField(hintText: "name")),
+                      ]),
+                      Row(children: [
+                        Text("being the legal heirs of Late "),
+                        Expanded(
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton(
+                              value: _iSlug,
+                              // icon: SizedBox.shrink(),
+                              items: iSlug.map((String dropdownItem) {
+                                return DropdownMenuItem<String>(
+                                  value: dropdownItem,
+                                  child: Text(dropdownItem),
+                                );
+                              }).toList(),
+                              onChanged: (String value) {
+                                setState(() {
+                                  this._iSlug = value;
+                                  userInputs["i_slug"] = value;
+                                });
+                              },
+                              dropdownColor: ColorPalette.superlightPurple,
+                            ),
+                          ),
+                        ),
+                      ]),
+                      Row(children: [
+                        Expanded(
+                            child: SimpleFormField(
+                          hintText: "name ",
+                        )),
+                        Text("have no objection if")
+                      ]),
+                      Text(
+                          "the entire amount reimbursable pertaining to the treatment of late "),
+                      Row(children: [
+                        DropdownButtonHideUnderline(
+                          child: DropdownButton(
+                            value: _iSlug,
+                            // icon: SizedBox.shrink(),
+                            items: iSlug.map((String dropdownItem) {
+                              return DropdownMenuItem<String>(
+                                value: dropdownItem,
+                                child: Text(dropdownItem),
+                              );
+                            }).toList(),
+                            onChanged: (String value) {
+                              setState(() {
+                                this._iSlug = value;
+                                userInputs["i_slug"] = value;
+                              });
+                            },
+                            dropdownColor: ColorPalette.superlightPurple,
+                          ),
+                        ),
+                        Expanded(child: SimpleFormField(hintText: "name"))
+                      ]),
+                      Row(children: [
+                        Text("is paid to "),
+                        Expanded(child: SimpleFormField(hintText: "name"))
+                      ]),
                     ],
                   ),
                 ),
