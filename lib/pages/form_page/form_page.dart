@@ -1,7 +1,8 @@
-import 'dart:ui';
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_signature_pad/flutter_signature_pad.dart';
 import 'package:pdf_gen/constants.dart';
 import 'package:pdf_gen/pages/form_page/widgets.dart';
 import 'package:pdf_gen/pages/pdf/pdf_templetate.dart';
@@ -9,7 +10,7 @@ import 'package:pdf_gen/shared/color_palette.dart';
 import 'package:pdf_gen/utils/logger.dart';
 import 'package:pdf_gen/utils/ui_utils.dart';
 import 'package:intl/intl.dart';
-import 'package:pdf_gen/widgets/textfield_widget.dart';
+import 'dart:ui' as ui;
 
 class FormPage extends StatefulWidget {
   @override
@@ -17,53 +18,6 @@ class FormPage extends StatefulWidget {
 }
 
 class _FormPageState extends State<FormPage> {
-  FocusNode tokenNumberNode;
-  FocusNode placeNode;
-  FocusNode fullNameNode;
-  FocusNode numberOfOriginalBillsNode;
-  FocusNode datedNode;
-  FocusNode telephoneNode;
-  FocusNode emailNode;
-  FocusNode bankNameNode;
-  FocusNode branchNode;
-  FocusNode accountNumberNode;
-  FocusNode micrCodeNode;
-  FocusNode telephoneOfBankBranchNode;
-
-  @override
-  void initState() {
-    super.initState();
-
-    tokenNumberNode = FocusNode();
-    placeNode = FocusNode();
-    fullNameNode = FocusNode();
-    numberOfOriginalBillsNode = FocusNode();
-    datedNode = FocusNode();
-    telephoneNode = FocusNode();
-    emailNode = FocusNode();
-    bankNameNode = FocusNode();
-    branchNode = FocusNode();
-    accountNumberNode = FocusNode();
-    micrCodeNode = FocusNode();
-    telephoneOfBankBranchNode = FocusNode();
-  }
-
-  @override
-  void dispose() {
-    tokenNumberNode.dispose();
-    placeNode.dispose();
-    numberOfOriginalBillsNode.dispose();
-    datedNode.dispose();
-    telephoneNode.dispose();
-    emailNode.dispose();
-    bankNameNode.dispose();
-    branchNode.dispose();
-    accountNumberNode.dispose();
-    micrCodeNode.dispose();
-    telephoneOfBankBranchNode.dispose();
-    super.dispose();
-  }
-
   MegaHeading megaHeading = MegaHeading();
   Heading heading = Heading();
   SubHeading subHeading = SubHeading();
@@ -103,13 +57,15 @@ class _FormPageState extends State<FormPage> {
   DateTime dated = DateTime.now();
   DateTime expiredOn = DateTime.now();
 
+  static final _signatureKey = GlobalKey<SignatureState>();
+
   @override
   Widget build(BuildContext context) {
     final height = UIUtils().size(context).height;
     final width = UIUtils().size(context).width;
 
     return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
+      onTap: unfocusScope,
       child: Scaffold(
         appBar: AppBar(
           title: Text("Fill the form"),
@@ -123,6 +79,7 @@ class _FormPageState extends State<FormPage> {
             child: Form(
                 child: Column(
               children: [
+                // Page 1
                 titleText(megaHeading.megaTitle1),
                 normalTitleText(heading.tokenAndPlace),
                 Row(
@@ -152,7 +109,6 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ],
                 ),
-
                 normalTitleText(heading.validityOfcghsCard),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -164,6 +120,7 @@ class _FormPageState extends State<FormPage> {
                             subtitle: Text("From"),
                             trailing: Icon(Icons.calendar_today),
                             onTap: () async {
+                              unfocusScope();
                               DateTime picked = await showDatePicker(
                                 context: context,
                                 initialDate: fromDate,
@@ -184,6 +141,7 @@ class _FormPageState extends State<FormPage> {
                             subtitle: Text("To"),
                             trailing: Icon(Icons.calendar_today),
                             onTap: () async {
+                              unfocusScope();
                               DateTime picked = await showDatePicker(
                                 context: context,
                                 initialDate: toDate,
@@ -199,7 +157,6 @@ class _FormPageState extends State<FormPage> {
                             })),
                   ],
                 ),
-
                 normalTitleText(heading.entitlement),
                 Row(
                   mainAxisSize: MainAxisSize.min,
@@ -216,6 +173,7 @@ class _FormPageState extends State<FormPage> {
                                 child: Text(item),
                               );
                             }).toList(),
+                            onTap: () => unfocusScope(),
                             onChanged: (String value) {
                               setState(() {
                                 this._entitlementSelected = value;
@@ -229,7 +187,6 @@ class _FormPageState extends State<FormPage> {
                     )
                   ],
                 ),
-
                 normalTitleText(heading.fullName),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -247,7 +204,6 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ],
                 ),
-
                 normalTitleText(heading.status),
                 Row(
                   mainAxisSize: MainAxisSize.min,
@@ -264,6 +220,7 @@ class _FormPageState extends State<FormPage> {
                                 child: Text(dropdownItem),
                               );
                             }).toList(),
+                            onTap: () => unfocusScope(),
                             onChanged: (String value) {
                               setState(() {
                                 this._statusSelected = value;
@@ -277,7 +234,6 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ],
                 ),
-
                 normalTitleText(heading.documentsAreSubmitted),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -420,20 +376,17 @@ class _FormPageState extends State<FormPage> {
                         Flexible(
                           child: FormFieldWidget(
                             labelText: subHeading.numberOfOriginalBills,
+                            keyboardType: TextInputType.number,
                             onChanged: (value) {
                               userInputs["number_of_original_bills"] = value;
                             },
-                            focusNode: numberOfOriginalBillsNode,
-                            onSubmitted: (_) {
-                              FocusScope.of(context).requestFocus(datedNode);
-                            },
+                            onSubmitted: (_) => unfocusScope(),
                           ),
                         ),
                       ],
                     ),
                   ],
                 ),
-
                 smallTitleText(subHeading.originalpapersLost),
                 Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -478,7 +431,6 @@ class _FormPageState extends State<FormPage> {
                         }),
                       ),
                     ]),
-
                 smallTitleText(subHeading.inCaseOfDeath),
                 Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -490,13 +442,15 @@ class _FormPageState extends State<FormPage> {
                             (BuildContext context, StateSetter setState) {
                           return CheckboxListTile(
                             value: _affidavitOnStampPaper2,
-                            title: Text(subHeading.affidavitOnStampPaper2),
+                            title: Text(
+                                subHeading.affidavitOnStampPaperByClaimant),
                             checkColor: ColorPalette.darkPurple,
                             activeColor: ColorPalette.white,
                             onChanged: (value) {
                               setState(() {
                                 _affidavitOnStampPaper2 = value;
-                                userInputs["affidavit_on_stamppaper2"] =
+                                userInputs[
+                                        "affidavit_on_stamppaper_by_claimant"] =
                                     value ? "Yes" : "No";
                               });
                             },
@@ -542,7 +496,6 @@ class _FormPageState extends State<FormPage> {
                         }),
                       ),
                     ]),
-
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -552,6 +505,7 @@ class _FormPageState extends State<FormPage> {
                         Flexible(
                           child: FormFieldWidget(
                             labelText: "Telephone No.",
+                            keyboardType: TextInputType.phone,
                             onChanged: (value) {
                               userInputs["telephone_no"] = value;
                             },
@@ -565,13 +519,11 @@ class _FormPageState extends State<FormPage> {
                         Flexible(
                           child: FormFieldWidget(
                             labelText: "E-mail Address",
+                            keyboardType: TextInputType.emailAddress,
                             onChanged: (value) {
                               userInputs["email_address"] = value;
                             },
-                            focusNode: emailNode,
-                            onSubmitted: (_) {
-                              FocusScope.of(context).requestFocus(bankNameNode);
-                            },
+                            onSubmitted: (_) => unfocusScope(),
                           ),
                         ),
                       ],
@@ -585,6 +537,7 @@ class _FormPageState extends State<FormPage> {
                                 subtitle: Text("dated"),
                                 trailing: Icon(Icons.calendar_today),
                                 onTap: () async {
+                                  unfocusScope();
                                   DateTime picked = await showDatePicker(
                                     context: context,
                                     initialDate: dated,
@@ -603,21 +556,51 @@ class _FormPageState extends State<FormPage> {
                                 })),
                       ],
                     ),
+                    smallTitleText("Signature"),
                     Container(
-                      height: 200,
-                      width: width,
-                      color: ColorPalette.cream,
-                      child: Center(
-                        //TODO Signature Pad
-                        child: Center(
-                          child:
-                              Text("Signature of CGHS card holder Logic Here"),
-                        ),
-                      ),
-                    ),
+                        height: 200,
+                        width: width,
+                        color: ColorPalette.cream,
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: IconButton(
+                                  icon: Icon(Icons.check),
+                                  onPressed: () async {
+                                    final image = await _signatureKey
+                                        .currentState
+                                        .getData();
+
+                                    var data = await image.toByteData(
+                                        format: ui.ImageByteFormat.png);
+                                    final encoded = base64
+                                        .encode(data.buffer.asUint8List());
+
+                                    print(encoded);
+                                    userInputs["signature"] = encoded;
+                                  }),
+                            ),
+                            Positioned(
+                              top: 0,
+                              right: 0,
+                              child: IconButton(
+                                  icon: Icon(Icons.close),
+                                  onPressed: () {
+                                    _signatureKey.currentState.clear();
+                                  }),
+                            ),
+                            Signature(
+                              color: Colors.black,
+                              strokeWidth: 2.0,
+                              onSign: () {},
+                              key: _signatureKey,
+                            ),
+                          ],
+                        )),
                   ],
                 ),
-
                 smallTitleText(subHeading.bankDetails),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -654,13 +637,11 @@ class _FormPageState extends State<FormPage> {
                         Flexible(
                           child: FormFieldWidget(
                             labelText: subHeading.accountNumber,
+                            keyboardType: TextInputType.number,
                             onChanged: (value) {
                               userInputs["account_number"] = value;
                             },
-                            focusNode: accountNumberNode,
-                            onSubmitted: (_) {
-                              FocusScope.of(context).requestFocus(micrCodeNode);
-                            },
+                            onSubmitted: (_) => unfocusScope(),
                           ),
                         ),
                       ],
@@ -670,14 +651,11 @@ class _FormPageState extends State<FormPage> {
                         Flexible(
                           child: FormFieldWidget(
                             labelText: subHeading.micrCode,
+                            keyboardType: TextInputType.number,
                             onChanged: (value) {
                               userInputs["micr_code"] = value;
                             },
-                            focusNode: micrCodeNode,
-                            onSubmitted: (_) {
-                              FocusScope.of(context)
-                                  .requestFocus(telephoneOfBankBranchNode);
-                            },
+                            onSubmitted: (_) => unfocusScope(),
                           ),
                         ),
                       ],
@@ -687,13 +665,11 @@ class _FormPageState extends State<FormPage> {
                         Flexible(
                           child: FormFieldWidget(
                             labelText: subHeading.telephoneOfBankBranch,
+                            keyboardType: TextInputType.phone,
                             onChanged: (value) {
                               userInputs["telephone_of_bankbranch"] = value;
                             },
-                            focusNode: telephoneOfBankBranchNode,
-                            onSubmitted: (_) {
-                              FocusScope.of(context).unfocus();
-                            },
+                            onSubmitted: (_) => unfocusScope(),
                           ),
                         ),
                       ],
@@ -703,10 +679,9 @@ class _FormPageState extends State<FormPage> {
 
                 SizedBox(height: 50),
 
-                //  Page 2
+                // Page 2
                 titleText(megaHeading.megaTitle2),
                 smallTitleText(heading.toBeFilled),
-
                 normalTitleText(heading.computerNo),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -724,134 +699,6 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ],
                 ),
-
-                normalTitleText(heading.tokenAndPlace2),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      child: Container(
-                        child: FormFieldWidget(
-                          labelText: "Token No.",
-                          onChanged: (value) {
-                            userInputs["token_no2"] = value;
-                          },
-                          onSubmitted: (_) => unfocusScope(),
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      child: Container(
-                        child: FormFieldWidget(
-                          labelText: "Place",
-                          onChanged: (value) {
-                            userInputs["place2"] = value;
-                          },
-                          // focusNode: placeNode,
-                          // onSubmitted: (_) {
-                          //   FocusScope.of(context).unfocus();
-                          // },
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-
-                normalTitleText(heading.validityOfcghsCard),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Flexible(
-                        child: ListTile(
-                            title: Text(
-                                "${fromDate.day}-${fromDate.month}-${fromDate.year}"),
-                            subtitle: Text("From"),
-                            trailing: Icon(Icons.calendar_today),
-                            onTap: () async {
-                              DateTime picked = await showDatePicker(
-                                context: context,
-                                initialDate: fromDate,
-                                firstDate: DateTime(DateTime.now().year - 10),
-                                lastDate: DateTime(DateTime.now().year + 10),
-                              );
-                              if (picked != null)
-                                setState(() {
-                                  fromDate = picked;
-                                  userInputs["from_date2"] =
-                                      DateFormat('dd-MM-yyyy').format(picked);
-                                });
-                            })),
-                    Flexible(
-                        child: ListTile(
-                            title: Text(
-                                "${toDate.day}-${toDate.month}-${toDate.year}"),
-                            subtitle: Text("To"),
-                            trailing: Icon(Icons.calendar_today),
-                            onTap: () async {
-                              DateTime picked = await showDatePicker(
-                                context: context,
-                                initialDate: toDate,
-                                firstDate: DateTime(DateTime.now().year - 10),
-                                lastDate: DateTime(DateTime.now().year + 10),
-                              );
-                              if (picked != null)
-                                setState(() {
-                                  toDate = picked;
-                                  userInputs["to_date2"] =
-                                      DateFormat('dd-MM-yyyy').format(picked);
-                                });
-                            })),
-                  ],
-                ),
-
-                normalTitleText(heading.entitlement2),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Expanded(
-                      child: DropdownButtonHideUnderline(
-                        child: Card(
-                          elevation: 3.0,
-                          child: DropdownButton(
-                            value: _entitlementSelected2,
-                            items: entitlement2.map((String item) {
-                              return DropdownMenuItem<String>(
-                                value: item,
-                                child: Text(item),
-                              );
-                            }).toList(),
-                            onChanged: (String value) {
-                              setState(() {
-                                this._entitlementSelected2 = value;
-                                userInputs["entitlement2"] = value;
-                              });
-                            },
-                            dropdownColor: ColorPalette.superlightPurple,
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-
-                normalTitleText(heading.fullName2),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      child: Container(
-                        child: FormFieldWidget(
-                          labelText: "Full name",
-                          onChanged: (value) {
-                            userInputs["full_name2"] = value;
-                          },
-                          onSubmitted: (_) => unfocusScope(),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-
                 normalTitleText(heading.fullAddress),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -870,126 +717,6 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ],
                 ),
-
-                normalTitleText(heading.telephone),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      child: FormFieldWidget(
-                        labelText: "Telephone No.",
-                        onChanged: (value) {
-                          userInputs["telephone_no2"] = value;
-                        },
-                        onSubmitted: (_) => unfocusScope(),
-                      ),
-                    ),
-                  ],
-                ),
-
-                normalTitleText(heading.emailAddress),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      child: FormFieldWidget(
-                        labelText: "E-mail Address",
-                        onChanged: (value) {
-                          userInputs["email_address2"] = value;
-                        },
-                        onSubmitted: (_) => unfocusScope(),
-                      ),
-                    ),
-                  ],
-                ),
-
-                normalTitleText(heading.bankDetails),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Row(
-                      children: [
-                        Flexible(
-                          child: FormFieldWidget(
-                            labelText: subHeading.bankName,
-                            onChanged: (value) {
-                              userInputs["bank_name2"] = value;
-                            },
-                            onSubmitted: (_) => unfocusScope(),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Flexible(
-                          child: FormFieldWidget(
-                            labelText: subHeading.bankBranch,
-                            onChanged: (value) {
-                              userInputs["bank_branch2"] = value;
-                            },
-                            // focusNode: branchNode,
-                            // onSubmitted: (_) {
-                            //   FocusScope.of(context)
-                            //       .requestFocus(accountNumberNode);
-                            // },
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Flexible(
-                          child: FormFieldWidget(
-                            labelText: subHeading.accountNumber,
-                            onChanged: (value) {
-                              userInputs["account_number2"] = value;
-                            },
-                            // focusNode: accountNumberNode,
-                            // onSubmitted: (_) {
-                            //   FocusScope.of(context).requestFocus(micrCodeNode);
-                            // },
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Flexible(
-                          child: FormFieldWidget(
-                            labelText: subHeading.micrCode,
-                            onChanged: (value) {
-                              userInputs["micr_code2"] = value;
-                            },
-                            // focusNode: micrCodeNode,
-                            // onSubmitted: (_) {
-                            //   FocusScope.of(context)
-                            //       .requestFocus(telephoneOfBankBranchNode);
-                            // },
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Flexible(
-                          child: FormFieldWidget(
-                            labelText: subHeading.telephoneOfBankBranch,
-                            onChanged: (value) {
-                              userInputs["telephone_of_bankbranch2"] = value;
-                            },
-                            // focusNode: telephoneOfBankBranchNode,
-                            // onSubmitted: (_) {
-                            //   FocusScope.of(context).unfocus();
-                            // },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-
                 normalTitleText(heading.patientNameAndRelationship),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1014,16 +741,12 @@ class _FormPageState extends State<FormPage> {
                           onChanged: (value) {
                             userInputs["relationship2"] = value;
                           },
-                          // focusNode: placeNode,
-                          // onSubmitted: (_) {
-                          //   FocusScope.of(context).unfocus();
-                          // },
+                          onSubmitted: unfocusScope(),
                         ),
                       ),
                     ),
                   ],
                 ),
-
                 normalTitleText(heading.status2),
                 Row(
                   children: [
@@ -1041,6 +764,7 @@ class _FormPageState extends State<FormPage> {
                                   child: Text(item),
                                 );
                               }).toList(),
+                              onTap: () => unfocusScope(),
                               onChanged: (String value) {
                                 setState(() {
                                   this._statusSelected2 = value;
@@ -1055,7 +779,6 @@ class _FormPageState extends State<FormPage> {
                     )
                   ],
                 ),
-
                 normalTitleText(heading.basicPay),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1064,6 +787,7 @@ class _FormPageState extends State<FormPage> {
                       child: Container(
                         child: FormFieldWidget(
                           labelText: "Basic pay / Basic pension",
+                          keyboardType: TextInputType.number,
                           onChanged: (value) {
                             userInputs["basic_pay2"] = value;
                           },
@@ -1073,7 +797,6 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ],
                 ),
-
                 normalTitleText(heading.hospitalName),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1109,7 +832,6 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ],
                 ),
-
                 normalTitleText(heading.admitAndDischargeDate),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -1121,6 +843,7 @@ class _FormPageState extends State<FormPage> {
                             subtitle: Text("admission"),
                             trailing: Icon(Icons.calendar_today),
                             onTap: () async {
+                              unfocusScope();
                               DateTime picked = await showDatePicker(
                                 context: context,
                                 initialDate: fromDate,
@@ -1141,6 +864,7 @@ class _FormPageState extends State<FormPage> {
                             subtitle: Text("discharge"),
                             trailing: Icon(Icons.calendar_today),
                             onTap: () async {
+                              unfocusScope();
                               DateTime picked = await showDatePicker(
                                 context: context,
                                 initialDate: toDate,
@@ -1156,7 +880,6 @@ class _FormPageState extends State<FormPage> {
                             })),
                   ],
                 ),
-
                 normalTitleText(heading.totalAmountClaimed),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1165,6 +888,7 @@ class _FormPageState extends State<FormPage> {
                       child: Container(
                         child: FormFieldWidget(
                           labelText: "OPD Treatment",
+                          keyboardType: TextInputType.number,
                           onChanged: (value) {
                             userInputs["amount_claimed_opd_treatment2"] = value;
                           },
@@ -1176,20 +900,17 @@ class _FormPageState extends State<FormPage> {
                       child: Container(
                         child: FormFieldWidget(
                           labelText: "Indoor Treatment",
+                          keyboardType: TextInputType.number,
                           onChanged: (value) {
                             userInputs["amount_claimed_indoor_treatment2"] =
                                 value;
                           },
-                          // focusNode: placeNode,
-                          // onSubmitted: (_) {
-                          //   FocusScope.of(context).unfocus();
-                          // },
+                          onSubmitted: unfocusScope(),
                         ),
                       ),
                     ),
                   ],
                 ),
-
                 normalTitleText(heading.referralDetails),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1208,7 +929,6 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ],
                 ),
-
                 normalTitleText(heading.medicalAdvance),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1228,67 +948,11 @@ class _FormPageState extends State<FormPage> {
                   ],
                 ),
 
-                //Page 3
+                SizedBox(height: 50),
+
+                // Page 3
                 titleText("Declaration"),
                 paragraphText(heading.declarationPara),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Row(
-                      children: [
-                        Flexible(
-                          child: FormFieldWidget(
-                            labelText: "Name",
-                            onChanged: (value) {
-                              userInputs["name2"] = value;
-                            },
-                            onSubmitted: (_) => unfocusScope(),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Flexible(
-                            child: ListTile(
-                                title: Text(
-                                    "${dated.day}-${dated.month}-${dated.year}"),
-                                subtitle: Text("dated"),
-                                trailing: Icon(Icons.calendar_today),
-                                onTap: () async {
-                                  DateTime picked = await showDatePicker(
-                                    context: context,
-                                    initialDate: dated,
-                                    firstDate:
-                                        DateTime(DateTime.now().year - 10),
-                                    lastDate:
-                                        DateTime(DateTime.now().year + 10),
-                                  );
-                                  if (picked != null)
-                                    setState(() {
-                                      dated = picked;
-                                      userInputs["dated2"] =
-                                          DateFormat('dd-MM-yyyy')
-                                              .format(picked);
-                                    });
-                                })),
-                      ],
-                    ),
-                    Container(
-                      height: 200,
-                      width: width,
-                      color: ColorPalette.cream,
-                      child: Center(
-                        //TODO Signature Pad
-                        child: Center(
-                          child: Text("Signature of Member"),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-
                 smallTitleText("Note :"),
                 paragraphText(heading.misuseOfFacilities),
                 smallTitleText("INFORMATION"),
@@ -1297,247 +961,10 @@ class _FormPageState extends State<FormPage> {
                 paragraphText(heading.draftAnnexure1),
                 paragraphText(heading.draftAnnexure2),
 
-                //Page 4
+                SizedBox(height: 50),
 
-                // normalTitleText(heading.draftAnnexure1),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Flexible(
-                //       child: Container(
-                //         child: FormFieldWidget(
-                //           labelText: "Name",
-                //           onChanged: (value) {
-                //             userInputs["i_name"] = value;
-                //           },
-                //           onSubmitted: (_) => unfocusScope(),
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // Row(
-                //   mainAxisSize: MainAxisSize.min,
-                //   children: [
-                //     Expanded(
-                //       child: Card(
-                //         elevation: 3.0,
-                //         child: DropdownButtonHideUnderline(
-                //           child: DropdownButton(
-                //             value: _iRelation,
-                //             items: iRelation.map((String dropdownItem) {
-                //               return DropdownMenuItem<String>(
-                //                 value: dropdownItem,
-                //                 child: Text(dropdownItem),
-                //               );
-                //             }).toList(),
-                //             onChanged: (String value) {
-                //               setState(() {
-                //                 this._iRelation = value;
-                //                 userInputs["i_relation"] = value;
-                //               });
-                //             },
-                //             dropdownColor: ColorPalette.superlightPurple,
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Flexible(
-                //       child: Container(
-                //         child: FormFieldWidget(
-                //           labelText: "Parent Name",
-                //           onChanged: (value) {
-                //             userInputs["i_parent_name"] = value;
-                //           },
-                //           onSubmitted: (_) => unfocusScope(),
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Flexible(
-                //       child: Container(
-                //         child: FormFieldWidget(
-                //           labelText: "Resident of",
-                //           onChanged: (value) {
-                //             userInputs["i_resident_of"] = value;
-                //           },
-                //           onSubmitted: (_) => unfocusScope(),
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                //
-                // normalTitleText(heading.draftAnnexure2),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Flexible(
-                //       child: Container(
-                //         child: FormFieldWidget(
-                //           labelText: "Name",
-                //           onChanged: (value) {
-                //             userInputs["i_name"] = value;
-                //           },
-                //           onSubmitted: (_) => unfocusScope(),
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // Row(
-                //   mainAxisSize: MainAxisSize.min,
-                //   children: [
-                //     Expanded(
-                //       child: Card(
-                //         elevation: 3.0,
-                //         child: DropdownButtonHideUnderline(
-                //           child: DropdownButton(
-                //             value: _iRelation2,
-                //             items: iRelation2.map((String dropdownItem) {
-                //               return DropdownMenuItem<String>(
-                //                 value: dropdownItem,
-                //                 child: Text(dropdownItem),
-                //               );
-                //             }).toList(),
-                //             onChanged: (String value) {
-                //               setState(() {
-                //                 this._iRelation2 = value;
-                //                 userInputs["i_relation2"] = value;
-                //               });
-                //             },
-                //             dropdownColor: ColorPalette.superlightPurple,
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Flexible(
-                //       child: Container(
-                //         child: FormFieldWidget(
-                //           labelText: "Parent Name",
-                //           onChanged: (value) {
-                //             userInputs["i_parent_name"] = value;
-                //           },
-                //           onSubmitted: (_) => unfocusScope(),
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Flexible(
-                //       child: Container(
-                //         child: FormFieldWidget(
-                //           labelText: "Resident of",
-                //           onChanged: (value) {
-                //             userInputs["i_resident_of"] = value;
-                //           },
-                //           onSubmitted: (_) => unfocusScope(),
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // Row(
-                //   mainAxisSize: MainAxisSize.min,
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     Expanded(
-                //       child: Card(
-                //         elevation: 3.0,
-                //         child: DropdownButtonHideUnderline(
-                //           child: DropdownButton(
-                //             value: _iRelation2,
-                //             items: iRelation2.map((String dropdownItem) {
-                //               return DropdownMenuItem<String>(
-                //                 value: dropdownItem,
-                //                 child: Text(dropdownItem),
-                //               );
-                //             }).toList(),
-                //             onChanged: (String value) {
-                //               setState(() {
-                //                 this._iRelation2 = value;
-                //                 userInputs["i_relation2"] = value;
-                //               });
-                //             },
-                //             dropdownColor: ColorPalette.superlightPurple,
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // Row(
-                //   mainAxisSize: MainAxisSize.min,
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     Expanded(
-                //       child: Card(
-                //         elevation: 3.0,
-                //         child: DropdownButtonHideUnderline(
-                //           child: DropdownButton(
-                //             value: _iSlug,
-                //             items: iSlug.map((String dropdownItem) {
-                //               return DropdownMenuItem<String>(
-                //                 value: dropdownItem,
-                //                 child: Text(dropdownItem),
-                //               );
-                //             }).toList(),
-                //             onChanged: (String value) {
-                //               setState(() {
-                //                 this._iSlug = value;
-                //                 userInputs["i_slug"] = value;
-                //               });
-                //             },
-                //             dropdownColor: ColorPalette.superlightPurple,
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // Row(
-                //   children: [
-                //     Flexible(
-                //         child: ListTile(
-                //             title: Text(
-                //                 "${dated.day}-${dated.month}-${dated.year}"),
-                //             subtitle: Text("Expired on"),
-                //             trailing: Icon(Icons.calendar_today),
-                //             onTap: () async {
-                //               DateTime picked = await showDatePicker(
-                //                 context: context,
-                //                 initialDate: dated,
-                //                 firstDate: DateTime(DateTime.now().year - 50),
-                //                 lastDate: DateTime(DateTime.now().year + 10),
-                //               );
-                //               if (picked != null)
-                //                 setState(() {
-                //                   expiredOn = picked;
-                //                   userInputs["i_expired_on"] =
-                //                       DateFormat('dd-MM-yyyy').format(picked);
-                //                 });
-                //             })),
-                //   ],
-                // ),
-
-                normalTitleText(
+                // Page 4
+                titleText(
                     "Draft for Affidavit for Duplicate Claim Papers/bills on stamp Paper (Annexure —I)"),
                 Container(
                   width: width,
@@ -1567,6 +994,7 @@ class _FormPageState extends State<FormPage> {
                                 child: Text(dropdownItem),
                               );
                             }).toList(),
+                            onTap: () => unfocusScope(),
                             onChanged: (String value) {
                               setState(() {
                                 this._iRelation = value;
@@ -1604,8 +1032,7 @@ class _FormPageState extends State<FormPage> {
                     ],
                   ),
                 ),
-
-                normalTitleText(
+                titleText(
                     "Draft for Affidavit on Stamp Paper for claiming medical reimbursement ( Annexure-II)"),
                 Container(
                   width: width,
@@ -1627,6 +1054,7 @@ class _FormPageState extends State<FormPage> {
                                 child: Text(dropdownItem),
                               );
                             }).toList(),
+                            onTap: () => unfocusScope(),
                             onChanged: (String value) {
                               setState(() {
                                 this._iRelation = value;
@@ -1672,6 +1100,7 @@ class _FormPageState extends State<FormPage> {
                                 child: Text(dropdownItem),
                               );
                             }).toList(),
+                            onTap: () => unfocusScope(),
                             onChanged: (String value) {
                               setState(() {
                                 this._iRelation2 = value;
@@ -1692,6 +1121,7 @@ class _FormPageState extends State<FormPage> {
                                 child: Text(dropdownItem),
                               );
                             }).toList(),
+                            onTap: () => unfocusScope(),
                             onChanged: (String value) {
                               setState(() {
                                 this._iSlug = value;
@@ -1720,6 +1150,7 @@ class _FormPageState extends State<FormPage> {
                                   subtitle: Text("Expired on"),
                                   trailing: Icon(Icons.calendar_today),
                                   onTap: () async {
+                                    unfocusScope();
                                     DateTime picked = await showDatePicker(
                                       context: context,
                                       initialDate: dated,
@@ -1750,6 +1181,7 @@ class _FormPageState extends State<FormPage> {
                                 child: Text(dropdownItem),
                               );
                             }).toList(),
+                            onTap: () => unfocusScope(),
                             onChanged: (String value) {
                               setState(() {
                                 this._iSlug = value;
@@ -1773,9 +1205,7 @@ class _FormPageState extends State<FormPage> {
                     ],
                   ),
                 ),
-
-                normalTitleText(
-                    "Draft for No Objection Certificate on Stamp Paper."),
+                titleText("Draft for No Objection Certificate on Stamp Paper."),
                 Container(
                   width: width,
                   child: Wrap(
@@ -1817,6 +1247,7 @@ class _FormPageState extends State<FormPage> {
                                   child: Text(dropdownItem),
                                 );
                               }).toList(),
+                              onTap: () => unfocusScope(),
                               onChanged: (String value) {
                                 setState(() {
                                   this._iSlug = value;
@@ -1848,6 +1279,7 @@ class _FormPageState extends State<FormPage> {
                                 child: Text(dropdownItem),
                               );
                             }).toList(),
+                            onTap: () => unfocusScope(),
                             onChanged: (String value) {
                               setState(() {
                                 this._iSlug = value;
@@ -1898,17 +1330,4 @@ class _FormPageState extends State<FormPage> {
   unfocusScope() {
     FocusScope.of(context).unfocus();
   }
-
-  // selectDate(BuildContext context, DateTime dateType) async {
-  //   DateTime picked = await showDatePicker(
-  //     context: context,
-  //     initialDate: DateTime.now(),
-  //     firstDate: DateTime(DateTime.now().year - 10),
-  //     lastDate: DateTime(DateTime.now().year + 10),
-  //   );
-  //   if (picked != null)
-  //     setState(() {
-  //       dateType = picked;
-  //     });
-  // }
 }

@@ -1,5 +1,8 @@
+import 'dart:convert';
+import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'dart:io';
 import 'package:pdf/widgets.dart';
@@ -35,7 +38,8 @@ pdfTemplate(context, Map userInputs) async {
   final numberOfOriginalBills = userInputs['number_of_original_bills'] ?? blank;
   final copiesOfClaimPapers = userInputs['copies_of_claim_papers'] ?? "No";
   final affidavitOnStampPaper = userInputs['affidavit_on_stamppaper'] ?? "No";
-  final affidavitOnStampPaper2 = userInputs['affidavit_on_stamppaper2'] ?? "No";
+  final affidavitOnStampPaperByClaimant =
+      userInputs['affidavit_on_stamppaper_by_claimant'] ?? "No";
   final noObjectionOnStampPaper =
       userInputs['no_objection_on_stamppaper'] ?? "No";
   final copyOfDeathCertificate =
@@ -43,6 +47,7 @@ pdfTemplate(context, Map userInputs) async {
   final telephoneNo = userInputs['telephone_no'] ?? blank;
   final emailAddress = userInputs['email_address'] ?? blank;
   final dated = userInputs['dated'] ?? blank;
+  final signature = userInputs['signature'] ?? nullSignature;
   final bankName = userInputs['bank_name'] ?? blank;
   final bankBranch = userInputs['bank_branch'] ?? blank;
   final accountNumber = userInputs['account_number'] ?? blank;
@@ -50,21 +55,8 @@ pdfTemplate(context, Map userInputs) async {
   final telephoneOfBankBranch = userInputs['telephone_of_bankbranch'] ?? blank;
 
   //Page 2
-  final tokenNo2 = userInputs['token_no2'] ?? blank;
-  final place2 = userInputs['place2'] ?? blank;
-  final fromDate2 = userInputs['from_date2'] ?? blank;
-  final toDate2 = userInputs['to_date2'] ?? blank;
-  final entitlement2 = userInputs['entitlement2'] ?? blank;
-  final fullname2 = userInputs['full_name2'] ?? blank;
+  final computerNumber = userInputs['computer_no'] ?? blank;
   final fullAddress2 = userInputs['full_address2'] ?? blank;
-  final telephoneNo2 = userInputs['telephone_no2'] ?? blank;
-  final emailAddress2 = userInputs['email_address2'] ?? blank;
-  final bankName2 = userInputs['bank_name2'] ?? blank;
-  final bankBranch2 = userInputs['bank_branch2'] ?? blank;
-  final accountNumber2 = userInputs['account_number2'] ?? blank;
-  final micrCode2 = userInputs['micr_code2'] ?? blank;
-  final telephoneOfBankBranch2 =
-      userInputs['telephone_of_bankbranch2'] ?? blank;
   final patientName2 = userInputs['patient_name2'] ?? blank;
   final relationship2 = userInputs['relationship2'] ?? blank;
   final status2 = userInputs['status2'] ?? blank;
@@ -80,8 +72,6 @@ pdfTemplate(context, Map userInputs) async {
   final detailsOfReferral2 = userInputs['details_of_referral2'] ?? blank;
   final detailsOfMedicalAdvance2 =
       userInputs['details_of_medical_advance2'] ?? blank;
-  final name2 = userInputs['name2'] ?? blank;
-  final dated2 = userInputs['dated2'] ?? blank;
 
   //Page 4
   final iName = userInputs['i_name'] ?? blank;
@@ -91,6 +81,11 @@ pdfTemplate(context, Map userInputs) async {
   final iResidentOf = userInputs['i_resident_of'] ?? blank;
   final iDeathDate = userInputs['i_expired_on'] ?? blank;
   final iSlug = userInputs['i_slug'] ?? blank;
+
+  final PdfImage signatureImage = PdfImage.file(
+    pdf.document,
+    bytes: base64.decode(signature),
+  );
 
   //Page 1
   pdf.addPage(
@@ -134,7 +129,7 @@ pdfTemplate(context, Map userInputs) async {
           leftRightContent(
             "5",
             heading.status,
-            status,
+            "$status",
           ),
           leftRightContent(
             "6",
@@ -168,7 +163,7 @@ pdfTemplate(context, Map userInputs) async {
           nestedContent("j", subHeading.inCaseOfDeath, ""),
           //deeply nested I, II, ....
           deeplyNestedContent("I", subHeading.affidavitOnStampPaper2,
-              "$affidavitOnStampPaper2"),
+              "$affidavitOnStampPaperByClaimant"),
           deeplyNestedContent("II", subHeading.noObjectionOnStampPaper,
               "$noObjectionOnStampPaper"),
           deeplyNestedContent(
@@ -194,8 +189,7 @@ pdfTemplate(context, Map userInputs) async {
                         Container(
                           width: 100,
                           height: 50,
-                          color: PdfColor.fromHex("#000"),
-                          child: Text("Signature of CGHS card holder"),
+                          child: Image(signatureImage),
                         ),
                         Text("Tel. No.  : $telephoneNo"),
                         Text("e-mail address  : $emailAddress"),
@@ -275,12 +269,12 @@ pdfTemplate(context, Map userInputs) async {
           leftRightContent(
             "1",
             heading.tokenAndPlace,
-            tokenNo2 + "    " + place2,
+            tokenNo + "    " + place,
           ),
           leftRightContent(
             "2",
             heading.validityOfcghsCard,
-            "from : $fromDate2" + "    " + "to : $toDate2",
+            "from : $fromDate" + "    " + "to : $toDate",
           ),
           leftRightContent(
             "  ",
@@ -290,7 +284,7 @@ pdfTemplate(context, Map userInputs) async {
           leftRightContent(
             "3",
             heading.fullName2,
-            "$fullname2 $fullname2 $fullname2$fullname2$fullname2$fullname2",
+            "$fullName",
           ),
           leftRightContent(
             "4",
@@ -300,12 +294,12 @@ pdfTemplate(context, Map userInputs) async {
           leftRightContent(
             "5",
             heading.telephone2,
-            "$telephoneNo2",
+            "$telephoneNo",
           ),
           leftRightContent(
             "6",
             heading.emailAddress2,
-            "$emailAddress2",
+            "$emailAddress",
           ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -318,28 +312,28 @@ pdfTemplate(context, Map userInputs) async {
                     text: TextSpan(children: [
                   TextSpan(text: "${subHeading.bankName}  ", children: [
                     TextSpan(
-                        text: "$bankName2  ",
+                        text: "$bankName  ",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             decoration: TextDecoration.underline))
                   ]),
                   TextSpan(text: "${subHeading.bankBranch}  ", children: [
                     TextSpan(
-                        text: "$bankBranch2  ",
+                        text: "$bankBranch  ",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             decoration: TextDecoration.underline))
                   ]),
                   TextSpan(text: " ${subHeading.accountNumber}  ", children: [
                     TextSpan(
-                        text: "$accountNumber2  ",
+                        text: "$accountNumber  ",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             decoration: TextDecoration.underline))
                   ]),
                   TextSpan(text: " ${subHeading.micrCode}  ", children: [
                     TextSpan(
-                        text: "$micrCode2  ",
+                        text: "$micrCode  ",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             decoration: TextDecoration.underline))
@@ -348,7 +342,7 @@ pdfTemplate(context, Map userInputs) async {
                       text: "${subHeading.telephoneOfBankBranch}  ",
                       children: [
                         TextSpan(
-                            text: "$telephoneOfBankBranch2  ",
+                            text: "$telephoneOfBankBranch  ",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 decoration: TextDecoration.underline))
@@ -459,7 +453,7 @@ pdfTemplate(context, Map userInputs) async {
                     children: [
                       Expanded(
                         flex: 3,
-                        child: Text("Dated   : $dated2"),
+                        child: Text("Dated   : $dated"),
                       ),
                       Expanded(
                           flex: 2,
@@ -474,7 +468,7 @@ pdfTemplate(context, Map userInputs) async {
                                 color: PdfColor.fromHex("#000"),
                                 child: Text("Signature of Member"),
                               ),
-                              Text("Name.  : $name2"),
+                              Text("Name.  : $fullName"),
                               Text("IC No. : IC No"), // TODO IC No.
                             ],
                           )),
@@ -539,10 +533,23 @@ pdfTemplate(context, Map userInputs) async {
                 SizedBox(height: containerHeight),
                 RichText(
                   text: TextSpan(text: "I, ", children: [
-                    TextSpan(text: "$iName"),
+                    TextSpan(
+                        text: "$iName",
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(
+                        text: " $iRelation",
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(text: " of "),
+                    TextSpan(
+                        text: "$iParentName",
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(text: "and resident of "),
+                    TextSpan(
+                        text: "$iResidentOf",
+                        style: TextStyle(fontWeight: FontWeight.bold)),
                     TextSpan(
                         text:
-                            " $iRelation of $iParentName and resident of $iResidentOf lost/misplaced the original paper or the same are not traceable. I hereby give an undertaking that I have not received any payment against original bills/claim papers from any source and that if the original papers are traced I shall not stake claim against original bills in future and that in the event. If I receive any cheque against original bills in future I shall return the same to competent authority.")
+                            "lost/misplaced the original paper or the same are not traceable. I hereby give an undertaking that I have not received any payment against original bills/claim papers from any source and that if the original papers are traced I shall not stake claim against original bills in future and that in the event. If I receive any cheque against original bills in future I shall return the same to competent authority. "),
                   ]),
                 ),
                 heightGap(),

@@ -70,7 +70,8 @@ class SubHeading {
 
   String inCaseOfDeath =
       "Incase of death of card holder the Following documents are submitted";
-  String affidavitOnStampPaper2 = "I. Affidavit on Stamp paper by Claimant";
+  String affidavitOnStampPaperByClaimant =
+      "I. Affidavit on Stamp paper by Claimant";
   String noObjectionOnStampPaper =
       "II. No objection from other legal Heirs on Stamp papers";
   String copyOfDeathCerti = "III. Copy of death certificate";

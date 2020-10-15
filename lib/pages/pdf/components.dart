@@ -97,7 +97,7 @@ Widget deeplyNestedContent(String prefix, String heading, String field1) {
             children: [
               Text('$prefix.    '),
               Container(
-                width: 3.2 * PdfPageFormat.inch,
+                width: 2.5 * PdfPageFormat.inch,
                 child: Text(heading),
               ),
               Text(":"),
@@ -105,9 +105,17 @@ Widget deeplyNestedContent(String prefix, String heading, String field1) {
           ),
         ),
         Expanded(
-          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text(field1),
-          ]),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 2.5 * PdfPageFormat.inch,
+                // color: PdfColor.fromHex("#3431DA"),
+                child: Center(child: Text(field1)),
+              )
+            ],
+          ),
         )
       ]));
 }

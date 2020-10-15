@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pdf_gen/pages/form_page/form_page.dart';
 import 'package:pdf_gen/pages/profile.dart';
 import 'package:pdf_gen/services/auth.dart';
 import 'package:pdf_gen/services/database.dart';
@@ -24,6 +25,12 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: Column(
           children: [
+            FlatButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => FormPage()));
+                },
+                child: Text("Fill the Form")),
             FlatButton(
                 onPressed: () {
                   Navigator.push(context,

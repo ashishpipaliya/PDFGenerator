@@ -9,6 +9,7 @@ class FormFieldWidget extends StatelessWidget {
   final void Function(String) onChanged;
   final void Function(String) onSubmitted;
   final FocusNode focusNode;
+  final TextInputType keyboardType;
 
   const FormFieldWidget({
     Key key,
@@ -18,6 +19,7 @@ class FormFieldWidget extends StatelessWidget {
     this.onChanged,
     this.onSubmitted,
     this.focusNode,
+    this.keyboardType,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,7 @@ class FormFieldWidget extends StatelessWidget {
         onChanged: onChanged,
         onFieldSubmitted: onSubmitted,
         focusNode: focusNode,
+        keyboardType: keyboardType,
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
             labelText: labelText,
@@ -163,6 +166,7 @@ Widget titleText(String heading) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
+      SizedBox(height: 10),
       Text(
         heading,
         textAlign: TextAlign.left,
