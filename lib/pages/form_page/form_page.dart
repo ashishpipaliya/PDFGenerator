@@ -57,15 +57,13 @@ class _FormPageState extends State<FormPage> {
   DateTime dated = DateTime.now();
   DateTime expiredOn = DateTime.now();
 
-  static final _signatureKey = GlobalKey<SignatureState>();
-
   @override
   Widget build(BuildContext context) {
     final height = UIUtils().size(context).height;
     final width = UIUtils().size(context).width;
 
     return GestureDetector(
-      onTap: unfocusScope,
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: AppBar(
           title: Text("Fill the form"),
@@ -79,7 +77,6 @@ class _FormPageState extends State<FormPage> {
             child: Form(
                 child: Column(
               children: [
-                // Page 1
                 titleText(megaHeading.megaTitle1),
                 normalTitleText(heading.tokenAndPlace),
                 Row(
@@ -109,6 +106,7 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ],
                 ),
+
                 normalTitleText(heading.validityOfcghsCard),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -157,6 +155,7 @@ class _FormPageState extends State<FormPage> {
                             })),
                   ],
                 ),
+
                 normalTitleText(heading.entitlement),
                 Row(
                   mainAxisSize: MainAxisSize.min,
@@ -187,6 +186,7 @@ class _FormPageState extends State<FormPage> {
                     )
                   ],
                 ),
+
                 normalTitleText(heading.fullName),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -204,6 +204,7 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ],
                 ),
+
                 normalTitleText(heading.status),
                 Row(
                   mainAxisSize: MainAxisSize.min,
@@ -234,6 +235,7 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ],
                 ),
+
                 normalTitleText(heading.documentsAreSubmitted),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -558,47 +560,48 @@ class _FormPageState extends State<FormPage> {
                     ),
                     smallTitleText("Signature"),
                     Container(
-                        height: 200,
-                        width: width,
-                        color: ColorPalette.cream,
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: IconButton(
-                                  icon: Icon(Icons.check),
-                                  onPressed: () async {
-                                    final image = await _signatureKey
-                                        .currentState
-                                        .getData();
-
-                                    var data = await image.toByteData(
-                                        format: ui.ImageByteFormat.png);
-                                    final encoded = base64
-                                        .encode(data.buffer.asUint8List());
-
-                                    print(encoded);
-                                    userInputs["signature"] = encoded;
-                                  }),
-                            ),
-                            Positioned(
-                              top: 0,
-                              right: 0,
-                              child: IconButton(
-                                  icon: Icon(Icons.close),
-                                  onPressed: () {
-                                    _signatureKey.currentState.clear();
-                                  }),
-                            ),
-                            Signature(
-                              color: Colors.black,
-                              strokeWidth: 2.0,
-                              onSign: () {},
-                              key: _signatureKey,
-                            ),
-                          ],
-                        )),
+                      height: 200,
+                      width: width,
+                      color: ColorPalette.cream,
+                      // child: Stack(
+                      //   children: [
+                      //     Positioned(
+                      //       bottom: 0,
+                      //       right: 0,
+                      //       child: IconButton(
+                      //           icon: Icon(Icons.check),
+                      //           onPressed: () async {
+                      //             final image = await _signatureKey
+                      //                 .currentState
+                      //                 .getData();
+                      //
+                      //             var data = await image.toByteData(
+                      //                 format: ui.ImageByteFormat.png);
+                      //             final encoded = base64
+                      //                 .encode(data.buffer.asUint8List());
+                      //
+                      //             print(encoded);
+                      //             userInputs["signature"] = encoded;
+                      //           }),
+                      //     ),
+                      //     Positioned(
+                      //       top: 0,
+                      //       right: 0,
+                      //       child: IconButton(
+                      //           icon: Icon(Icons.close),
+                      //           onPressed: () {
+                      //             _signatureKey.currentState.clear();
+                      //           }),
+                      //     ),
+                      //     Signature(
+                      //       color: Colors.black,
+                      //       strokeWidth: 2.0,
+                      //       onSign: () {},
+                      //       key: _signatureKey,
+                      //     ),
+                      //   ],
+                      // )
+                    ),
                   ],
                 ),
                 smallTitleText(subHeading.bankDetails),
@@ -679,7 +682,7 @@ class _FormPageState extends State<FormPage> {
 
                 SizedBox(height: 50),
 
-                // Page 2
+                //  Page 2
                 titleText(megaHeading.megaTitle2),
                 smallTitleText(heading.toBeFilled),
                 normalTitleText(heading.computerNo),
@@ -699,6 +702,7 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ],
                 ),
+
                 normalTitleText(heading.fullAddress),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -717,6 +721,7 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ],
                 ),
+
                 normalTitleText(heading.patientNameAndRelationship),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -741,12 +746,13 @@ class _FormPageState extends State<FormPage> {
                           onChanged: (value) {
                             userInputs["relationship2"] = value;
                           },
-                          onSubmitted: unfocusScope(),
+                          onSubmitted: (_) => unfocusScope(),
                         ),
                       ),
                     ),
                   ],
                 ),
+
                 normalTitleText(heading.status2),
                 Row(
                   children: [
@@ -764,7 +770,6 @@ class _FormPageState extends State<FormPage> {
                                   child: Text(item),
                                 );
                               }).toList(),
-                              onTap: () => unfocusScope(),
                               onChanged: (String value) {
                                 setState(() {
                                   this._statusSelected2 = value;
@@ -779,6 +784,7 @@ class _FormPageState extends State<FormPage> {
                     )
                   ],
                 ),
+
                 normalTitleText(heading.basicPay),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -797,6 +803,7 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ],
                 ),
+
                 normalTitleText(heading.hospitalName),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -832,6 +839,7 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ],
                 ),
+
                 normalTitleText(heading.admitAndDischargeDate),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -880,6 +888,7 @@ class _FormPageState extends State<FormPage> {
                             })),
                   ],
                 ),
+
                 normalTitleText(heading.totalAmountClaimed),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -905,12 +914,13 @@ class _FormPageState extends State<FormPage> {
                             userInputs["amount_claimed_indoor_treatment2"] =
                                 value;
                           },
-                          onSubmitted: unfocusScope(),
+                          onSubmitted: (_) => unfocusScope(),
                         ),
                       ),
                     ),
                   ],
                 ),
+
                 normalTitleText(heading.referralDetails),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -929,6 +939,7 @@ class _FormPageState extends State<FormPage> {
                     ),
                   ],
                 ),
+
                 normalTitleText(heading.medicalAdvance),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1032,6 +1043,7 @@ class _FormPageState extends State<FormPage> {
                     ],
                   ),
                 ),
+
                 titleText(
                     "Draft for Affidavit on Stamp Paper for claiming medical reimbursement ( Annexure-II)"),
                 Container(
@@ -1054,7 +1066,6 @@ class _FormPageState extends State<FormPage> {
                                 child: Text(dropdownItem),
                               );
                             }).toList(),
-                            onTap: () => unfocusScope(),
                             onChanged: (String value) {
                               setState(() {
                                 this._iRelation = value;
@@ -1100,7 +1111,6 @@ class _FormPageState extends State<FormPage> {
                                 child: Text(dropdownItem),
                               );
                             }).toList(),
-                            onTap: () => unfocusScope(),
                             onChanged: (String value) {
                               setState(() {
                                 this._iRelation2 = value;
@@ -1121,7 +1131,6 @@ class _FormPageState extends State<FormPage> {
                                 child: Text(dropdownItem),
                               );
                             }).toList(),
-                            onTap: () => unfocusScope(),
                             onChanged: (String value) {
                               setState(() {
                                 this._iSlug = value;
@@ -1150,7 +1159,6 @@ class _FormPageState extends State<FormPage> {
                                   subtitle: Text("Expired on"),
                                   trailing: Icon(Icons.calendar_today),
                                   onTap: () async {
-                                    unfocusScope();
                                     DateTime picked = await showDatePicker(
                                       context: context,
                                       initialDate: dated,
@@ -1181,7 +1189,6 @@ class _FormPageState extends State<FormPage> {
                                 child: Text(dropdownItem),
                               );
                             }).toList(),
-                            onTap: () => unfocusScope(),
                             onChanged: (String value) {
                               setState(() {
                                 this._iSlug = value;
@@ -1205,7 +1212,9 @@ class _FormPageState extends State<FormPage> {
                     ],
                   ),
                 ),
-                titleText("Draft for No Objection Certificate on Stamp Paper."),
+
+                normalTitleText(
+                    "Draft for No Objection Certificate on Stamp Paper."),
                 Container(
                   width: width,
                   child: Wrap(
@@ -1247,7 +1256,6 @@ class _FormPageState extends State<FormPage> {
                                   child: Text(dropdownItem),
                                 );
                               }).toList(),
-                              onTap: () => unfocusScope(),
                               onChanged: (String value) {
                                 setState(() {
                                   this._iSlug = value;
@@ -1279,7 +1287,6 @@ class _FormPageState extends State<FormPage> {
                                 child: Text(dropdownItem),
                               );
                             }).toList(),
-                            onTap: () => unfocusScope(),
                             onChanged: (String value) {
                               setState(() {
                                 this._iSlug = value;
