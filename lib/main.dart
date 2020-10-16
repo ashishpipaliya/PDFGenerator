@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf_gen/pages/form_page/form_page.dart';
+import 'package:pdf_gen/pages/landing_page.dart';
 import 'package:pdf_gen/services/auth.dart';
 import 'package:pdf_gen/shared/color_palette.dart';
 import 'package:pdf_gen/wrapper/wrapper.dart';
@@ -30,8 +31,7 @@ class MyApp extends StatelessWidget {
             },
           ),
         ).copyWith(textSelectionHandleColor: ColorPalette.darkPurple),
-        // home: Wrapper(),
-        home: FormPage(),
+        home: Wrapper(),
       ),
     );
   }

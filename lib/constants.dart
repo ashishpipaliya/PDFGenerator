@@ -90,9 +90,9 @@ class SubHeading {
 }
 
 List<String> entitlement = ["Select", "Private", "Semi Private", "General"];
+List<String> relationship = ["Select", "husband", "wife", "son", "daughter"];
 List<String> status = ["Select", "Government Servant", "Member of Parliament"];
 
-List<String> entitlement2 = ["Select", "Private", "Semi Private", "General"];
 List<String> status2 = [
   "Select",
   "Govt. Servant",

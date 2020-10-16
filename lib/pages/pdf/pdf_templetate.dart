@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:ui';
 
-import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'dart:io';
 import 'package:pdf/widgets.dart';
@@ -17,7 +17,7 @@ pdfTemplate(context, Map userInputs) async {
   MegaHeading megaHeading = MegaHeading();
   Heading heading = Heading();
   SubHeading subHeading = SubHeading();
-  final blank = "...............";
+  final blank = "";
 
   final tokenNo = userInputs['token_no'] ?? blank;
   final place = userInputs['place'] ?? blank;
@@ -46,7 +46,8 @@ pdfTemplate(context, Map userInputs) async {
       userInputs['copy_of_death_certificate'] ?? "No";
   final telephoneNo = userInputs['telephone_no'] ?? blank;
   final emailAddress = userInputs['email_address'] ?? blank;
-  final dated = userInputs['dated'] ?? blank;
+  final dated =
+      userInputs['dated'] ?? DateFormat('dd-MM-yyyy').format(DateTime.now());
   final signature = userInputs['signature'] ?? nullSignature;
   final bankName = userInputs['bank_name'] ?? blank;
   final bankBranch = userInputs['bank_branch'] ?? blank;
@@ -58,7 +59,7 @@ pdfTemplate(context, Map userInputs) async {
   final computerNumber = userInputs['computer_no'] ?? blank;
   final fullAddress2 = userInputs['full_address2'] ?? blank;
   final patientName2 = userInputs['patient_name2'] ?? blank;
-  final relationship2 = userInputs['relationship2'] ?? blank;
+  final relationship2 = userInputs['relationship_with_cardholder2'] ?? blank;
   final status2 = userInputs['status2'] ?? blank;
   final basicPay2 = userInputs['basic_pay2'] ?? blank;
   final opdTreatment2 = userInputs['opd_treatment2'] ?? blank;
@@ -73,18 +74,54 @@ pdfTemplate(context, Map userInputs) async {
   final detailsOfMedicalAdvance2 =
       userInputs['details_of_medical_advance2'] ?? blank;
 
+  //Page 3
+  final icNumber = userInputs["ic_number"] ?? blank;
+
   //Page 4
   final iName = userInputs['i_name'] ?? blank;
   final iRelation = userInputs['i_relation'] ?? blank;
   final iRelation2 = userInputs['i_relation2'] ?? blank;
-  final iParentName = userInputs['i_patient_name'] ?? blank;
+  final iParentName = userInputs['i_parent_name'] ?? blank;
   final iResidentOf = userInputs['i_resident_of'] ?? blank;
   final iDeathDate = userInputs['i_expired_on'] ?? blank;
   final iSlug = userInputs['i_slug'] ?? blank;
 
+  final legalHeir1 = userInputs["legal_heir1"] ?? blank;
+  final legalHeir2 = userInputs["legal_heir2"] ?? blank;
+  final legalHeir3 = userInputs["legal_heir3"] ?? blank;
+  final legalHeir4 = userInputs["legal_heir4"] ?? blank;
+
+  final iSlug2 = userInputs['i_slug2'] ?? blank;
+  final paidToName = userInputs['paid_to_name'] ?? blank;
+
+  final heir1Sign = userInputs['heir_1_sign'] ?? nullSignature;
+  final heir2Sign = userInputs['heir_2_sign'] ?? nullSignature;
+  final heir3Sign = userInputs['heir_3_sign'] ?? nullSignature;
+  final heir4Sign = userInputs['heir_4_sign'] ?? nullSignature;
+
   final PdfImage signatureImage = PdfImage.file(
     pdf.document,
     bytes: base64.decode(signature),
+  );
+
+  final PdfImage heir1Signature = PdfImage.file(
+    pdf.document,
+    bytes: base64.decode(heir1Sign),
+  );
+
+  final PdfImage heir2Signature = PdfImage.file(
+    pdf.document,
+    bytes: base64.decode(heir2Sign),
+  );
+
+  final PdfImage heir3Signature = PdfImage.file(
+    pdf.document,
+    bytes: base64.decode(heir3Sign),
+  );
+
+  final PdfImage heir4Signature = PdfImage.file(
+    pdf.document,
+    bytes: base64.decode(heir4Sign),
   );
 
   //Page 1
@@ -189,6 +226,7 @@ pdfTemplate(context, Map userInputs) async {
                         Container(
                           width: 100,
                           height: 50,
+                          margin: EdgeInsets.only(bottom: 5.0),
                           child: Image(signatureImage),
                         ),
                         Text("Tel. No.  : $telephoneNo"),
@@ -279,7 +317,7 @@ pdfTemplate(context, Map userInputs) async {
           leftRightContent(
             "  ",
             heading.entitlement2,
-            "$entitlement2",
+            "$entitlement",
           ),
           leftRightContent(
             "3",
@@ -465,11 +503,10 @@ pdfTemplate(context, Map userInputs) async {
                                 width: 100,
                                 height: 50,
                                 margin: EdgeInsets.only(bottom: 5.0),
-                                color: PdfColor.fromHex("#000"),
-                                child: Text("Signature of Member"),
+                                child: Image(signatureImage),
                               ),
                               Text("Name.  : $fullName"),
-                              Text("IC No. : IC No"), // TODO IC No.
+                              Text("IC No. : $icNumber"),
                             ],
                           )),
                     ],
@@ -533,20 +570,12 @@ pdfTemplate(context, Map userInputs) async {
                 SizedBox(height: containerHeight),
                 RichText(
                   text: TextSpan(text: "I, ", children: [
-                    TextSpan(
-                        text: "$iName",
-                        style: TextStyle(fontWeight: FontWeight.bold)),
-                    TextSpan(
-                        text: " $iRelation",
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(text: "$iName", style: filledBlankStyle),
+                    TextSpan(text: " $iRelation ", style: filledBlankStyle),
                     TextSpan(text: " of "),
-                    TextSpan(
-                        text: "$iParentName",
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(text: "$iParentName ", style: filledBlankStyle),
                     TextSpan(text: "and resident of "),
-                    TextSpan(
-                        text: "$iResidentOf",
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(text: " $iResidentOf ", style: filledBlankStyle),
                     TextSpan(
                         text:
                             "lost/misplaced the original paper or the same are not traceable. I hereby give an undertaking that I have not received any payment against original bills/claim papers from any source and that if the original papers are traced I shall not stake claim against original bills in future and that in the event. If I receive any cheque against original bills in future I shall return the same to competent authority. "),
@@ -576,17 +605,33 @@ pdfTemplate(context, Map userInputs) async {
                 SizedBox(height: containerHeight),
                 RichText(
                   text: TextSpan(text: "I, ", children: [
-                    TextSpan(text: "$iName"),
+                    TextSpan(text: " $iName ", style: filledBlankStyle),
+                    TextSpan(text: " $iRelation ", style: filledBlankStyle),
+                    TextSpan(text: " of Late "),
+                    TextSpan(text: " $iParentName ", style: filledBlankStyle),
+                    TextSpan(text: " and resident of "),
+                    TextSpan(text: " $iResidentOf ", style: filledBlankStyle),
                     TextSpan(
                         text:
-                            " $iRelation of Late $iParentName and resident of $iResidentOf hereby submit the medical claim papers pertaining to treatment of my $iRelation Late Shri/Smt $iParentName who has expired on $iDeathDate (copy of Death Certificate is enclosed).")
+                            " hereby submit the medical claim papers pertaining to treatment of my "),
+                    TextSpan(text: " $iRelation2 ", style: filledBlankStyle),
+                    TextSpan(text: " Late "),
+                    TextSpan(text: " $iSlug ", style: filledBlankStyle),
+                    TextSpan(text: " $iParentName ", style: filledBlankStyle),
+                    TextSpan(text: " who has expired on "),
+                    TextSpan(text: " $iDeathDate ", style: filledBlankStyle),
+                    TextSpan(text: " (copy of Death Certificate is enclosed)."),
                   ]),
                 ),
                 heightGap(),
                 RichText(
-                    text: TextSpan(
-                        text:
-                            "       Late $iSlug, $iName has left behind the following other legal heirs none of whom have any objection if the entire amount reimbursable is paid to me.")),
+                    text: TextSpan(text: "       Late , ", children: [
+                  TextSpan(text: " $iSlug ", style: filledBlankStyle),
+                  TextSpan(text: " $iParentName ", style: filledBlankStyle),
+                  TextSpan(
+                      text:
+                          " has left behind the following other legal heirs none of whom have any objection if the entire amount reimbursable is paid to me. "),
+                ])),
                 heightGap(),
                 Text(megaHeading.noObjectionCertificateSignedBy,
                     style: TextStyle(fontWeight: FontWeight.bold)),
@@ -615,64 +660,125 @@ pdfTemplate(context, Map userInputs) async {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       RichText(
-                          text: TextSpan(
-                              text: "We (i) $blank S/o  D/o Late Shri $blank")),
+                          text: TextSpan(text: "We (i)", children: [
+                        TextSpan(
+                            text: " $legalHeir1 ", style: filledBlankStyle),
+                        TextSpan(text: " S/o  D/o Late Shri  "),
+                        TextSpan(
+                            text: " $iParentName ", style: filledBlankStyle),
+                      ])),
                       RichText(
-                          text: TextSpan(
-                              text: "(ii) $blank S/o  D/o Late Shri $blank")),
+                          text: TextSpan(text: "(ii)", children: [
+                        TextSpan(
+                            text: " $legalHeir2 ", style: filledBlankStyle),
+                        TextSpan(text: " S/o  D/o Late Shri  "),
+                        TextSpan(
+                            text: " $iParentName ", style: filledBlankStyle),
+                      ])),
                       RichText(
-                          text: TextSpan(
-                              text: "(iii) $blank S/o  D/o Late Shri $blank")),
+                          text: TextSpan(text: "(iii)", children: [
+                        TextSpan(
+                            text: " $legalHeir3 ", style: filledBlankStyle),
+                        TextSpan(text: " S/o  D/o Late Shri  "),
+                        TextSpan(
+                            text: " $iParentName ", style: filledBlankStyle),
+                      ])),
                       RichText(
-                          text: TextSpan(
-                              text: "(iv) $blank S/o  D/o Late Shri $blank")),
+                          text: TextSpan(text: "(iv)", children: [
+                        TextSpan(
+                            text: " $legalHeir4 ", style: filledBlankStyle),
+                        TextSpan(text: " S/o  D/o Late Shri  "),
+                        TextSpan(
+                            text: " $iParentName ", style: filledBlankStyle),
+                      ])),
                     ]),
                 heightGap(),
                 RichText(
-                    text: TextSpan(
+                  text: TextSpan(children: [
+                    TextSpan(text: " being the legal heirs of Late "),
+                    TextSpan(text: " $iSlug $iName ", style: filledBlankStyle),
+                    TextSpan(
                         text:
-                            "being the legal heirs of Late $iSlug $iName have no objection if the entire amount reimbursable pertaining to the treatment of late $iSlug $iName is paid to $iSlug $iName")),
+                            " have no objection if the entire amount reimbursable pertaining to the treatment of late "),
+                    TextSpan(text: " $iSlug $iName ", style: filledBlankStyle),
+                    TextSpan(text: " is paid to "),
+                    TextSpan(
+                        text: " $iSlug2 $paidToName ", style: filledBlankStyle)
+                  ]),
+                ),
                 heightGap(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text("(Signature)"),
-                        Text("Name: $blank"),
-                        Text("Address: $blank"),
-                      ],
+                    Container(
+                      width: 1.5 * PdfPageFormat.inch,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 100,
+                            height: 50,
+                            margin: EdgeInsets.only(bottom: 5.0),
+                            child: Image(heir1Signature),
+                          ),
+                          Text("Name: $legalHeir1"),
+                          Text("Address: $blank"),
+                        ],
+                      ),
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text("(Signature)"),
-                        Text("Name: $blank"),
-                        Text("Address: $blank"),
-                      ],
+                    Container(
+                      width: 1.5 * PdfPageFormat.inch,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 100,
+                            height: 50,
+                            margin: EdgeInsets.only(bottom: 5.0),
+                            child: Image(heir2Signature),
+                          ),
+                          Text("Name: $legalHeir2"),
+                          Text("Address: $blank"),
+                        ],
+                      ),
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text("(Signature)"),
-                        Text("Name: $blank"),
-                        Text("Address: $blank"),
-                      ],
+                    Container(
+                      width: 1.5 * PdfPageFormat.inch,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 100,
+                            height: 50,
+                            margin: EdgeInsets.only(bottom: 5.0),
+                            child: Image(heir3Signature),
+                          ),
+                          Text("Name: $legalHeir3"),
+                          Text("Address: $blank"),
+                        ],
+                      ),
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text("(Signature)"),
-                        Text("Name: $blank"),
-                        Text("Address: $blank"),
-                      ],
-                    ),
+                    Container(
+                      width: 1.5 * PdfPageFormat.inch,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 100,
+                            height: 50,
+                            margin: EdgeInsets.only(bottom: 5.0),
+                            child: Image(heir4Signature),
+                          ),
+                          Text("Name: $legalHeir4"),
+                          Text("Address: $blank"),
+                        ],
+                      ),
+                    )
                   ],
                 ),
                 heightGap(),
@@ -687,15 +793,16 @@ pdfTemplate(context, Map userInputs) async {
   //save PDF
   final String dir = (await getApplicationDocumentsDirectory()).path;
   var fileName = DateTime.now()
-      .toLocal()
+      .toIso8601String()
       .toString()
       .replaceAll(" ", "")
       .replaceAll(":", "")
       .replaceAll(".", "");
+
   final String path = '$dir/$fileName.pdf';
   final File file = File(path);
   await file.writeAsBytes(pdf.save());
-  material.Navigator.of(context).push(
+  material.Navigator.of(context).pushReplacement(
     material.MaterialPageRoute(
       builder: (_) => PDFViewer(path: path),
     ),

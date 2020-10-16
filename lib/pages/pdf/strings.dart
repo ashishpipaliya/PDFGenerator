@@ -100,7 +100,6 @@ class SubHeading {
 List<String> entitlement = ["Private", "Semi Private", "General"];
 List<String> status = ["Government Servant", "Member of Parliament"];
 
-List<String> entitlement2 = ["Private", "Semi Private", "General"];
 List<String> status2 = [
   "Govt. Servant",
   "Pensioner",

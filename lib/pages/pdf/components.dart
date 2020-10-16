@@ -119,3 +119,6 @@ Widget deeplyNestedContent(String prefix, String heading, String field1) {
         )
       ]));
 }
+
+final filledBlankStyle = TextStyle(
+    fontWeight: FontWeight.bold, decoration: TextDecoration.underline);
