@@ -12,7 +12,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="pdf_gen"
+        android:label="CGHS"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

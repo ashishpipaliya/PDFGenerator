@@ -10,6 +10,7 @@ class FormFieldWidget extends StatelessWidget {
   final void Function(String) onSubmitted;
   final FocusNode focusNode;
   final TextInputType keyboardType;
+  final String Function(String) validator;
 
   const FormFieldWidget({
     Key key,
@@ -20,6 +21,7 @@ class FormFieldWidget extends StatelessWidget {
     this.onSubmitted,
     this.focusNode,
     this.keyboardType,
+    this.validator,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,7 @@ class FormFieldWidget extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         maxLines: maxLines,
+        validator: validator,
         textAlignVertical: TextAlignVertical.center,
         onChanged: onChanged,
         onFieldSubmitted: onSubmitted,

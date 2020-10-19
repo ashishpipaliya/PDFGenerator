@@ -5,9 +5,12 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io' as io;
 import 'package:path/path.dart';
 import 'package:pdf_gen/pages/form_page/form_page.dart';
+import 'package:pdf_gen/pages/form_page/widgets.dart';
 import 'package:pdf_gen/pages/pdf/pdf_viewer.dart';
 import 'package:pdf_gen/pages/profile.dart';
 import 'package:pdf_gen/services/auth.dart';
+import 'package:pdf_gen/services/mailer.dart';
+import 'package:pdf_gen/services/validation.dart';
 import 'package:pdf_gen/shared/color_palette.dart';
 import 'package:share/share.dart';
 
@@ -32,11 +35,18 @@ class _LandingPageState extends State<LandingPage> {
     });
   }
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
-        title: Text("CGHS"),
+        title: Text(
+          "CENTRAL GOVERNMENT HEALTH SCHEME",
+          style: TextStyle(fontSize: 13),
+        ),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
@@ -85,7 +95,7 @@ class _LandingPageState extends State<LandingPage> {
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 color: ColorPalette.darkPurple,
-                              )
+                              ),
                             ],
                           ),
                         ),
@@ -105,7 +115,6 @@ class _LandingPageState extends State<LandingPage> {
                   itemCount: file.length ?? 0,
                   itemBuilder: (BuildContext context, int index) {
                     final currentFile = file[index];
-
                     var pdfPath = currentFile
                         .toString()
                         .replaceFirst("File: ", "")
@@ -177,8 +186,8 @@ class _LandingPageState extends State<LandingPage> {
                       title: Text(basename(currentFile.path)),
                     )),
                 ListTile(
-                  leading: new Icon(Icons.delete),
-                  title: new Text('Delete'),
+                  leading: Icon(Icons.delete),
+                  title: Text('Delete'),
                   onTap: () {
                     currentFile.deleteSync(recursive: true);
                     if (Navigator.canPop(context)) {
@@ -187,12 +196,98 @@ class _LandingPageState extends State<LandingPage> {
                     _generatedPDFList();
                   },
                 ),
-                new ListTile(
+                ListTile(
                   leading: new Icon(Icons.share),
                   title: new Text('Share'),
                   onTap: () {
                     Share.shareFiles([currentFile.path],
                         text: currentFile.path);
+                    if (Navigator.canPop(context)) {
+                      Navigator.pop(context);
+                    }
+                  },
+                ),
+                ListTile(
+                  leading: new Icon(Icons.mail),
+                  title: new Text('Send via Email'),
+                  onTap: () {
+                    if (Navigator.canPop(context)) {
+                      Navigator.pop(context);
+                    }
+                    var sendEmailAddress;
+                    showDialog(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (context) => Dialog(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0)),
+                            child: Container(
+                              height: 200,
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Form(
+                                  key: _formKey,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      FormFieldWidget(
+                                          onChanged: (value) =>
+                                              sendEmailAddress = value,
+                                          labelText: "Enter an email",
+                                          maxLines: 1,
+                                          validator: (value) =>
+                                              Validator().emailValidator(value),
+                                          keyboardType:
+                                              TextInputType.emailAddress),
+                                      FlatButton.icon(
+                                        onPressed: () async {
+                                          if (_formKey.currentState
+                                              .validate()) {
+                                            if (Navigator.canPop(context)) {
+                                              Navigator.pop(context);
+                                            }
+                                            try {
+                                              _scaffoldKey.currentState
+                                                  .showSnackBar(SnackBar(
+                                                content: Text("Sending Email"),
+                                                backgroundColor:
+                                                    ColorPalette.darkPurple,
+                                                duration: Duration(seconds: 3),
+                                              ));
+                                              await sendMail(sendEmailAddress,
+                                                  currentFile.path);
+                                              _scaffoldKey.currentState
+                                                  .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    "Email sent Successfully"),
+                                                backgroundColor:
+                                                    ColorPalette.darkPurple,
+                                                duration: Duration(seconds: 2),
+                                              ));
+                                            } catch (e) {
+                                              _scaffoldKey.currentState
+                                                  .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    "Failed to send Email"),
+                                                backgroundColor:
+                                                    ColorPalette.darkPurple,
+                                                duration: Duration(seconds: 3),
+                                              ));
+                                            }
+                                          }
+                                        },
+                                        icon: Icon(Icons.send),
+                                        color: ColorPalette.darkPurple,
+                                        textColor: ColorPalette.white,
+                                        label: Text("Send"),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            )));
                   },
                 ),
               ],

@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pdf_gen/models/usermodel.dart';
 import 'package:pdf_gen/shared/color_palette.dart';
 import 'package:pdf_gen/utils/logger.dart';
+import 'package:path/path.dart';
 
 final FirebaseFirestore _db = FirebaseFirestore.instance;
 
@@ -74,4 +75,29 @@ class Database {
       print("No image selected");
     }
   }
+
+  // uploadPdfFile(File pdfPath, String email, String uid) async {
+  //   final _storage = FirebaseStorage.instance;
+  //   File pdfFile;
+  //   var snapshot =
+  //       await _storage.ref().child('pdf/$uid/').putFile(pdfFile).onComplete;
+  //
+  //   var pdfUrl = await snapshot.ref.getDownloadURL();
+  //   print(pdfUrl);
+  //
+  //   try {
+  //     await FirebaseFirestore.instance
+  //         .collection('users')
+  //         .doc(email)
+  //         .collection("pdf")
+  //         .doc(basename(pdfPath.path))
+  //         .update(
+  //       {basename(pdfPath.path): "$pdfUrl"},
+  //     );
+  //
+  //     Logger().d('pdf added to firebase');
+  //   } catch (e) {
+  //     Logger().d(e.toString());
+  //   }
+  // }
 }

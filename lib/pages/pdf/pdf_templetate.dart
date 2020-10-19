@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:intl/intl.dart';
@@ -17,7 +16,7 @@ pdfTemplate(context, Map userInputs) async {
   MegaHeading megaHeading = MegaHeading();
   Heading heading = Heading();
   SubHeading subHeading = SubHeading();
-  final blank = "";
+  final blank = "            ";
 
   final tokenNo = userInputs['token_no'] ?? blank;
   final place = userInputs['place'] ?? blank;
@@ -98,6 +97,11 @@ pdfTemplate(context, Map userInputs) async {
   final heir2Sign = userInputs['heir_2_sign'] ?? nullSignature;
   final heir3Sign = userInputs['heir_3_sign'] ?? nullSignature;
   final heir4Sign = userInputs['heir_4_sign'] ?? nullSignature;
+
+  final heir1Address = userInputs['legal_heir1_address'] ?? blank;
+  final heir2Address = userInputs['legal_heir2_address'] ?? blank;
+  final heir3Address = userInputs['legal_heir3_address'] ?? blank;
+  final heir4Address = userInputs['legal_heir4_address'] ?? blank;
 
   final PdfImage signatureImage = PdfImage.file(
     pdf.document,
@@ -303,7 +307,21 @@ pdfTemplate(context, Map userInputs) async {
                     fontWeight: FontWeight.bold,
                     lineSpacing: 2,
                   ))),
-          SizedBox(height: containerHeight),
+          Header(
+              level: 1,
+              margin: EdgeInsets.symmetric(horizontal: 3.0 * PdfPageFormat.cm),
+              child: Text("Computer No. $computerNumber",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      lineSpacing: 2,
+                      decoration: TextDecoration.combine([
+                        TextDecoration.underline,
+                        TextDecoration.overline
+                      ])))),
+          SizedBox(
+              height: containerHeight,
+              child: Text("(To be filled by the claimant)")),
           leftRightContent(
             "1",
             heading.tokenAndPlace,
@@ -724,7 +742,7 @@ pdfTemplate(context, Map userInputs) async {
                             child: Image(heir1Signature),
                           ),
                           Text("Name: $legalHeir1"),
-                          Text("Address: $blank"),
+                          Text("Address: $heir1Address"),
                         ],
                       ),
                     ),
@@ -741,7 +759,7 @@ pdfTemplate(context, Map userInputs) async {
                             child: Image(heir2Signature),
                           ),
                           Text("Name: $legalHeir2"),
-                          Text("Address: $blank"),
+                          Text("Address: $heir2Address"),
                         ],
                       ),
                     ),
@@ -758,7 +776,7 @@ pdfTemplate(context, Map userInputs) async {
                             child: Image(heir3Signature),
                           ),
                           Text("Name: $legalHeir3"),
-                          Text("Address: $blank"),
+                          Text("Address: $heir3Address"),
                         ],
                       ),
                     ),
@@ -775,7 +793,7 @@ pdfTemplate(context, Map userInputs) async {
                             child: Image(heir4Signature),
                           ),
                           Text("Name: $legalHeir4"),
-                          Text("Address: $blank"),
+                          Text("Address: $heir4Address"),
                         ],
                       ),
                     )
@@ -802,7 +820,8 @@ pdfTemplate(context, Map userInputs) async {
   final String path = '$dir/$fileName.pdf';
   final File file = File(path);
   await file.writeAsBytes(pdf.save());
-  material.Navigator.of(context).pushReplacement(
+
+  material.Navigator.of(context).push(
     material.MaterialPageRoute(
       builder: (_) => PDFViewer(path: path),
     ),

@@ -165,21 +165,21 @@ class _SignupRedesignState extends State<SignupRedesign> {
                                     : null,
                               ),
                               heightGap(),
-                              TextFieldWidgetwithIcon(
-                                hintText: 'Repeat Password',
-                                obscureText: _obscureText,
-                                prefixIconData: Icons.lock_outline,
-                                suffixIconData: _obscureText
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                                togglePassword: () => _toggle(),
-                                onChanged: (value) {
-                                  _password = value;
-                                },
-                                validator: (value) => value.length < 6
-                                    ? 'Password too short'
-                                    : null,
-                              ),
+                              // TextFieldWidgetwithIcon(
+                              //   hintText: 'Repeat Password',
+                              //   obscureText: _obscureText,
+                              //   prefixIconData: Icons.lock_outline,
+                              //   suffixIconData: _obscureText
+                              //       ? Icons.visibility
+                              //       : Icons.visibility_off,
+                              //   togglePassword: () => _toggle(),
+                              //   onChanged: (value) {
+                              //     _password = value;
+                              //   },
+                              //   validator: (value) => value.length < 6
+                              //       ? 'Password too short'
+                              //       : null,
+                              // ),
                               heightGap(),
                               TextFieldWidgetwithIcon(
                                   hintText: 'Phone',
