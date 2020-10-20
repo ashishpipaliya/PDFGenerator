@@ -27,25 +27,19 @@ class PDFViewer extends StatelessWidget {
             title: Text(basename(path)),
             automaticallyImplyLeading: false,
             actions: [
-              // FlatButton(
-              //     onPressed: () async {
-              //       try {
-              //         print("path : $path");
-              //         try {
-              //           if (File(path).existsSync()) {
-              //             await Database()
-              //                 .uploadPdfFile(File(path), user.email, user.uid);
-              //             print("success");
-              //           }
-              //         } catch (e) {
-              //           print(e);
-              //           print("file not found");
-              //         }
-              //       } catch (e) {
-              //         print(e.toString());
-              //       }
-              //     },
-              //     child: Text("upload to db")),
+              FlatButton(
+                  onPressed: () async {
+                    try {
+                      if (File(path).existsSync()) {
+                        await Database()
+                            .uploadPdfFile(File(path), user.email, user.uid);
+                        print("success");
+                      }
+                    } catch (e) {
+                      print(e.toString());
+                    }
+                  },
+                  child: Text("upload to db")),
               IconButton(
                 onPressed: () async {
                   Share.shareFiles([path], text: path);

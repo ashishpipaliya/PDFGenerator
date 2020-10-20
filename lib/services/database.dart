@@ -76,28 +76,28 @@ class Database {
     }
   }
 
-  // uploadPdfFile(File pdfPath, String email, String uid) async {
-  //   final _storage = FirebaseStorage.instance;
-  //   File pdfFile;
-  //   var snapshot =
-  //       await _storage.ref().child('pdf/$uid/').putFile(pdfFile).onComplete;
-  //
-  //   var pdfUrl = await snapshot.ref.getDownloadURL();
-  //   print(pdfUrl);
-  //
-  //   try {
-  //     await FirebaseFirestore.instance
-  //         .collection('users')
-  //         .doc(email)
-  //         .collection("pdf")
-  //         .doc(basename(pdfPath.path))
-  //         .update(
-  //       {basename(pdfPath.path): "$pdfUrl"},
-  //     );
-  //
-  //     Logger().d('pdf added to firebase');
-  //   } catch (e) {
-  //     Logger().d(e.toString());
-  //   }
-  // }
+  uploadPdfFile(File pdfPath, String email, String uid) async {
+    final _storage = FirebaseStorage.instance;
+
+    var snapshot = await _storage
+        .ref()
+        .child('pdf/$email/${basename(pdfPath.path)}')
+        .putFile(pdfPath)
+        .onComplete;
+
+    var pdfUrl = await snapshot.ref.getDownloadURL();
+
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(email)
+          .collection("pdf")
+          .doc(basename(pdfPath.path))
+          .set({"name": basename(pdfPath.path), "url": pdfUrl});
+
+      Logger().d('pdf added to firebase');
+    } catch (e) {
+      Logger().d(e.toString());
+    }
+  }
 }

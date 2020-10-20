@@ -44,6 +44,7 @@ dependencies:
   share: ^0.6.5+2
   flutter_signature_pad: ^2.0.2
   mailer: ^3.2.1
+  http:
 #  pdf create plugins test
   pdf: ^1.11.2
   flutter_full_pdf_viewer: ^1.0.6
